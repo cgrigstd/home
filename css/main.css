@@ -250,6 +250,14 @@ h3 {
         vertical-align: middle;
         width: auto;
     }
+    .dynamic-message {
+	display: flex;
+    	justify-content: center;
+        margin: auto;
+	transform: translateY(60px);
+        width: 400px;
+    }
+
 
     .social-top {
 	    position: absolute;
@@ -519,6 +527,13 @@ h3 {
         max-width: 600px;
         height: auto;
     }
+    .dynamic-message {
+	display: flex;
+    	justify-content: center;
+	margin: auto;
+        width: 400px;
+    }
+
     .content-logo {
         z-index: 3;
         position: sticky;
