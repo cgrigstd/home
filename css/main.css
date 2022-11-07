@@ -224,6 +224,19 @@ h3 {
         max-width: 600px;
         height: auto;
     }
+    .back-video video {
+        z-index: -1;
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 100%;
+        max-height: 100%;
+        border: 1px solid red;
+        filter: brightness(0.4);
+
+    }
+
     .content-logo {
         z-index: 3;
         position: sticky;
@@ -523,6 +536,21 @@ h3 {
         width: 100%;
         max-width: 600px;
         height: auto;
+    }
+
+    .back-video video {
+        z-index: -1;
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: cover; 
+        filter: brightness(0.4);
+
     }
     .dynamic-message {
 	display: flex;
