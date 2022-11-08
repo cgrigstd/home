@@ -25,6 +25,14 @@ body {
     max-width: 100px;
     max-height: 100px;
     filter: drop-shadow(10px 10px 10px rgba(0, 0, 0, 1.0));
+    animation: crescendo 0.3s alternate infinite ease-in;
+
+}
+
+@keyframes crescendo{
+
+  0% {transform:scale(0.95);}
+  100% {transform:scale(1.0);}
 
 }
 
