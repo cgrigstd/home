@@ -45,7 +45,11 @@
 
 </head>
 
-<body oncontextmenu="return false;">
+<body ontextmenu="return false;">
+  <div class="loader-center" id="onload">
+  <div class="lds-facebook"><div></div><div></div><div></div></div>
+  </div>
+
     <div class="main-contaner">
             <div class="topnav">
             <video autoplay loop muted="muted">
@@ -431,6 +435,12 @@ I always strive to be the best I can be, and I think that shows in my work.
         </script>
 
     </div>
+    <script>
+          window.onload = function() {
+                      $('#onload').fadeOut();
+                    }
+    </script>
+
 </body>
 
 </html>
