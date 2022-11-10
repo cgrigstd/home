@@ -260,6 +260,17 @@ h3 {
         max-width: 600px;
         height: auto;
     }
+
+    .grid-video video {
+        width: 100%;
+        height: auto;
+     }
+
+     .offset video {
+       object-fit: cover;
+       transform: scale(1.2);
+     }
+     
     .back-video video {
         z-index: -1;
         position: fixed;
@@ -377,7 +388,7 @@ h3 {
         width: 100%;
         height: auto;
     }
-    content-transform {
+    .content-transform {
         transform: translateX(-30%);
     }
     .item-content h2 {
@@ -572,6 +583,16 @@ h3 {
         max-width: 600px;
         height: auto;
     }
+
+    .grid-video video {
+        width: 100%;
+        height: auto;
+     }
+
+     .offset video {
+       object-fit: cover;
+       transform: scale(1.2);
+     }
 
     .back-video video {
         z-index: -1;
