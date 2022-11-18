@@ -45,7 +45,7 @@
 
 </head>
 
-<body ontextmenu="return false;">
+<body ontextmenu="return false;" id="body_main">
   <div class="loader-center" id="onload">
   <div class="shape-logo">
                 <img src="img/cgrigs-logo.svg">
@@ -444,9 +444,15 @@ I always strive to be the best I can be, and I think that shows in my work.
 
     </div>
     <script>
+          function show(){
+                  document.getElementById("body_main").style.overflow = "visible";
+                }
+
           window.onload = function() {
                       $('#onload').fadeOut();
+                      show();
                     }
+
     </script>
 
 </body>
