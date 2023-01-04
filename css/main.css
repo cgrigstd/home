@@ -306,29 +306,20 @@ h3 {
         vertical-align: middle;
         width: auto;
     }
-    .dynamic-message {
-	display: flex;
-    	justify-content: center;
-        margin: auto;
-	transform: translateY(60px);
-        width: 400px;
-    }
-
-
+    
     .social-top {
 	    position: absolute;
 	    display: inline-block;
 	    margin-top: 21px;
 	    right: 8%;
 	    width: auto;
-	    background-color: rgba(255,255,255,0.1);
+	    background-color: rgba(255,255,255,0.0);
 	    border-radius: 5px;
     }
     .social-top img {
 	    padding: 3px;
 	    min-width: 30px;
 	    max-width: 30px;
-
     }
 
     .social-top img:hover {
@@ -605,13 +596,7 @@ h3 {
         filter: brightness(0.4);
 
     }
-    .dynamic-message {
-	display: flex;
-    	justify-content: center;
-	margin: auto;
-        width: 400px;
-    }
-
+    
     .content-logo {
         z-index: 3;
         position: sticky;

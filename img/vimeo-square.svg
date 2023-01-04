@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    aria-hidden="true"
    focusable="false"
    data-prefix="fab"
@@ -19,7 +12,14 @@
    sodipodi:docname="vimeo-square.svg"
    width="64"
    height="64"
-   inkscape:version="1.0.2-2 (e86c870879, 2021-01-15)">
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <metadata
      id="metadata3852">
     <rdf:RDF>
@@ -28,7 +28,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -44,21 +44,23 @@
      inkscape:pageopacity="1"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="1017"
+     inkscape:window-height="1027"
      id="namedview3848"
      showgrid="false"
      inkscape:zoom="3.3203124"
-     inkscape:cx="106.66873"
-     inkscape:cy="54.002352"
+     inkscape:cx="80.263532"
+     inkscape:cy="54.211766"
      inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-y="22"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg3846"
      inkscape:document-rotation="0"
-     inkscape:pagecheckerboard="true" />
+     inkscape:pagecheckerboard="true"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1" />
   <path
      fill="currentColor"
      d="M 55.446691,2.4406988 H 8.1827908 c -3.5582229,0 -6.4450787,2.8868555 -6.4450787,6.445078 V 56.149684 c 0,3.558216 2.8868558,6.445079 6.4450787,6.445079 H 55.446691 c 3.558222,0 6.445081,-2.886863 6.445081,-6.445079 V 8.8857768 c 0,-3.5582225 -2.886859,-6.445078 -6.445081,-6.445078 z M 53.271472,22.527856 c -0.187977,4.175876 -3.115116,9.909309 -8.767989,17.173448 -5.840851,7.586391 -10.782074,11.386306 -14.823679,11.386306 -2.510896,0 -4.618966,-2.309488 -6.351085,-6.928462 C 19.945057,31.765805 18.508338,24.50166 15.715474,24.50166 c -0.322254,0 -1.450143,0.671367 -3.370239,2.027518 l -2.014088,-2.604887 c 4.954651,-4.350429 9.681048,-9.184235 12.635041,-9.45278 3.343379,-0.322254 5.397746,1.960373 6.176527,6.861323 2.752587,17.401711 3.974464,20.03345 8.969401,12.151652 1.799246,-2.846571 2.766014,-4.994936 2.886861,-6.485356 0.456521,-4.404137 -3.437376,-4.108738 -6.069118,-2.980847 2.108071,-6.915033 6.149685,-10.271848 12.097946,-10.083863 4.417569,0.134269 6.498794,3.007701 6.243667,8.593436 z"
      id="path3844"
-     style="stroke-width:0.134272" />
+     style="stroke-width:0.134272;fill:#ffffff" />
 </svg>
