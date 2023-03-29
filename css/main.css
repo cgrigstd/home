@@ -6,6 +6,15 @@
 .order {
 	z-index: 1;
 }
+ input[type="checkbox"] {
+    /* Add if not using autoprefixer */
+    -webkit-appearance: none;
+    appearance: none;
+    /* For iOS < 15 to remove gradient background */
+    background-color: #fff;
+    /* Not removed via appearance */
+    margin: 0;
+  }
 
 
 body {
@@ -273,6 +282,7 @@ h3 {
   }
 
   .en {
+    transform: translateY(-20px);
     display: block;
 
   }
@@ -281,11 +291,12 @@ h3 {
 
   }
 
+ 
   .check {
     display: block;
     position: relative;
     width: 10px;
-    transform: translate(45px, -10px);
+    transform: translate(50px, -25px);
   }
 
   .check:before {
@@ -631,6 +642,7 @@ h3 {
   }
 
   .en {
+    transform: translateY(-20px);
     display: block;
 
   }
@@ -643,7 +655,7 @@ h3 {
     display: block;
     position: relative;
     width: 10px;
-    transform: translate(45px, -10px);
+    transform: translate(50px, -25px);
   }
 
   .check:before {
