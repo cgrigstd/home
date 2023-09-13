@@ -491,7 +491,7 @@ h3 {
         width: 150px;
         margin-left: 10px;
         margin-right: 10px;
-        margin-bottom: -8px;
+        margin-bottom: 10px;
         padding-left: 5px;
         padding-right: 5px;
         float: left;
@@ -517,6 +517,15 @@ h3 {
         color: rgb(230, 230, 230);
         text-transform: uppercase;
         font-family: 'Bebas Neue';
+    }
+    .main-title .label {
+        color: rgb(230, 230, 230);
+        text-transform: lowercase;
+        font-family: 'Bebas Neue';
+        text-align: center;
+        letter-spacing: 5px;
+        font-size: 12px;
+        line-height: 20%;
     }
     .main-title .low-title {
         color: rgb(230, 230, 230);
@@ -854,7 +863,7 @@ h3 {
         width: 150px;
         margin-left: 10px;
         margin-right: 10px;
-        margin-bottom: -8px;
+        margin-bottom: 15px;
         padding-left: 5px;
         padding-right: 5px;
         float: left;
@@ -881,6 +890,16 @@ h3 {
         text-transform: uppercase;
         font-family: 'Bebas Neue';
     }
+    .main-title .label {
+        color: rgb(230, 230, 230);
+        text-transform: lowercase;
+        font-family: 'Bebas Neue';
+        text-align: center;
+        letter-spacing: 5px;
+        font-size: 12px;
+        line-height: 20%;
+    }
+
     .main-title .low-title {
         color: rgb(230, 230, 230);
         text-transform: uppercase;
