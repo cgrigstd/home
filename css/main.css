@@ -71,10 +71,10 @@ input[type=email] {
 input[type=submit] {
     display: block;
     width: 100%;
-    background-color: #B65253;
+    background-color: #00a1ff;
     border: 1px solid #60bfbfb3;
-    color: rgb(31, 32, 36);
-    font-size: 20px;
+    color: white;
+    font-size: 24px;
     font-family: 'Bebas Neue';
     padding: 10px;
     margin-bottom: 16px;
@@ -82,8 +82,7 @@ input[type=submit] {
 }
 
 input[type=submit]:hover {
-    background-color: #60bfbfb3;
-    border: 1px solid #B65253;
+    border: 2px solid white;
 }
 
 .container {
@@ -219,11 +218,10 @@ h3 {
     margin-top: 5px;
     padding-left: 10px;
     padding-right: 10px;
+    margin-top: -15px;
 }
 
-::selection {
-    background: #9F4040;
-}
+
 
 .footer {
     display: flex;
@@ -232,7 +230,7 @@ h3 {
     height: 400px;
     margin-top: 200px;
     background: rgba(31, 32, 36, 1);
-    box-shadow: 0px 40px 100px #60bfbfb3;
+    box-shadow: 0px 40px 100px #00a1ff;
 }
 
 .footer:before {
@@ -520,7 +518,7 @@ h3 {
         font-size: 18px;
         font-family: 'Bebas Neue';
         letter-spacing: 2px;
-        color: #333;
+        color: #00a1ff;
     }
     a:link,
     a:visited,
@@ -528,7 +526,7 @@ h3 {
         text-decoration: none;
     }
     .item-content h2:hover {
-        color: #f94040;
+        color: white;
     }
     .image-container img {
         width: 100%;
@@ -582,7 +580,7 @@ h3 {
         font-family: 'Bebas Neue';
     }
     .divider {
-        background: linear-gradient(rgba(255, 255, 255, 0), #9F4040, transparent);
+        background: linear-gradient(rgba(255, 255, 255, 0), #00a1ff, transparent);
         position: absolute;
         margin: auto;
         left: 50%;
@@ -618,7 +616,7 @@ h3 {
     }
     .title {
         display: block;
-        color: #9F4040;
+        color: #00a1ff;
         font-size: 36px;
         font-family: 'Bebas Neue';
         width: 100px;
@@ -634,7 +632,7 @@ h3 {
         max-height: 50px;
         border-radius: 3px;
         opacity: 0.5;
-        background-color: #60bfbfb3;
+        background-color: #00a1ff;
         border-radius: 5px;
     }
     .box img {
@@ -647,7 +645,7 @@ h3 {
         grid-template-columns: auto auto auto auto;
         width: auto;
         height: 80px;
-        background-image: linear-gradient(#b65253, #9F4040 80%);
+        background-image: linear-gradient(rgb(50,50,50), black 80%);
     }
 	.payments {
         width: auto;
@@ -940,7 +938,7 @@ h3 {
         font-size: 13px;
         font-family: 'Bebas Neue';
         letter-spacing: 2px;
-        color: #333;
+        color: #00a1ff;
         padding: 5px;
     }
     a:link,
@@ -949,7 +947,7 @@ h3 {
         text-decoration: none;
     }
     .item-content h2:hover {
-        color: #f94040;
+        color: white;
     }
     .image-container img {
         width: 100%;
@@ -1003,7 +1001,7 @@ h3 {
         font-family: 'Bebas Neue';
     }
     .divider {
-        background: linear-gradient(rgba(255, 255, 255, 0), #9F4040, transparent);
+        background: linear-gradient(rgba(255, 255, 255, 0), #00a1ff, transparent);
         position: absolute;
         margin: auto;
         left: 50%;
@@ -1039,7 +1037,7 @@ h3 {
     }
     .title {
         display: block;
-        color: #9F4040;
+        color: #00a1ff;
         font-size: 36px;
         font-family: 'Bebas Neue';
         width: 100px;
@@ -1055,7 +1053,7 @@ h3 {
         max-height: 30px;
         border-radius: 3px;
         opacity: 0.5;
-        background-color: #60bfbfb3;
+        background-color: #00a1ff;
         border-radius: 5px;
     }
     .box img {
@@ -1068,7 +1066,7 @@ h3 {
         grid-template-columns: auto auto auto auto;
         width: auto;
         height: 80px;
-        background-image: linear-gradient(#b65253, #9F4040 80%);
+        background-image: linear-gradient(rgb(50,50,50), black 80%);
     }
         .payments {
         width: auto;
