@@ -24,6 +24,16 @@ body {
     overflow:hidden;
 }
 
+.container-slides {
+  margin: auto;
+  padding: 10px;
+}
+
+.animate-fading {
+  width:100%;
+  animation:fadeIn 1s alternate ease-in;
+} 
+
 .shape-logo img{
     display:flex;
     justify-content:center;

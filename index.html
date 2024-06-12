@@ -197,6 +197,18 @@ My goal is to be your trusted companion on this creative journey. With honed tec
           <div class="description">
             <h3> These cartoon charcters I was created for animated short film. </h3>
           </div>
+
+          <div class="container-slides">
+            <img class="mySlides animate-fading" src="./img/project_ypf_01.jpg">
+            <img class="mySlides animate-fading" src="./img/project_ypf_02.jpg">
+            <img class="mySlides animate-fading" src="./img/project_ypf_03.jpg">
+            <img class="mySlides animate-fading" src="./img/project_ypf_04.jpg">
+            <img class="mySlides animate-fading" src="./img/project_ypf_05.jpg">
+
+            <img class="mySlides animate-fading" src="./img/daruma_01.jpg">
+            <img class="mySlides animate-fading" src="./img/daruma_02.jpg">
+            <img class="mySlides animate-fading" src="./img/robot_rigs.jpg">
+          </div>
           
           <div class="grid-content">
 
@@ -500,6 +512,20 @@ My goal is to be your trusted companion on this creative journey. With honed tec
         }else{
           location.href="../index.html";
         }
+      }
+      var myIndex = 0;
+      carousel();
+
+      function carousel() {
+        var i;
+        var x = document.getElementsByClassName("mySlides");
+        for (i = 0; i < x.length; i++) {
+          x[i].style.display = "none";  
+        }
+        myIndex++;
+        if (myIndex > x.length) {myIndex = 1}    
+        x[myIndex-1].style.display = "block";  
+        setTimeout(carousel, 5000);    
       }
     </script>
   </body>
