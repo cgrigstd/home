@@ -25,14 +25,19 @@ body {
 }
 
 .container-slides {
-  margin: auto;
-  padding: 10px;
+  padding:0px;
 }
 
 .animate-fading {
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
   width:100%;
+
   animation:fadeIn 1s alternate ease-in;
 } 
+
+
 
 .shape-logo img{
     display:flex;
@@ -110,7 +115,7 @@ input[type=submit]:hover {
     width:100%;
     height:auto;
     min-height:200px;
-    max-height:600px;
+    max-height:900px;
     background-color:black;
     overflow:hidden;
 }
@@ -287,6 +292,7 @@ h3 {
     /* transform:scale(0.85); */
 
   }
+
 
   .card {
     margin:0;

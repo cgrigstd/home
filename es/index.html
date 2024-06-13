@@ -43,9 +43,22 @@
     </div>
     <div class="main-contaner">
       <div class="topnav">
-        <video preload="auto" playsinline="" webkit-playsinline="" x5-playsinline="" autoplay loop muted="muted">
-          <source src="../img/show-rigs-short.mp4" type="video/mp4">
-        </video>
+        <div class="container-slides">
+            <img class="mySlides animate-fading" src="../img/project_ypf_01.jpg">
+            <img class="mySlides animate-fading" src="../img/project_ypf_02.jpg">
+            <img class="mySlides animate-fading" src="../img/project_ypf_03.jpg">
+            <img class="mySlides animate-fading" src="../img/project_ypf_04.jpg">
+            <img class="mySlides animate-fading" src="../img/project_ypf_05.jpg">
+
+            <img class="mySlides animate-fading" src="../img/daruma_01.jpg">
+            <img class="mySlides animate-fading" src="../img/daruma_02.jpg">
+            <img class="mySlides animate-fading" src="../img/robot_rigs.jpg">
+
+            <video class="mySlides animate-fading" preload="auto" webkit-playsinline="" x5-playsinline="" autoplay loop muted="muted">
+              <source src="../img/show-rigs-short.mp4" type="video/mp4">
+            </video>
+          </div>
+
       </div>
       <div class="back-video">
         <video preload="auto" webkit-playsinline="" x5-playsinline="" autoplay loop muted="muted">
@@ -197,18 +210,7 @@ Mi objetivo es ser tu compañero de confianza en este viaje creativo. Con habili
             <h3> Rigs para cortos y spot publicitarios. </h3>
           </div>
 
-          <div class="container-slides">
-            <img class="mySlides animate-fading" src="../img/project_ypf_01.jpg">
-            <img class="mySlides animate-fading" src="../img/project_ypf_02.jpg">
-            <img class="mySlides animate-fading" src="../img/project_ypf_03.jpg">
-            <img class="mySlides animate-fading" src="../img/project_ypf_04.jpg">
-            <img class="mySlides animate-fading" src="../img/project_ypf_05.jpg">
-
-            <img class="mySlides animate-fading" src="../img/daruma_01.jpg">
-            <img class="mySlides animate-fading" src="../img/daruma_02.jpg">
-            <img class="mySlides animate-fading" src="../img/robot_rigs.jpg">
-          </div>
-
+          
           <div class="grid-content">
 
             <div class="card">
@@ -524,7 +526,7 @@ Mi objetivo es ser tu compañero de confianza en este viaje creativo. Con habili
         myIndex++;
         if (myIndex > x.length) {myIndex = 1}    
         x[myIndex-1].style.display = "block";  
-        setTimeout(carousel, 5000);    
+        setTimeout(carousel, 6000);    
       }
     </script>
   </body>
