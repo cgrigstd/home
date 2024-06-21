@@ -110,7 +110,8 @@ input[type=submit]:hover {
 }
 
 .topnav {
-    text-align:center;
+    margin-left:auto;
+    margin-right:auto;
     overflow:hidden;
     width:100%;
     height:auto;
@@ -124,7 +125,7 @@ input[type=submit]:hover {
 video {
     width:100%;
     height:auto;
-    max-width:100vh;
+    max-width:90%;
     min-height:200px;
     max-height:50%;
     object-fit:fill;
