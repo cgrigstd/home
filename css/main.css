@@ -24,6 +24,14 @@ body {
     overflow:hidden;
 }
 
+
+#tools-assets {
+  scroll-margin-top: 200px;
+  width: auto;
+  height: auto;
+
+}
+
 .container-slides {
   padding:0px;
 }
