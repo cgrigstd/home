@@ -238,10 +238,9 @@ h3 {
 
 .description h3 {
     color:rgb(230, 230, 230);
-    margin-top:5px;
+    margin-top:0;
     padding-left:10px;
     padding-right:10px;
-    margin-top:-15px;
 }
 
 
