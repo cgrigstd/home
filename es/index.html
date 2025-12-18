@@ -16,21 +16,6 @@
     <link rel="icon" href="../img/cgrigs-logo.svg">
     <title>CG RIGS</title>
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-    <script>
-      function SubForm() {
-        $.ajax({
-          url: "https://api.apispreadsheets.com/data/2xfM777bbugUsZjl/",
-          type: "post",
-          data: $("#myForm").serializeArray(),
-          success: function() {
-            alert("Form Data Submitted successfully")
-          },
-          error: function() {
-            alert("There was an error :(")
-          }
-        });
-      }
-    </script>
   </head>
   <body ontextmenu="return false;" id="body_main">
     <div class="loader-center" id="onload">
@@ -465,57 +450,18 @@ Si estás buscando un socio técnico que entienda tanto código como animación,
     </div>
     </div>
     <div class="footer">
-      <div class="divider"></div>
-      <div class="left">
-        <div class="title">CONTACTO</div>
-        <div class="form-container">
-          <form id="myForm">
-            <input type="text" id="fname" name="Name" placeholder="Nombre">
-            <input type="email" id="email" name="Email" placeholder="Email" required>
-            <textarea id="subject" name="Message" placeholder="Mensaje"></textarea>
-          </form>
-          <input type="submit" value="Enviar" onclick="SubForm();">
+      <div class="group-contact">
+        <div class="contact-container">
+          <div class="title"> CONTACTO </div>
+          <div class="contact-skills"> cgrig.td@gmail.com </div>
         </div>
-      </div>
-      <div class="right">
-        <div class="title">Habilidades</div>
-        <div class="group">
-          <div class="info">
-            <h3> blender </h3>
-          </div>
-          <div class="info">
-            <h3> maya </h3>
-          </div>
-          <div class="info">
-            <h3> unity3d </h3>
-          </div>
-          <div class="info">
-            <h3> ue5 </h3>
-          </div>
-          <div class="info">
-            <h3> mel-script </h3>
-          </div>
-          <div class="info">
-            <h3> c# </h3>
-          </div>
-          <div class="info">
-            <h3> go </h3>
-          </div>
-          <div class="info">
-            <h3> java </h3>
-          </div>
-          <div class="info">
-            <h3> python </h3>
-          </div>
-          <div class="info">
-            <h3> html5 </h3>
-          </div>
-          <div class="info">
-            <h3> css </h3>
-          </div>
-          <div class="info">
-            <h3> git </h3>
-          </div>
+        <div class="divider"> </div>
+        <div class="contact-container">
+          <div class="title"> HABILIDADES </div>
+          <div class="contact-skills"> blender </div>
+          <div class="contact-skills"> python </div>
+          <div class="contact-skills"> unity3d </div>
+          <div class="contact-skills"> unrealengine </div>
         </div>
       </div>
     </div>
