@@ -1,0 +1,179 @@
+{
+
+"profile":{
+"name":"Pablo",
+"lastname":"Romero",
+"description":"I specialize in technical rigging and rig automation, creating reliable, and production-ready rigs for animation, games, and real-time pipelines. With a strong focus on Python-driven tools to improve workflows, I design rigs for characters, props, and vehicles that are easy to animate, easy to maintain, and fast to deploy. My work is not just about making things move — it’s about building systems that save time, reduce errors, and integrate smoothly into existing pipelines.Behind every clean deformation and expressive performance, there is solid technical design. I approach rigging as a problem-solving discipline, combining technical precision with a deep understanding of animation needs As a Technical Rigger TD, my goal is to support teams by delivering robust solutions: reusable rigs and custom tools. If you’re looking for a technical partner who understands both code and animation, you’re in the right place.",
+"logo":"./assets/cgrigs-logo.svg",
+"profileImage":"./assets/user.jpg"
+},
+
+"demoReel":"https://www.youtube.com/embed/Kdbo_7j7KE8",
+
+"shortRealTime":"https://player.vimeo.com/video/868833528?h=324e4acd7e&app_id=122963&byline=0&badge=0&portrait=0&title=0",
+
+"skills":{
+  "3d_software":[
+    "Blender",
+    "Maya"
+  ],
+  "game_engine":[
+    "Unreal Engine",
+    "Unity3D"
+  ],
+  "human_system_pipeline":[
+    "Meta Human",
+    "Character Crator 5"
+  ],
+  "programming_language":[
+    "Python",
+    "C#"
+  ]
+},
+"productionrigs":[
+{
+"name":"Pharmathon Kiddi",
+"image":"./assets/robot_rigs.jpg",
+"url":"https://vimeo.com/867342475?share=copy"
+},
+{
+"name":"CONSOMATE TE CORONA",
+"image":"./assets/tomate_rig_fix.jpg",
+"url":"https://vimeo.com/963893918"
+},
+{
+"name":"Nissin - Monociclo",
+"image":"./assets/daruma_01.jpg",
+"url":"https://vimeo.com/890075928"
+},
+{
+"name":"Fox Sports",
+"image":"./assets/fox_sport_robot_rig.jpg",
+"url":"https://www.bocanadastudio.com/project/super-bowl-lviii/"
+},
+{
+"name":"Lucia Rig",
+"image":"./assets/lucia.jpg",
+"url":""
+},
+{
+"name":"Benja Rig",
+"image":"./assets/benja.jpg",
+"url":""
+},
+{
+"name":"Martina Rig",
+"image":"./assets/martina.jpg",
+"url":"./assets/martina_rig_test.mp4"
+}
+],
+"rigs":[
+{
+"name":"PawPatrol Rig",
+"image":"./assets/paw_patrol.jpg",
+"url":"./assets/pawpatrol_rig_test.mp4"
+},
+{
+"name":"Robot Rig",
+"image":"./assets/proj-img-02.png",
+"url":"./assets/quadruped_robot_test.mp4"
+},
+{
+"name":"Girl Rig",
+"image":"./assets/proj-img-04.png",
+"url":""
+},
+{
+"name":"Boy Rig",
+"image":"./assets/proj-img-05.png",
+"url":""
+},
+{
+"name":"Grave Digger",
+"image":"./assets/grave_digger.png",
+"url":""
+}
+],
+
+"tools":[
+{
+"name":"Recsure Screen Recorder",
+"image":"./assets/recsure.jpg",
+"url":"https://blendermarket.com/products/recsure"
+},
+{
+"name":"Bike Toy",
+"image":"./assets/bike_001.png",
+"url":"https://blendermarket.com/products/bike-wood"
+},
+{
+"name":"hippydrome Rig",
+"image":"./assets/hippydrome_rig_free.png",
+"url":"https://drive.google.com/file/d/1DxpxmSScBrrD1m5D-T3ykwix6N7Ba8Bv/view?usp=sharing"
+}
+],
+
+"games":[
+{
+"name":"Protohea",
+"image":"./assets/protothea.jpg",
+"url": "https://www.youtube.com/watch?v=co_v3RoePwE"
+},
+{
+"name":"Rusher Dominance",
+"image":"./assets/rusher.png",
+"url":"https://www.youtube.com/watch?v=zakCOpxGSM0"
+},
+{
+"name":"Zup Buh Hell",
+"image":"./assets/zap-bug-hell.jpg",
+"url": "https://www.youtube.com/watch?v=pxgd24WmEjQ"
+},
+{
+"name":"Zup Firts Jump",
+"image":"./assets/zap-first-jump.jpg",
+"url": "https://appsafari.com/games/19030/zap-first-jump/"
+},
+{
+"name":"Hacker vs Cybercrook",
+"image":"./assets/hackers_vs_cybercrook.jpg",
+"url":"https://play.google.com/store/apps/details?id=com.incibe.hackersvscybercrook&hl=es_AR&gl=US"
+},
+{
+"name":"Desafio Ruta 40",
+"image":"./assets/desafio-ruta-40.jpg",
+"url":"https://www.youtube.com/watch?v=Kf2qiCxdYLg"
+}
+],
+"showcase":[
+{
+"type":"image",
+"src":"./assets/project_ypf_01.jpg"
+},
+{
+"type":"image",
+"src":"./assets/project_ypf_02.jpg"
+},
+{
+"type":"video",
+"src":"./assets/show-rigs-short.mp4"
+},
+{
+"type":"image",
+"src":"./assets/project_ypf_03.jpg"
+},
+{
+"type":"image",
+"src":"./assets/project_ypf_04.jpg"
+},
+{
+"type":"image",
+"src":"./assets/project_ypf_05.jpg"
+},
+{
+"type":"video",
+"src":"./assets/facerig.mp4"
+}
+]
+
+}
