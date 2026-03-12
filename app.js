@@ -148,7 +148,7 @@ index = (index + 1) % elements.length
 
 elements[index].classList.add("active")
 
-},5000)
+},9000)
 
 }
 

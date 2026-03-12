@@ -147,6 +147,10 @@
 ],
 "showcase":[
 {
+"type":"video",
+"src":"./assets/newton.mp4"
+},
+{
 "type":"image",
 "src":"./assets/project_ypf_01.jpg"
 },
