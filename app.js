@@ -48,57 +48,83 @@ createCards(data.games, gamesContainer)
 }
 
 function createCards(items, container) {
-  const videoModal = document.getElementById('video-modal');
-  const projectVideo = document.getElementById('project-video');
+
+  const videoModal = document.getElementById("video-modal")
+  const projectVideo = document.getElementById("project-video")
+
+  const fragment = document.createDocumentFragment()
 
   items.forEach(item => {
-    const isLocalVideo = item.url && item.url.endsWith(".mp4") &&
-                         (container.id === "rigsContainer" || container.id === "productionrigsContainer");
-    const hasValidLink = item.url && item.url !== "" && !isLocalVideo;
 
-    const card = document.createElement("div");
-    card.className = "card";
+    const isLocalVideo = item.url && item.url.endsWith(".mp4") &&
+      (container.id === "rigsContainer" || container.id === "productionrigsContainer")
+
+    const hasValidLink = item.url && item.url !== "" && !isLocalVideo
+
+    const card = document.createElement("div")
+    card.className = "card"
 
     if (isLocalVideo || hasValidLink) {
-      card.classList.add("clickable");
+      card.classList.add("clickable")
     }
 
     if (hasValidLink) {
-      const link = document.createElement("a");
-      link.href = item.url;
-      link.target = "_blank";
-      link.innerHTML = `<img loading="lazy" src="${item.image}"><h3>${item.name}</h3>`;
-      card.appendChild(link);
-    } else {
-      card.innerHTML = `<img loading="lazy" src="${item.image}"><h3>${item.name}</h3>`;
-    }
 
-    container.appendChild(card);
+      const link = document.createElement("a")
+      link.href = item.url
+      link.target = "_blank"
+
+      link.innerHTML = `
+        <img loading="lazy" src="${item.image}">
+        <h3>${item.name}</h3>
+      `
+
+      card.appendChild(link)
+
+    } else {
+
+      card.innerHTML = `
+        <img loading="lazy" src="${item.image}">
+        <h3>${item.name}</h3>
+      `
+    }
 
     if (isLocalVideo) {
+
       card.addEventListener("click", () => {
-        projectVideo.src = item.url;
-        projectVideo.currentTime = 0;
-        projectVideo.play();
-        videoModal.classList.add("active");
-      });
+
+        projectVideo.src = item.url
+        projectVideo.currentTime = 0
+        projectVideo.play()
+
+        videoModal.classList.add("active")
+
+      })
+
     }
-  });
 
-  projectVideo.addEventListener("ended", () => {
-    projectVideo.pause();
-    projectVideo.src = "";
-    videoModal.classList.remove("active");
-  });
+    fragment.appendChild(card)
 
-  videoModal.addEventListener("click", (e) => {
+  })
+
+  container.appendChild(fragment)
+
+  projectVideo.onended = () => {
+    projectVideo.pause()
+    projectVideo.src = ""
+    videoModal.classList.remove("active")
+  }
+
+  videoModal.onclick = (e) => {
     if (e.target === videoModal) {
-      projectVideo.pause();
-      projectVideo.src = "";
-      videoModal.classList.remove("active");
+      projectVideo.pause()
+      projectVideo.src = ""
+      videoModal.classList.remove("active")
     }
-  });
+  }
+
 }
+
 function initShowcase(items){
 
 const container = document.getElementById("showcaseCarousel")
@@ -121,7 +147,9 @@ element = document.createElement("video")
 element.src = item.src
 element.muted = true
 element.loop = true
-element.autoplay = true
+element.autoplay = false
+element.playsInline = true
+element.preload = "metadata"
 
 }
 
@@ -140,13 +168,25 @@ if(elements.length === 0) return
 
 elements[0].classList.add("active")
 
+let firstVideo = elements[0].querySelector("video")
+if(firstVideo) firstVideo.play()
+
 setInterval(()=>{
+
+let currentVideo = elements[index].querySelector("video")
+if(currentVideo) currentVideo.pause()
 
 elements[index].classList.remove("active")
 
 index = (index + 1) % elements.length
 
 elements[index].classList.add("active")
+
+let nextVideo = elements[index].querySelector("video")
+if(nextVideo){
+nextVideo.currentTime = 0
+nextVideo.play()
+}
 
 },9000)
 
