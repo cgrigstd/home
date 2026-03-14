@@ -4,6 +4,8 @@
 "name":"Pablo",
 "lastname":"Romero",
 "description":"I specialize in technical rigging and rig automation, creating reliable, and production-ready rigs for animation, games, and real-time pipelines. With a strong focus on Python-driven tools to improve workflows, I design rigs for characters, props, and vehicles that are easy to animate, easy to maintain, and fast to deploy. My work is not just about making things move — it’s about building systems that save time, reduce errors, and integrate smoothly into existing pipelines.Behind every clean deformation and expressive performance, there is solid technical design. I approach rigging as a problem-solving discipline, combining technical precision with a deep understanding of animation needs As a Technical Rigger TD, my goal is to support teams by delivering robust solutions: reusable rigs and custom tools. If you’re looking for a technical partner who understands both code and animation, you’re in the right place.",
+"area":"Technical Artist rigs.tools.dev",
+"solutions":"Game ready rigs for Unreal & Unity3D. Animator friendly rigs. Fixing broken rigs. Optimizing rigs for performance. Custom rig tools",
 "logo":"./assets/cgrigs-logo.svg",
 "profileImage":"./assets/user.jpg"
 },

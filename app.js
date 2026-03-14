@@ -17,6 +17,8 @@ const gamesContainer = document.getElementById("gamesContainer")
 document.getElementById("heroName").textContent = data.profile.name
 document.getElementById("heroLastName").textContent = data.profile.lastname
 document.getElementById("heroDescription").textContent = data.profile.description
+document.getElementById("area").textContent = data.profile.area
+document.getElementById("solutions").textContent = data.profile.solutions
 
 document.getElementById("navLogo").src = data.profile.logo
 

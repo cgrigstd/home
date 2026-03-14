@@ -86,6 +86,17 @@ text-transform:uppercase;
 text-align:center;
 }
 
+.hero-area{
+display:flex;
+flex-direction:column;
+max-width:150px;
+line-height:1.5;
+margin-top:5px;
+font-size:0.5rem;
+text-transform:uppercase;
+word-break:break-word;
+}
+
 #heroName{
 margin-top:12px;
 font-size:36px;
@@ -94,6 +105,21 @@ font-size:36px;
 #heroLastName{
 margin-top:0px;
 font-size:26px;
+}
+
+.hero-solutions{
+display:block;
+line-height:1.2;
+text-align:center;
+border-radius:8px;
+padding:20px;
+margin-left:30px;
+margin-right:30px;
+font-size:1.0rem;
+color:#bfbfbf;
+text-transform:uppercase;
+word-break:break-word;
+border:1px solid white;
 }
 
 #heroDescription{
