@@ -364,19 +364,41 @@ font-size:24px;
 text-align:justify;
 }
 
+.hero-buttons {
+text-align:center;
+}
+
 }
 
 /* DESKTOP */
 
 @media (min-width:1200px){
 
-.hero-container{
-max-width:1100px;
+.hero-buttons {
+text-align:left;
 }
 
 .section{
 padding:120px 12%;
 }
+
+.hero-container{
+min-width:1000px;
+flex-direction:row;
+align-items:flex-start;
+justify-content:flex-start;
+}
+
+.hero-content{
+text-align:left;
+}
+
+#heroDescription{
+width:700px;
+max-width:1100px;
+text-align:left;
+}
+
 
 }
 
