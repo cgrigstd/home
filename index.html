@@ -2,151 +2,160 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>CG RIGS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pablo Romero — Rigger &amp; Programmer</title>
 <link rel="stylesheet" href="./styles.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="icon" href="./assets/cgrigs-logo.svg">
 </head>
-
 <body>
+
+<div class="bg-wire"></div>
 
 <div id="loader">
   <img id="loaderLogo" class="loader-logo">
 </div>
 
-<nav class="navbar">
+<nav>
   <div class="nav-logo">
-    <img id="navLogo">
+    <img id="navLogo" alt="CG RIGS">
+    CG RIGS
   </div>
   <div class="nav-links">
-    <a href="#reel">Reel</a>
-    <a href="#productionRigs">Rigs</a>
-    <a href="#tools">Tools</a>
-    <a href="#games">Games</a>
+    <a href="#work">Work</a>
     <a href="#skills">Skills</a>
+    <a href="mailto:cgrig.td@gmail.com">Contact</a>
   </div>
 </nav>
 
-<header class="hero">
+<div class="container">
 
-  <div class="hero-container">
-
+  <!-- HERO -->
+  <div class="hero">
     <div class="hero-left">
-
-      <div class="hero-image">
-        <img id="profileImage">
+      <img class="avatar" id="profileImage" alt="Pablo Romero">
+      <div class="hero-name">
+        <span class="emerald" id="heroName"></span> <span class="indigo" id="heroLastName"></span>
       </div>
-
-      <h1 class="hero-title">
-        <span id="heroName"></span>
-        <span id="heroLastName"></span>
-        <div class="hero-area">
-          <span id="area"></span>
-        </div>
-      </h1>
-
+      <div class="hero-role" id="heroRole"></div>
     </div>
-
-    <div class="hero-content">
-
-      <p id="heroDescription"></p>
-
-      <div class="hero-buttons">
-          <a href="mailto:cgrig.td@gmail.com" target="_blank">
-            <img src="./assets/email.svg">
-          </a>
-          <a href="https://www.instagram.com/cgrigstd/" target="_blank">
-            <img src="./assets/instagram.svg">
-          </a>
-          <a href="https://vimeo.com/user1834075" target="_blank">
-            <img src="./assets/vimeo-square.svg">
-          </a>
-          <a href="https://www.linkedin.com/in/pablo-romero-98602124/" target="_blank">
-            <img src="./assets/linkedin.svg">
-          </a>
+    <div class="hero-center">
+      <div class="tags">
+        <span class="tag-rig">rigging</span>
+        <span class="tag-rig">deformation</span>
+        <span class="tag-rig">automation</span>
+        <span class="tag-code">python</span>
+        <span class="tag-code">c#</span>
+        <span class="tag-code">pipeline</span>
+        <span class="tag-pipe">unreal</span>
+        <span class="tag-pipe">blender</span>
       </div>
-
+      <div class="bio" id="heroDescription"></div>
     </div>
-
+    <div class="hero-right">
+      <a href="mailto:cgrig.td@gmail.com"><img src="./assets/email.svg" alt="Email"></a>
+      <a href="https://www.instagram.com/cgrigstd/"><img src="./assets/instagram.svg" alt="Instagram"></a>
+      <a href="https://vimeo.com/user1834075"><img src="./assets/vimeo-square.svg" alt="Vimeo"></a>
+      <a href="https://www.linkedin.com/in/pablo-romero-98602124/"><img src="./assets/linkedin.svg" alt="LinkedIn"></a>
+    </div>
   </div>
-</header>
 
-<div class="hero-solutions">
-  <span id="solutions"></span>
+  <div class="divider"></div>
+
+  <!-- SHOWCASE -->
+  <div class="section">
+    <div class="section-title">
+      <div class="dot green"></div>
+      <h2>Showcase</h2>
+    </div>
+    <div class="carousel-container" id="showcaseCarousel"></div>
+  </div>
+
+  <!-- DEMO REEL -->
+  <div class="section">
+    <div class="section-title">
+      <div class="dot green"></div>
+      <h2>Demo Reel</h2>
+    </div>
+    <div class="video-wrapper">
+      <iframe id="demoReel" frameborder="0" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <!-- SHORT UNREAL -->
+  <div class="section">
+    <div class="section-title">
+      <div class="dot indigo"></div>
+      <h2>Short Unreal Engine</h2>
+    </div>
+    <div class="video-wrapper">
+      <iframe id="shortRealTime" frameborder="0" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <!-- WORK -->
+  <div class="section" id="work">
+    <div class="section-title">
+      <div class="dot green"></div>
+      <h2>Production Rigs</h2>
+      <span class="count" id="prodCount"></span>
+    </div>
+    <div class="work-grid" id="prodGrid"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">
+      <div class="dot indigo"></div>
+      <h2>Realtime Rigs</h2>
+      <span class="count" id="realtimeCount"></span>
+    </div>
+    <div class="work-grid" id="realtimeGrid"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">
+      <div class="dot white"></div>
+      <h2>Tools &amp; Assets</h2>
+      <span class="count" id="toolsCount"></span>
+    </div>
+    <div class="work-grid" id="toolsGrid"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">
+      <div class="dot indigo"></div>
+      <h2>Games</h2>
+      <span class="count" id="gamesCount"></span>
+    </div>
+    <div class="work-grid" id="gamesGrid"></div>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="section" id="skills">
+    <div class="section-title">
+      <div class="dot green"></div>
+      <h2>Skills</h2>
+    </div>
+    <div class="skills-panel" id="skillsPanel"></div>
+  </div>
+
+  <footer>
+    <span>Pablo Romero · CG RIGS</span>
+    <div class="f-links">
+      <a href="mailto:cgrig.td@gmail.com">Email</a>
+      <a href="https://vimeo.com/user1834075">Vimeo</a>
+      <a href="https://www.linkedin.com/in/pablo-romero-98602124/">LinkedIn</a>
+    </div>
+  </footer>
+
 </div>
 
-<section id="reel" class="section">
-  <h2>Showcase</h2>
-  <div class="showcase-container">
-    <div id="showcaseCarousel"></div>
-  </div>
-  <h2>Demo Reel</h2>
-  <div class="video-container">
-    <iframe id="demoReel" frameborder="0" allowfullscreen></iframe>
-  </div>
-
-  <h2>Short Unreal Engine</h2>
-  <div class="video-container">
-    <iframe id="shortRealTime" frameborder="0" allowfullscreen></iframe>
-  </div>
-</section>
-
-<section id="productionRigs" class="section">
-  <h2>Production Rigs</h2>
-  <div id="productionrigsContainer" class="card-grid"></div>
-</section>
-
-<section id="rigs" class="section">
-  <h2>Realtime Rigs</h2>
-  <div id="rigsContainer" class="card-grid"></div>
-</section>
-
-<section id="tools" class="section">
-  <h2>Tools & Assets</h2>
-  <div id="toolsContainer" class="card-grid"></div>
-</section>
-
-<section id="games" class="section">
-  <h2>Games</h2>
-  <div id="gamesContainer" class="card-grid"></div>
-</section>
-
-<footer id="skills">
-
-  <h2 class="footer-title">Skills</h2>
-
-  <div class="footer-skills">
-
-    <div class="skill-group">
-      <h3>3D Software</h3>
-      <p id="skillSoftware"></p>
-    </div>
-
-    <div class="skill-group">
-      <h3>Game Engines</h3>
-      <p id="skillEngines"></p>
-    </div>
-
-    <div class="skill-group">
-      <h3>Human System Pipeline</h3>
-      <p id="humansystempipeline"></p>
-    </div>
-
-    <div class="skill-group">
-      <h3>Programming</h3>
-      <p id="skillLanguages"></p>
-    </div>
-
-  </div>
-
-</footer>
-<div id="video-modal" class="hidden">
+<div id="video-modal">
   <video id="project-video" muted></video>
 </div>
-<script src="./app.js"></script>
 
+<script src="./app.js"></script>
 </body>
 </html>
-
