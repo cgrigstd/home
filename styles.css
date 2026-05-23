@@ -99,6 +99,7 @@ nav{
   font-size:0.78rem;
   color:rgba(255,255,255,0.25);
   letter-spacing:0.04em;
+  text-transform:uppercase;
   transition:color 0.2s;
 }
 
@@ -389,17 +390,6 @@ nav{
 
 .work-card:hover h3{ color:rgba(255,255,255,0.85); }
 
-.work-card .indicator{
-  font-size:0.6rem;
-  color:rgba(255,255,255,0.05);
-  margin-top:4px;
-  transition:color 0.2s;
-}
-
-.work-card:hover .indicator{
-  color:rgba(16,185,129,0.3);
-}
-
 /* ── SKILLS ── */
 
 .skills-panel{
@@ -506,9 +496,14 @@ footer .f-links a:hover{ color:rgba(255,255,255,0.4); }
 
 @media(max-width:800px) and (orientation:portrait){
   .hero-right{ flex-direction:row; align-self:center; }
+  .nav-links{ gap:12px; }
+  .nav-links a{ font-size:0.65rem; }
+  .hero-center .bio{ text-align:justify; }
 }
 
 @media(max-width:500px){
   .work-grid{ grid-template-columns:1fr; }
   .skills-panel{ grid-template-columns:1fr; }
+  .nav-links{ gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+  .nav-links a{ font-size:0.6rem; }
 }

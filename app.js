@@ -12,6 +12,8 @@ function safeUrl(url){
   } catch { return ""; }
 }
 
+let videoModal, projectVideo;
+
 function initSite(data){
 
   document.getElementById("heroName").textContent = data.profile.name;
@@ -35,8 +37,8 @@ function initSite(data){
   buildCards(data.tools, "toolsGrid");
   buildCards(data.games, "gamesGrid");
 
-  const videoModal = document.getElementById("video-modal");
-  const projectVideo = document.getElementById("project-video");
+  videoModal = document.getElementById("video-modal");
+  projectVideo = document.getElementById("project-video");
   projectVideo.onended = () => {
     projectVideo.pause();
     projectVideo.src = "";
@@ -139,9 +141,6 @@ function buildCards(items, containerId){
     h3.textContent = item.name;
     outer.appendChild(h3);
 
-    const ind = document.createElement("div");
-    ind.className = "indicator";
-
     if(hasValidLink){
       const a = document.createElement("a");
       a.className = "work-card";
@@ -153,27 +152,19 @@ function buildCards(items, containerId){
       const h32 = document.createElement("h3");
       h32.textContent = item.name;
       a.appendChild(h32);
-      const ind2 = document.createElement("div");
-      ind2.className = "indicator";
-      ind2.textContent = "\u2197 view";
-      a.appendChild(ind2);
       grid.appendChild(a);
       return;
     }
 
     if(isLocalVideo){
-      ind.textContent = "\u25B6 play";
       outer.addEventListener("click", () => {
         projectVideo.src = item.url;
         projectVideo.currentTime = 0;
         projectVideo.play();
         videoModal.classList.add("active");
       });
-    } else {
-      ind.textContent = "\u2014";
     }
 
-    outer.appendChild(ind);
     grid.appendChild(outer);
   });
 }
