@@ -34,6 +34,16 @@
 },
 "productionrigs":[
 {
+"name":"BBVA Seguro de Hogar",
+"image":"./assets/BBVA_SEGURO_DE_HOGAR.jpg",
+"url":"https://vimeo.com/965544861"
+},
+{
+"name":"BBVA Cascabel",
+"image":"./assets/BBVA Cascabel.jpg",
+"url":"https://vimeo.com/904477691"
+},
+{
 "name":"Pharmathon Kiddi",
 "image":"./assets/robot_rigs.jpg",
 "url":"https://vimeo.com/867342475?share=copy"
