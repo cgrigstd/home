@@ -209,6 +209,12 @@ body{
   background:rgba(201,168,124,0.04);
 }
 
+#remote-toggle.active{
+  border-color:#4fc3f7;
+  color:#4fc3f7;
+  background:rgba(79,195,247,0.04);
+}
+
 /* ── PAGINATION ── */
 
 .pagination-row{
@@ -299,6 +305,28 @@ body{
 
 .job-card:not(:last-child){
   border-bottom:1px solid rgba(255,255,255,0.03);
+}
+
+.job-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:4px;
+  margin-bottom:5px;
+}
+
+.job-tag{
+  font-size:0.6rem;
+  padding:2px 7px;
+  border:1px solid rgba(201,168,124,0.15);
+  color:rgba(201,168,124,0.5);
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  transition:all 0.2s;
+}
+
+.job-card:hover .job-tag{
+  border-color:rgba(201,168,124,0.3);
+  color:rgba(201,168,124,0.7);
 }
 
 .job-title{
