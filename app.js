@@ -20,6 +20,7 @@ function initSite(data){
   document.getElementById("heroLastName").textContent = data.profile.lastname;
   document.getElementById("heroDescription").textContent = data.profile.description;
   document.getElementById("heroRole").textContent = data.profile.area;
+  document.getElementById("footerLocation").textContent = "Location: " + data.profile.location;
   document.getElementById("navLogo").src = data.profile.logo;
 
   document.getElementById("profileImage").src = data.profile.profileImage;
