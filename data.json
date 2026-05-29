@@ -160,6 +160,10 @@
 "showcase":[
 {
 "type":"video",
+"src":"./assets/gloria.mp4"
+},
+{
+"type":"video",
 "src":"./assets/free_rig.mp4"
 },
 {

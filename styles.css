@@ -157,6 +157,11 @@ nav{
   align-self:flex-start;
 }
 
+.hero-left,
+.hero-right{
+  align-self:flex-start;
+}
+
 .hero-left{
   display:flex;
   flex-direction:column;
