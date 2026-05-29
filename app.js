@@ -21,7 +21,7 @@ function initSite(data){
   document.getElementById("heroDescription").textContent = data.profile.description;
   document.getElementById("heroRole").textContent = data.profile.area;
   document.getElementById("navLogo").src = data.profile.logo;
-  document.getElementById("loaderLogo").src = data.profile.logo;
+
   document.getElementById("profileImage").src = data.profile.profileImage;
   document.getElementById("demoReel").src = safeUrl(data.demoReel);
   document.getElementById("shortRealTime").src = safeUrl(data.shortRealTime);
@@ -240,10 +240,37 @@ function initNav(){
   update();
 }
 
+function initSliders(){
+  document.querySelectorAll(".slider-wrapper").forEach(wrapper => {
+    const grid = wrapper.querySelector(".work-grid");
+    const prev = wrapper.querySelector(".slider-arrow.prev");
+    const next = wrapper.querySelector(".slider-arrow.next");
+    if(!grid || !prev || !next) return;
+    const scroll = dir => {
+      const card = grid.querySelector(".work-card, a.work-card");
+      const amount = card ? card.offsetWidth + 6 : 266;
+      grid.scrollBy({ left: dir * amount, behavior: "smooth" });
+    };
+    prev.addEventListener("click", () => scroll(-1));
+    next.addEventListener("click", () => scroll(1));
+  });
+}
+
 window.addEventListener("load", async () => {
   await loadData();
   randomizeWires();
   initNav();
+  initSliders();
+
+  const imgs = document.querySelectorAll("img:not([loading=lazy])");
+  await Promise.all(Array.from(imgs, img => {
+    if (img.complete) return;
+    return new Promise(resolve => {
+      img.addEventListener("load", resolve, { once: true });
+      img.addEventListener("error", resolve, { once: true });
+    });
+  }));
+
   const loader = document.getElementById("loader");
   loader.classList.add("hidden");
   setTimeout(() => {

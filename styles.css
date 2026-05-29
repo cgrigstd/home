@@ -386,13 +386,68 @@ nav{
   height:100%;
 }
 
-/* ── WORK GRID ── */
+/* ── WORK SLIDER ── */
+
+.slider-wrapper{
+  position:relative;
+  display:flex;
+  align-items:center;
+}
 
 .work-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  display:flex;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
   gap:6px;
+  padding:4px 0;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(255,255,255,0.06) transparent;
+  flex:1;
 }
+
+.work-grid::-webkit-scrollbar{ height:4px; }
+
+.work-grid::-webkit-scrollbar-track{ background:transparent; }
+
+.work-grid::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,0.06);
+  border-radius:2px;
+}
+
+.work-grid > .work-card,
+.work-grid > a.work-card{
+  flex:0 0 260px;
+  scroll-snap-align:start;
+}
+
+.slider-arrow{
+  position:absolute;
+  z-index:10;
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,0.06);
+  background:rgba(9,9,13,0.85);
+  color:rgba(255,255,255,0.3);
+  font-size:1.3rem;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:all 0.2s;
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  line-height:1;
+}
+
+.slider-arrow:hover{
+  border-color:rgba(16,185,129,0.25);
+  color:#10b981;
+}
+
+.slider-arrow.prev{ left:-16px; }
+
+.slider-arrow.next{ right:-16px; }
 
 .work-card{
   display:block;
@@ -539,6 +594,9 @@ footer .f-links a:hover{ color:rgba(255,255,255,0.4); }
   .hero-center{ flex-basis:100%; text-align:center; }
   .hero-center .bio{ max-width:100%; }
   .skills-panel{ grid-template-columns:repeat(2,1fr); }
+  .slider-arrow{ display:none; }
+  .work-grid > .work-card,
+  .work-grid > a.work-card{ flex:0 0 220px; }
   .container{ padding:0 16px; }
   nav{ padding:14px 16px; }
 }
@@ -556,7 +614,8 @@ footer .f-links a:hover{ color:rgba(255,255,255,0.4); }
 }
 
 @media(max-width:500px){
-  .work-grid{ grid-template-columns:1fr; }
+  .work-grid > .work-card,
+  .work-grid > a.work-card{ flex:0 0 180px; }
   .skills-panel{ grid-template-columns:1fr; }
   .nav-links{ gap:8px; flex-wrap:wrap; justify-content:flex-end; }
   .nav-links a{ font-size:0.6rem; }
