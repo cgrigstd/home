@@ -192,14 +192,6 @@
 "src":"./assets/project_ypf_03.jpg"
 },
 {
-"type":"image",
-"src":"./assets/project_ypf_04.jpg"
-},
-{
-"type":"image",
-"src":"./assets/project_ypf_05.jpg"
-},
-{
 "type":"video",
 "src":"./assets/martina_rig_test.mp4"
 }
