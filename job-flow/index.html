@@ -4,49 +4,168 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>JOBFLOW — EDGE</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' fonts.googleapis.com; font-src fonts.gstatic.com; connect-src https://raw.githubusercontent.com; img-src 'self' data:">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<title>JOBFLOW</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 
 </head>
-<body>
+<body class="js-loading">
 
-<div class="bg-stripe"></div>
-<div class="bg-dot-grid"></div>
-<div class="hero-ghost"><span>JOBFLOW</span></div>
-
-<div class="container">
-
-  <div class="top-bar">
-    <div class="brand">
-      <div class="brand-mark"></div>
-      <h1>JOB<span class="accent">FLOW</span></h1>
+  <div class="bg-canvas">
+    <div class="bg-orbs">
+      <div class="bg-orb a"></div>
+      <div class="bg-orb b"></div>
+      <div class="bg-orb c"></div>
     </div>
-    <div class="search-area">
-      <input id="search-input" type="text" placeholder="rig, rigging, technical artist, vfx">
-      <button id="search-button">→</button>
+  </div>
+  <div class="bg-grid"></div>
+
+  <!-- LOADING SCREEN -->
+  <div class="loading-screen" id="loading-screen">
+    <div class="loading-brand">
+      <div class="loading-icon">JF</div>
+      <div class="loading-text">JOB<span>FLOW</span></div>
     </div>
-    <a class="donate-btn" href="https://www.paypal.com/donate/?business=pabloromeroanimator@gmail.com" target="_blank" rel="noopener">donate ♡</a>
-    <span class="donate-msg">Your support keeps this tool improving</span>
+    <div class="loading-bar">
+      <div class="loading-bar-fill"></div>
+    </div>
   </div>
 
-  <div class="filter-row" id="filter-row"></div>
+<div class="container" id="container">
 
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="header">
+      <div class="brand">
+        <div class="brand-icon">JF</div>
+        <div>
+          <div class="brand-text">JOB<span class="accent">FLOW</span></div>
+        </div>
+      </div>
+      <div class="search-area">
+        <span class="search-icon">⌕</span>
+        <input id="search-input" type="text" placeholder="Search by title, skill, stack...">
+        <button id="search-button">→</button>
+      </div>
+      <div class="header-actions">
+        <span class="updated-badge" id="updated-badge">● last sync —</span>
+        <div class="donate-group">
+          <a class="donate-btn" href="https://www.paypal.com/donate/?business=pabloromeroanimator@gmail.com" target="_blank" rel="noopener">donate ♡</a>
+          <span class="donate-msg">Your support keeps this improving</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- INSIGHTS -->
+  <div class="insights">
+    <div class="insight-panel" id="insight-jobs">
+      <div class="insight-gauge" id="gauge-total">
+        <svg viewBox="0 0 56 56">
+          <circle class="bg" cx="28" cy="28" r="25"/>
+          <circle class="fg" cx="28" cy="28" r="25"/>
+        </svg>
+        <span class="label" id="gauge-total-label">0</span>
+      </div>
+      <div class="insight-text">
+        <div class="insight-value" id="total-jobs">0</div>
+        <div class="insight-label">active jobs in pipeline</div>
+      </div>
+      <div class="insight-distribution">
+        <div class="insight-bar-group" id="bar-group-category">
+          <div class="insight-bar-row">
+            <span class="insight-bar-label">Dev</span>
+            <div class="insight-bar-track"><div class="insight-bar-fill blue" style="width:0%"></div></div>
+            <span class="insight-bar-count" id="cat-dev-count">0</span>
+          </div>
+          <div class="insight-bar-row">
+            <span class="insight-bar-label">Art</span>
+            <div class="insight-bar-track"><div class="insight-bar-fill purple" style="width:0%"></div></div>
+            <span class="insight-bar-count" id="cat-art-count">0</span>
+          </div>
+          <div class="insight-bar-row">
+            <span class="insight-bar-label">Design</span>
+            <div class="insight-bar-track"><div class="insight-bar-fill green" style="width:0%"></div></div>
+            <span class="insight-bar-count" id="cat-des-count">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="insight-panel" id="insight-filters">
+      <div class="insight-gauge" id="gauge-filters">
+        <svg viewBox="0 0 56 56">
+          <circle class="bg" cx="28" cy="28" r="25"/>
+          <circle class="fg blue" cx="28" cy="28" r="25"/>
+        </svg>
+        <span class="label" id="gauge-filters-label">0</span>
+      </div>
+      <div class="insight-text">
+        <div class="insight-value blue" id="active-filters-count">0</div>
+        <div class="insight-label">active filters</div>
+      </div>
+      <div class="insight-distribution" style="flex:1">
+        <div class="insight-bar-group">
+          <div class="insight-bar-row">
+            <span class="insight-bar-label">Remote</span>
+            <div class="insight-bar-track"><div class="insight-bar-fill" id="bar-remote" style="width:0%"></div></div>
+            <span class="insight-bar-count" id="region-remote-count">0</span>
+          </div>
+          <div class="insight-bar-row">
+            <span class="insight-bar-label">LATAM</span>
+            <div class="insight-bar-track"><div class="insight-bar-fill" id="bar-latam" style="width:0%"></div></div>
+            <span class="insight-bar-count" id="region-latam-count">0</span>
+          </div>
+          <div class="insight-bar-row">
+            <span class="insight-bar-label">US/EU</span>
+            <div class="insight-bar-track"><div class="insight-bar-fill" id="bar-useu" style="width:0%"></div></div>
+            <span class="insight-bar-count" id="region-useu-count">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIVE FILTERS STRIP -->
+  <div class="active-strip" id="active-strip"></div>
+
+  <!-- FILTERS: REGION -->
+  <div class="filter-section">
+    <div class="filter-section-header">
+      <span class="filter-section-label">Location</span>
+      <span class="filter-section-line"></span>
+    </div>
+    <div class="filter-chips" id="filter-region"></div>
+  </div>
+
+  <!-- FILTERS: SPECIALTY -->
+  <div class="filter-section">
+    <div class="filter-section-header">
+      <span class="filter-section-label">Specialty</span>
+      <span class="filter-section-line"></span>
+    </div>
+    <div class="filter-chips" id="filter-specialty"></div>
+  </div>
+
+  <!-- PAGINATION -->
   <div class="pagination-row">
     <button id="prev-page" disabled>←</button>
     <span class="page-info" id="page-info">1 / 1</span>
     <button id="next-page" disabled>→</button>
-    <span class="jobs-count" id="updated"></span>
+    <span class="pagination-meta" id="pagination-meta">0 jobs</span>
   </div>
 
+  <!-- JOBS -->
   <div class="jobs-grid" id="jobs"></div>
 
+  <!-- FOOTER -->
   <div class="footer-bar">
-    <span>JOBFLOW &mdash; Find your next role</span>
+    <span>JOBFLOW — Find your next role</span>
+    <span class="mono" id="footer-updated">● pipeline active</span>
   </div>
 
 </div>

@@ -6,9 +6,30 @@ let allJobs = [];
 let specialtiesMeta = [];
 const labelMap = {};
 let activeSpecialties = new Set();
-let remoteOnly = false;
+let activeRegions = new Set();
 let currentPage = 1;
 let currentSearch = "";
+
+const REGION_CONFIG = {
+  latin_america: { label: "Latin America", icon: "🌎" },
+  remote: { label: "Remote", icon: "🌐" },
+  us_canada_europe: { label: "US / Canada / Europe", icon: "🇺🇸" },
+  other: { label: "Other", icon: "📍" },
+};
+
+const CATEGORY_MAP = {
+  developer: "dev",
+  game_dev: "dev",
+  cad_designer: "des",
+  production: "prod",
+  writer: "prod",
+  audio_composer: "prod",
+  video_production: "prod",
+};
+
+function catFor(slug) {
+  return CATEGORY_MAP[slug] || "art";
+}
 
 /* PERSISTENCE */
 
@@ -16,9 +37,9 @@ function saveState() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
       activeSpecialties: Array.from(activeSpecialties),
-      remoteOnly: remoteOnly,
+      activeRegions: Array.from(activeRegions),
       search: currentSearch,
-      page: currentPage
+      page: currentPage,
     }));
   } catch (e) { /* ignore */ }
 }
@@ -31,8 +52,8 @@ function restoreState() {
     if (Array.isArray(state.activeSpecialties)) {
       state.activeSpecialties.forEach(s => activeSpecialties.add(s));
     }
-    if (typeof state.remoteOnly === "boolean") {
-      remoteOnly = state.remoteOnly;
+    if (Array.isArray(state.activeRegions)) {
+      state.activeRegions.forEach(r => activeRegions.add(r));
     }
     if (state.search) {
       currentSearch = state.search;
@@ -45,10 +66,17 @@ function restoreState() {
 }
 
 function applyFilterUI() {
-  document.getElementById("remote-toggle")?.classList.toggle("active", remoteOnly);
-  document.querySelectorAll(".filter-btn:not(#remote-toggle)").forEach(btn => {
-    btn.classList.toggle("active", activeSpecialties.has(btn.dataset.specialty));
+  document.querySelectorAll(".filter-chip").forEach(btn => {
+    const spec = btn.dataset.specialty;
+    const region = btn.dataset.region;
+    if (spec) {
+      btn.classList.toggle("active", activeSpecialties.has(spec));
+    } else if (region) {
+      btn.classList.toggle("active", activeRegions.has(region));
+    }
   });
+  updateActiveStrip();
+  updateFilterGauge();
 }
 
 /* FILTERING */
@@ -63,12 +91,16 @@ function getFilteredJobs() {
         if (!jobSpecs.some(s => activeSpecialties.has(s))) return false;
       }
     }
-    if (remoteOnly && job.country !== "Remote") return false;
+    if (activeRegions.size > 0) {
+      const jobRegion = job.region || "";
+      if (!activeRegions.has(jobRegion)) return false;
+    }
     if (currentSearch) {
       const content = (
         (job.title || "") + " " +
         (job.description || "") + " " +
-        (job.country || "")
+        (job.country || "") + " " +
+        (job.region || "")
       ).toLowerCase();
       if (!content.includes(currentSearch)) return false;
     }
@@ -90,7 +122,7 @@ function safeUrl(url) {
   }
 }
 
-/* PAGINATION */
+/* PAGE RENDERING */
 
 function renderPage() {
   const filtered = getFilteredJobs();
@@ -102,25 +134,46 @@ function renderPage() {
   const container = document.getElementById("jobs");
   container.innerHTML = "";
 
+  if (pageJobs.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "empty-state";
+    empty.innerHTML = '<div class="icon">∅</div><div class="msg">No jobs match your filters</div>';
+    container.appendChild(empty);
+  }
+
   pageJobs.forEach((job, i) => {
     const card = document.createElement("a");
     card.className = "job-card";
-    card.style.animationDelay = `${i * 0.035}s`;
+    card.style.setProperty("--i", i);
     card.href = safeUrl(job.url);
     card.target = "_blank";
     card.rel = "noopener noreferrer";
 
+    const jobSpecs = job.specialties || [];
+    const primaryCat = jobSpecs.length > 0 ? catFor(jobSpecs[0]) : "other";
+    card.dataset.cat = primaryCat;
+
+    const titleRow = document.createElement("div");
+    titleRow.className = "job-title-row";
+
+    const dot = document.createElement("span");
+    dot.className = "job-dot " + primaryCat;
+    titleRow.appendChild(dot);
+
     const titleDiv = document.createElement("div");
     titleDiv.className = "job-title";
     titleDiv.textContent = job.title || "No title";
-    card.appendChild(titleDiv);
+    titleRow.appendChild(titleDiv);
+    card.appendChild(titleRow);
 
-    if (job.specialties && job.specialties.length > 0) {
+    if (jobSpecs.length > 0) {
       const tagsDiv = document.createElement("div");
       tagsDiv.className = "job-tags";
-      job.specialties.forEach(slug => {
+      jobSpecs.forEach(slug => {
         const tag = document.createElement("span");
-        tag.className = "job-tag";
+        const tagCat = catFor(slug);
+        const catClass = tagCat === "dev" ? "dev-tag" : tagCat === "art" ? "art-tag" : "";
+        tag.className = "job-tag" + (catClass ? " " + catClass : "");
         tag.textContent = labelMap[slug] || slug;
         tagsDiv.appendChild(tag);
       });
@@ -130,9 +183,22 @@ function renderPage() {
     const metaDiv = document.createElement("div");
     metaDiv.className = "job-meta";
     const parts = [];
-    if (job.source) parts.push(job.source);
-    if (job.country) parts.push(job.country);
-    metaDiv.textContent = parts.join(" · ");
+    if (job.source) {
+      const srcSpan = document.createElement("span");
+      srcSpan.className = "job-source";
+      srcSpan.textContent = job.source;
+      metaDiv.appendChild(srcSpan);
+    }
+    if (job.region) {
+      const cfg = REGION_CONFIG[job.region];
+      const regionSpan = document.createElement("span");
+      regionSpan.className = "job-region";
+      regionSpan.textContent = cfg ? `${cfg.icon} ${cfg.label}` : job.region;
+      metaDiv.appendChild(regionSpan);
+    }
+    if (metaDiv.children.length === 0) {
+      metaDiv.textContent = [job.source, job.country].filter(Boolean).join(" · ");
+    }
     card.appendChild(metaDiv);
 
     container.appendChild(card);
@@ -141,6 +207,10 @@ function renderPage() {
   document.getElementById("page-info").textContent = `${currentPage} / ${totalPages}`;
   document.getElementById("prev-page").disabled = currentPage <= 1;
   document.getElementById("next-page").disabled = currentPage >= totalPages;
+  document.getElementById("pagination-meta").textContent =
+    filtered.length > 0
+      ? `${start + 1}–${Math.min(start + ITEMS_PER_PAGE, filtered.length)} of ${filtered.length}`
+      : "0 jobs";
   saveState();
 }
 
@@ -154,6 +224,121 @@ function setupPagination() {
   });
 }
 
+/* INSIGHTS */
+
+function updateInsights() {
+  const total = allJobs.length;
+  document.getElementById("total-jobs").textContent = total;
+  document.getElementById("gauge-total-label").textContent = total;
+  const pct = Math.min(100, (total / 200) * 100);
+  document.querySelector("#gauge-total .fg").style.strokeDashoffset = 157 - (157 * pct / 100);
+
+  let dev = 0, art = 0, des = 0;
+  allJobs.forEach(job => {
+    const specs = job.specialties || [];
+    if (specs.length === 0) { art++; return; }
+    const c = catFor(specs[0]);
+    if (c === "dev") dev++;
+    else if (c === "des") des++;
+    else art++;
+  });
+  const maxCat = Math.max(dev, art, des, 1);
+  document.getElementById("cat-dev-count").textContent = dev;
+  document.getElementById("cat-art-count").textContent = art;
+  document.getElementById("cat-des-count").textContent = des;
+  document.querySelector("#bar-group-category .insight-bar-fill.blue").style.width = (dev / maxCat * 100) + "%";
+  document.querySelector("#bar-group-category .insight-bar-fill.purple").style.width = (art / maxCat * 100) + "%";
+  document.querySelector("#bar-group-category .insight-bar-fill.green").style.width = (des / maxCat * 100) + "%";
+
+  /* region distribution */
+  let remote = 0, latam = 0, useu = 0;
+  allJobs.forEach(job => {
+    const r = job.region || "";
+    if (r === "remote") remote++;
+    else if (r === "latin_america") latam++;
+    else if (r === "us_canada_europe") useu++;
+  });
+  const maxReg = Math.max(remote, latam, useu, 1);
+  document.getElementById("region-remote-count").textContent = remote;
+  document.getElementById("region-latam-count").textContent = latam;
+  document.getElementById("region-useu-count").textContent = useu;
+  document.getElementById("bar-remote").style.width = (remote / maxReg * 100) + "%";
+  document.getElementById("bar-latam").style.width = (latam / maxReg * 100) + "%";
+  document.getElementById("bar-useu").style.width = (useu / maxReg * 100) + "%";
+
+  updateFilterGauge();
+}
+
+function updateFilterGauge() {
+  const count = activeRegions.size + activeSpecialties.size;
+  document.getElementById("active-filters-count").textContent = count;
+  document.getElementById("gauge-filters-label").textContent = count;
+  const pct = Math.min(100, (count / 10) * 100);
+  document.querySelector("#gauge-filters .fg.blue").style.strokeDashoffset = 157 - (157 * pct / 100);
+}
+
+/* ACTIVE STRIP */
+
+function updateActiveStrip() {
+  const strip = document.getElementById("active-strip");
+  strip.innerHTML = "";
+
+  const total = activeRegions.size + activeSpecialties.size;
+  if (total === 0) return;
+
+  activeRegions.forEach(slug => {
+    const cfg = REGION_CONFIG[slug];
+    const chip = document.createElement("span");
+    chip.className = "active-chip region-chip";
+    chip.textContent = cfg ? `${cfg.icon} ${cfg.label}` : slug;
+    const rem = document.createElement("span");
+    rem.className = "remove";
+    rem.textContent = "✕";
+    rem.dataset.region = slug;
+    chip.appendChild(rem);
+    strip.appendChild(chip);
+  });
+
+  activeSpecialties.forEach(slug => {
+    const chip = document.createElement("span");
+    chip.className = "active-chip";
+    chip.textContent = labelMap[slug] || slug;
+    const rem = document.createElement("span");
+    rem.className = "remove";
+    rem.textContent = "✕";
+    rem.dataset.specialty = slug;
+    chip.appendChild(rem);
+    strip.appendChild(chip);
+  });
+
+  const clearBtn = document.createElement("button");
+  clearBtn.className = "clear-all-btn";
+  clearBtn.textContent = "Clear filters";
+  strip.appendChild(clearBtn);
+
+  strip.addEventListener("click", e => {
+    const rem = e.target.closest(".remove");
+    if (rem) {
+      const spec = rem.dataset.specialty;
+      const region = rem.dataset.region;
+      if (spec) activeSpecialties.delete(spec);
+      if (region) activeRegions.delete(region);
+      applyFilterUI();
+      currentPage = 1;
+      renderPage();
+      return;
+    }
+    const clear = e.target.closest(".clear-all-btn");
+    if (clear) {
+      activeSpecialties.clear();
+      activeRegions.clear();
+      applyFilterUI();
+      currentPage = 1;
+      renderPage();
+    }
+  });
+}
+
 /* LOAD JOBS */
 
 async function loadJobs() {
@@ -161,10 +346,11 @@ async function loadJobs() {
     const res = await fetch(JOBS_URL);
     const data = await res.json();
 
-    document.getElementById("updated").textContent = "Updated: " + data.updated;
+    const updatedStr = data.updated || "";
+    document.getElementById("updated-badge").textContent = "● last sync " + updatedStr;
+    document.getElementById("footer-updated").textContent = "● " + updatedStr;
 
     const specialties = data.specialties || [];
-
     specialtiesMeta = specialties.map(s => ({ slug: s.slug, label: s.label, count: s.job_count }));
     specialties.forEach(s => { labelMap[s.slug] = s.label; });
 
@@ -179,61 +365,97 @@ async function loadJobs() {
       });
     });
 
+    updateInsights();
+
     const hasSaved = !!localStorage.getItem(STORAGE_KEY);
     if (!hasSaved) {
-      specialtiesMeta.forEach(s => activeSpecialties.add(s.slug));
+      specialtiesMeta.forEach(s => {
+        if (s.count > 0) activeSpecialties.add(s.slug);
+      });
     }
 
-    buildFilterButtons();
+    buildFilterButtons(data.filters);
     restoreState();
     applyFilterUI();
     renderPage();
+    document.body.classList.remove("js-loading");
+    document.getElementById("loading-screen").classList.add("hidden");
 
   } catch (err) {
     console.error("Error loading jobs:", err);
+    const container = document.getElementById("jobs");
+    container.innerHTML = '<div class="empty-state"><div class="icon">⚠</div><div class="msg">Could not load jobs. Check your connection and try again.</div></div>';
+    document.getElementById("pagination-meta").textContent = "connection error";
+    document.body.classList.remove("js-loading");
+    document.getElementById("loading-screen").classList.add("hidden");
   }
 }
 
-function buildFilterButtons() {
-  const container = document.getElementById("filter-row");
-  container.innerHTML = "";
+function buildFilterButtons(filters) {
+  const regions = (filters && filters.regions) || [];
+  const regionContainer = document.getElementById("filter-region");
+  regionContainer.innerHTML = "";
 
-  const remoteBtn = document.createElement("button");
-  remoteBtn.className = "filter-btn";
-  remoteBtn.id = "remote-toggle";
-  remoteBtn.textContent = "🌐 Remote";
-  container.appendChild(remoteBtn);
-
-  specialtiesMeta.forEach(spec => {
+  regions.forEach(slug => {
     const btn = document.createElement("button");
-    btn.className = "filter-btn";
+    btn.className = "filter-chip region";
+    btn.dataset.region = slug;
+    const cfg = REGION_CONFIG[slug];
+    btn.textContent = cfg ? cfg.label : slug;
+    regionContainer.appendChild(btn);
+  });
+
+  const specContainer = document.getElementById("filter-specialty");
+  specContainer.innerHTML = "";
+
+  const activeMeta = specialtiesMeta.filter(s => s.count > 0);
+  activeMeta.forEach(spec => {
+    const btn = document.createElement("button");
+    btn.className = "filter-chip specialty";
     btn.dataset.specialty = spec.slug;
-    btn.textContent = `${spec.label} (${spec.count})`;
-    container.appendChild(btn);
+    const countSpan = document.createElement("span");
+    countSpan.className = "count";
+    countSpan.textContent = spec.count;
+    btn.textContent = spec.label + " ";
+    btn.appendChild(countSpan);
+    specContainer.appendChild(btn);
   });
 }
 
 /* FILTERS */
 
-function setupFilters() {
-  document.getElementById("filter-row").addEventListener("click", e => {
-    const btn = e.target.closest(".filter-btn");
+function toggleFilterGroup(set) {
+  return function (e) {
+    const btn = e.target.closest(".filter-chip");
     if (!btn) return;
+    const value = btn.dataset.region || btn.dataset.specialty;
+    if (!value) return;
 
-    if (btn.id === "remote-toggle") {
-      remoteOnly = !remoteOnly;
+    const isOnly = set.size === 1 && set.has(value);
+    const isModifier = e.ctrlKey || e.metaKey || e.shiftKey;
+
+    if (isOnly && !isModifier) {
+      /* clicking the last active chip: deselect it → show all */
+      set.delete(value);
+    } else if (isModifier) {
+      /* Ctrl/Cmd/Shift: toggle without affecting others */
+      if (set.has(value)) set.delete(value);
+      else set.add(value);
     } else {
-      const spec = btn.dataset.specialty;
-      if (activeSpecialties.has(spec)) {
-        activeSpecialties.delete(spec);
-      } else {
-        activeSpecialties.add(spec);
-      }
+      /* normal click: select ONLY this */
+      set.clear();
+      set.add(value);
     }
-    btn.classList.toggle("active");
+
+    applyFilterUI();
     currentPage = 1;
     renderPage();
-  });
+  };
+}
+
+function setupFilters() {
+  document.getElementById("filter-region").addEventListener("click", toggleFilterGroup(activeRegions));
+  document.getElementById("filter-specialty").addEventListener("click", toggleFilterGroup(activeSpecialties));
 }
 
 /* SEARCH */
