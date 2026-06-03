@@ -367,13 +367,6 @@ async function loadJobs() {
 
     updateInsights();
 
-    const hasSaved = !!localStorage.getItem(STORAGE_KEY);
-    if (!hasSaved) {
-      specialtiesMeta.forEach(s => {
-        if (s.count > 0) activeSpecialties.add(s.slug);
-      });
-    }
-
     buildFilterButtons(data.filters);
     restoreState();
     applyFilterUI();
@@ -431,21 +424,8 @@ function toggleFilterGroup(set) {
     const value = btn.dataset.region || btn.dataset.specialty;
     if (!value) return;
 
-    const isOnly = set.size === 1 && set.has(value);
-    const isModifier = e.ctrlKey || e.metaKey || e.shiftKey;
-
-    if (isOnly && !isModifier) {
-      /* clicking the last active chip: deselect it → show all */
-      set.delete(value);
-    } else if (isModifier) {
-      /* Ctrl/Cmd/Shift: toggle without affecting others */
-      if (set.has(value)) set.delete(value);
-      else set.add(value);
-    } else {
-      /* normal click: select ONLY this */
-      set.clear();
-      set.add(value);
-    }
+    if (set.has(value)) set.delete(value);
+    else set.add(value);
 
     applyFilterUI();
     currentPage = 1;
