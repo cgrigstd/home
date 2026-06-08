@@ -173,6 +173,10 @@
 },
 {
 "type":"video",
+"src":"./assets/hair_exp_test.mp4"
+},
+{
+"type":"video",
 "src":"./assets/show-rigs-short.mp4"
 },
 {
