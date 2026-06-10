@@ -31,7 +31,7 @@ function catFor(slug) {
   return CATEGORY_MAP[slug] || "art";
 }
 
-/* PERSISTENCE */
+
 
 function saveState() {
   try {
@@ -41,7 +41,7 @@ function saveState() {
       search: currentSearch,
       page: currentPage,
     }));
-  } catch (e) { /* ignore */ }
+  } catch (e) {}
 }
 
 function restoreState() {
@@ -62,7 +62,7 @@ function restoreState() {
     if (typeof state.page === "number" && state.page > 0) {
       currentPage = state.page;
     }
-  } catch (e) { /* ignore */ }
+  } catch (e) {}
 }
 
 function applyFilterUI() {
@@ -78,8 +78,6 @@ function applyFilterUI() {
   updateActiveStrip();
   updateFilterGauge();
 }
-
-/* FILTERING */
 
 function getFilteredJobs() {
   let filtered = allJobs.filter(job => {
@@ -110,8 +108,6 @@ function getFilteredJobs() {
   return filtered;
 }
 
-/* SAFE URL */
-
 function safeUrl(url) {
   if (!url) return "#";
   try {
@@ -121,8 +117,6 @@ function safeUrl(url) {
     return "#";
   }
 }
-
-/* PAGE RENDERING */
 
 function renderPage() {
   const filtered = getFilteredJobs();
@@ -224,14 +218,35 @@ function setupPagination() {
   });
 }
 
-/* INSIGHTS */
+function animateValue(el, from, to, duration) {
+  const start = performance.now();
+  function tick(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - (1 - progress) * (1 - progress);
+    el.textContent = Math.round(from + (to - from) * eased);
+    if (progress < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+function animateStyle(el, prop, from, to, duration, unit) {
+  const start = performance.now();
+  function tick(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - (1 - progress) * (1 - progress);
+    el.style[prop] = (from + (to - from) * eased) + (unit || "");
+    if (progress < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
 
 function updateInsights() {
   const total = allJobs.length;
-  document.getElementById("total-jobs").textContent = total;
-  document.getElementById("gauge-total-label").textContent = total;
-  const pct = Math.min(100, (total / 200) * 100);
-  document.querySelector("#gauge-total .fg").style.strokeDashoffset = 157 - (157 * pct / 100);
+
+  animateValue(document.getElementById("total-jobs"), 0, total, 1725);
+  animateValue(document.getElementById("gauge-total-label"), 0, total, 1725);
 
   let dev = 0, art = 0, des = 0;
   allJobs.forEach(job => {
@@ -242,15 +257,11 @@ function updateInsights() {
     else if (c === "des") des++;
     else art++;
   });
-  const maxCat = Math.max(dev, art, des, 1);
-  document.getElementById("cat-dev-count").textContent = dev;
-  document.getElementById("cat-art-count").textContent = art;
-  document.getElementById("cat-des-count").textContent = des;
-  document.querySelector("#bar-group-category .insight-bar-fill.blue").style.width = (dev / maxCat * 100) + "%";
-  document.querySelector("#bar-group-category .insight-bar-fill.purple").style.width = (art / maxCat * 100) + "%";
-  document.querySelector("#bar-group-category .insight-bar-fill.green").style.width = (des / maxCat * 100) + "%";
 
-  /* region distribution */
+  animateValue(document.getElementById("cat-dev-count"), 0, dev, 1725);
+  animateValue(document.getElementById("cat-art-count"), 0, art, 1725);
+  animateValue(document.getElementById("cat-des-count"), 0, des, 1725);
+
   let remote = 0, latam = 0, useu = 0;
   allJobs.forEach(job => {
     const r = job.region || "";
@@ -258,15 +269,47 @@ function updateInsights() {
     else if (r === "latin_america") latam++;
     else if (r === "us_canada_europe") useu++;
   });
-  const maxReg = Math.max(remote, latam, useu, 1);
-  document.getElementById("region-remote-count").textContent = remote;
-  document.getElementById("region-latam-count").textContent = latam;
-  document.getElementById("region-useu-count").textContent = useu;
-  document.getElementById("bar-remote").style.width = (remote / maxReg * 100) + "%";
-  document.getElementById("bar-latam").style.width = (latam / maxReg * 100) + "%";
-  document.getElementById("bar-useu").style.width = (useu / maxReg * 100) + "%";
 
+  animateValue(document.getElementById("region-remote-count"), 0, remote, 1725);
+  animateValue(document.getElementById("region-latam-count"), 0, latam, 1725);
+  animateValue(document.getElementById("region-useu-count"), 0, useu, 1725);
+
+  const maxCat = Math.max(dev, art, des, 1);
+  const maxReg = Math.max(remote, latam, useu, 1);
+  const pct = Math.min(100, (total / 200) * 100);
+
+  window.__insightData = {
+    dev, art, des, remote, latam, useu,
+    maxCat, maxReg, total, pct
+  };
   updateFilterGauge();
+}
+
+function animateInsightVisuals() {
+  const d = window.__insightData;
+  if (!d) return;
+
+  animateStyle(
+    document.querySelector("#gauge-total .fg"), "strokeDashoffset",
+    157, 157 - (157 * d.pct / 100), 1725
+  );
+
+  animateStyle(
+    document.querySelector("#bar-group-category .insight-bar-fill.blue"), "width",
+    0, d.dev / d.maxCat * 100, 1725, "%"
+  );
+  animateStyle(
+    document.querySelector("#bar-group-category .insight-bar-fill.purple"), "width",
+    0, d.art / d.maxCat * 100, 1725, "%"
+  );
+  animateStyle(
+    document.querySelector("#bar-group-category .insight-bar-fill.green"), "width",
+    0, d.des / d.maxCat * 100, 1725, "%"
+  );
+
+  animateStyle(document.getElementById("bar-remote"), "width", 0, d.remote / d.maxReg * 100, 1725, "%");
+  animateStyle(document.getElementById("bar-latam"), "width", 0, d.latam / d.maxReg * 100, 1725, "%");
+  animateStyle(document.getElementById("bar-useu"), "width", 0, d.useu / d.maxReg * 100, 1725, "%");
 }
 
 function updateFilterGauge() {
@@ -276,8 +319,6 @@ function updateFilterGauge() {
   const pct = Math.min(100, (count / 10) * 100);
   document.querySelector("#gauge-filters .fg.blue").style.strokeDashoffset = 157 - (157 * pct / 100);
 }
-
-/* ACTIVE STRIP */
 
 function updateActiveStrip() {
   const strip = document.getElementById("active-strip");
@@ -339,8 +380,6 @@ function updateActiveStrip() {
   });
 }
 
-/* LOAD JOBS */
-
 async function loadJobs() {
   try {
     const res = await fetch(JOBS_URL);
@@ -373,6 +412,7 @@ async function loadJobs() {
     renderPage();
     document.body.classList.remove("js-loading");
     document.getElementById("loading-screen").classList.add("hidden");
+    animateInsightVisuals();
 
   } catch (err) {
     console.error("Error loading jobs:", err);
@@ -415,8 +455,6 @@ function buildFilterButtons(filters) {
   });
 }
 
-/* FILTERS */
-
 function toggleFilterGroup(set) {
   return function (e) {
     const btn = e.target.closest(".filter-chip");
@@ -438,8 +476,6 @@ function setupFilters() {
   document.getElementById("filter-specialty").addEventListener("click", toggleFilterGroup(activeSpecialties));
 }
 
-/* SEARCH */
-
 function setupSearch() {
   const input = document.getElementById("search-input");
   const button = document.getElementById("search-button");
@@ -455,8 +491,6 @@ function setupSearch() {
     if (e.key === "Enter") applySearch();
   });
 }
-
-/* INIT */
 
 document.addEventListener("DOMContentLoaded", () => {
   setupSearch();
