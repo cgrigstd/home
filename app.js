@@ -182,6 +182,7 @@ function buildContactTab(){
           <textarea id="cMessage" name="message" placeholder="Tell me about your project..." required></textarea>
         </div>
         <button type="submit">Send Message</button>
+        <input type="hidden" name="_next" value="https://cgrigstd.github.io/home/">
         <input type="hidden" name="_captcha" value="false">
       </form>
       <div class="contact-alt">
