@@ -1,182 +1,205 @@
 async function loadData(){
   const response = await fetch("./data.json");
-  const data = await response.json();
-  initSite(data);
+  return await response.json();
 }
 
 function safeUrl(url){
   if(!url) return "";
-  try {
-    const u = new URL(url, window.location.origin);
-    return (u.protocol === "http:" || u.protocol === "https:") ? url : "";
-  } catch { return ""; }
+  try { const u = new URL(url, window.location.origin); return (u.protocol==="http:"||u.protocol==="https:")?url:""; } catch{ return ""; }
 }
 
-let videoModal, projectVideo;
+const tabs = [
+  { id:"showcase",     label:"Showcase",     dot:"green" },
+  { id:"demo",         label:"Demo Reel",    dot:"green" },
+  { id:"unreal",       label:"Short Unreal", dot:"indigo" },
+  { id:"production",   label:"Production",   dot:"green" },
+  { id:"realtime",     label:"Realtime",     dot:"indigo" },
+  { id:"tools",        label:"Tools",        dot:"white" },
+  { id:"games",        label:"Games",        dot:"indigo" },
+  { id:"skills",       label:"Skills",       dot:"green" },
+  { id:"contact",      label:"Contact",      dot:"green" },
+];
 
-function initSite(data){
+async function init(){
+  const data = await loadData();
+  const p = data.profile;
 
-  document.getElementById("heroName").textContent = data.profile.name;
-  document.getElementById("heroLastName").textContent = data.profile.lastname;
-  document.getElementById("heroDescription").textContent = data.profile.description;
-  document.getElementById("heroRole").textContent = data.profile.area;
-  document.getElementById("footerLocation").textContent = "Location: " + data.profile.location;
-  document.getElementById("navLogo").src = data.profile.logo;
+  document.getElementById("heroName").textContent = p.name;
+  document.getElementById("heroLastName").textContent = p.lastname;
+  document.getElementById("heroDescription").textContent = p.description;
+  document.getElementById("heroRole").textContent = p.area;
+  document.getElementById("footerLocation").textContent = "Location: " + p.location;
+  document.getElementById("profileImage").src = p.profileImage;
 
-  document.getElementById("profileImage").src = data.profile.profileImage;
-  document.getElementById("demoReel").src = safeUrl(data.demoReel);
-  document.getElementById("shortRealTime").src = safeUrl(data.shortRealTime);
+  const tabBar = document.getElementById("tabBar");
+  const tabContents = document.getElementById("tabContents");
 
-  document.getElementById("prodCount").textContent = "(" + data.productionrigs.length + ")";
-  document.getElementById("realtimeCount").textContent = "(" + data.rigs.length + ")";
-  document.getElementById("toolsCount").textContent = "(" + data.tools.length + ")";
-  document.getElementById("gamesCount").textContent = "(" + data.games.length + ")";
+  tabs.forEach((t,i) => {
+    const btn = document.createElement("button");
+    btn.className = "tab-btn" + (i===0?" active":"");
+    btn.textContent = t.label;
+    btn.dataset.tab = t.id;
+    btn.addEventListener("click", () => switchTab(t.id));
+    tabBar.appendChild(btn);
 
-  initShowcase(data.showcase);
-  buildCards(data.productionrigs, "prodGrid");
-  buildCards(data.rigs, "realtimeGrid");
-  buildCards(data.tools, "toolsGrid");
-  buildCards(data.games, "gamesGrid");
-
-  videoModal = document.getElementById("video-modal");
-  projectVideo = document.getElementById("project-video");
-  projectVideo.onended = () => {
-    projectVideo.pause();
-    projectVideo.src = "";
-    videoModal.classList.remove("active");
-  };
-  videoModal.onclick = (e) => {
-    if(e.target === videoModal){
-      projectVideo.pause();
-      projectVideo.src = "";
-      videoModal.classList.remove("active");
-    }
-  };
-
-  const skillsPanel = document.getElementById("skillsPanel");
-  const skillGroups = [
-    { label:"3D Software", items:data.skills["3d_software"] },
-    { label:"Game Engines", items:data.skills.game_engine },
-    { label:"Human Pipeline", items:data.skills.human_system_pipeline },
-    { label:"Programming", items:data.skills.programming_language }
-  ];
-  skillGroups.forEach(group => {
-    const block = document.createElement("div");
-    block.className = "skill-block";
-    const h4 = document.createElement("h4");
-    h4.textContent = group.label;
-    block.appendChild(h4);
-    const div = document.createElement("div");
-    div.className = "items";
-    group.items.forEach(item => {
-      const span = document.createElement("span");
-      span.textContent = item;
-      div.appendChild(span);
-    });
-    block.appendChild(div);
-    skillsPanel.appendChild(block);
+    const content = document.createElement("div");
+    content.className = "tab-content" + (i===0?" active":"");
+    content.id = "tab-" + t.id;
+    tabContents.appendChild(content);
   });
+
+  buildShowcaseTab(data.showcase);
+  buildDemoTab(data.demoReel);
+  buildUnrealTab(data.shortRealTime);
+  buildWorkTab(data.productionrigs, "Production Rigs", "green", "production");
+  buildWorkTab(data.rigs, "Realtime Rigs", "indigo", "realtime");
+  buildWorkTab(data.tools, "Tools & Assets", "white", "tools");
+  buildWorkTab(data.games, "Games", "indigo", "games");
+  buildSkillsTab(data.skills);
+  buildContactTab();
+  randomizeWires();
+  const wiresContainer = document.querySelector(".hero-bg-wires");
+  if(wiresContainer) wiresContainer.style.opacity = "1";
+
+  const modal = document.getElementById("video-modal");
+  const video = document.getElementById("project-video");
+  video.onended = ()=>{ video.pause();video.src="";modal.classList.remove("active"); };
+  modal.onclick = e => { if(e.target===modal){ video.pause();video.src="";modal.classList.remove("active"); } };
+  window.playVideo = src => { video.src=src;video.currentTime=0;video.play();modal.classList.add("active"); };
 }
 
-function initShowcase(items){
-  const container = document.getElementById("showcaseCarousel");
-  let index = 0;
-  let elements = [];
+function switchTab(id){
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab===id));
+  document.querySelectorAll(".tab-content").forEach(c => c.classList.toggle("active", c.id==="tab-"+id));
+}
 
+function buildShowcaseTab(items){
+  const container = document.getElementById("tab-showcase");
+  container.innerHTML = `
+    <div class="section-title"><div class="dot green"></div><h2>Showcase</h2></div>
+    <div class="carousel-container" id="scCarousel"></div>`;
+  const carousel = document.getElementById("scCarousel");
+  let idx = 0, els = [];
   items.forEach(item => {
-    let el;
-    if(item.type === "image"){
-      el = document.createElement("img");
-      el.src = item.src;
+    const el = item.type==="image" ? (()=>{const e=document.createElement("img");e.src=item.src;return e;})() : (()=>{const e=document.createElement("video");e.src=item.src;e.muted=true;e.loop=true;e.autoplay=false;e.playsInline=true;e.preload="metadata";return e;})();
+    const w = document.createElement("div");w.className="carousel-item";w.appendChild(el);carousel.appendChild(w);els.push(w);
+  });
+  if(!els.length) return;
+  els[0].classList.add("active");
+  let fv = els[0].querySelector("video"); if(fv) fv.play();
+  setInterval(()=>{
+    let cv = els[idx].querySelector("video"); if(cv) cv.pause();
+    els[idx].classList.remove("active");
+    idx = (idx+1)%els.length;
+    els[idx].classList.add("active");
+    let nv = els[idx].querySelector("video"); if(nv){ nv.currentTime=0;nv.play(); }
+  },9000);
+}
+
+function buildDemoTab(url){
+  const c = document.getElementById("tab-demo");
+  c.innerHTML = `
+    <div class="section-title"><div class="dot green"></div><h2>Demo Reel</h2></div>
+    <div class="video-wrapper"><iframe frameborder="0" allowfullscreen src="${safeUrl(url)}"></iframe></div>`;
+}
+
+function buildUnrealTab(url){
+  const c = document.getElementById("tab-unreal");
+  c.innerHTML = `
+    <div class="section-title"><div class="dot indigo"></div><h2>Short Unreal Engine</h2></div>
+    <div class="video-wrapper"><iframe frameborder="0" allowfullscreen src="${safeUrl(url)}"></iframe></div>`;
+}
+
+function buildWorkTab(items, title, dot, tabId){
+  const c = document.getElementById("tab-" + tabId);
+  c.innerHTML = `
+    <div class="section-title"><div class="dot ${dot}"></div><h2>${title}</h2><span class="count">(${items.length})</span></div>
+    <div class="work-grid"></div>`;
+  const grid = c.querySelector(".work-grid");
+  items.forEach(item => {
+    const isLocal = item.url && item.url.endsWith(".mp4");
+    const hasLink = item.url && item.url !== "" && !isLocal;
+    if(hasLink){
+      const a = document.createElement("a");a.className="work-card";a.href=safeUrl(item.url);a.target="_blank";a.rel="noopener";
+      const img=document.createElement("img");img.className="thumb";img.src=item.image;img.alt=item.name;img.loading="lazy";a.appendChild(img);
+      const h3=document.createElement("h3");h3.textContent=item.name;a.appendChild(h3);grid.appendChild(a);
     } else {
-      el = document.createElement("video");
-      el.src = item.src;
-      el.muted = true;
-      el.loop = true;
-      el.autoplay = false;
-      el.playsInline = true;
-      el.preload = "metadata";
+      const div=document.createElement("div");div.className="work-card";
+      const img=document.createElement("img");img.className="thumb";img.src=item.image;img.alt=item.name;img.loading="lazy";div.appendChild(img);
+      const h3=document.createElement("h3");h3.textContent=item.name;div.appendChild(h3);
+      if(isLocal) div.addEventListener("click",()=>window.playVideo(item.url));
+      grid.appendChild(div);
     }
-    const wrapper = document.createElement("div");
-    wrapper.className = "carousel-item";
-    wrapper.appendChild(el);
-    container.appendChild(wrapper);
-    elements.push(wrapper);
   });
-
-  if(elements.length === 0) return;
-  elements[0].classList.add("active");
-  let firstVideo = elements[0].querySelector("video");
-  if(firstVideo) firstVideo.play();
-
-  setInterval(() => {
-    let currentVideo = elements[index].querySelector("video");
-    if(currentVideo) currentVideo.pause();
-    elements[index].classList.remove("active");
-    index = (index + 1) % elements.length;
-    elements[index].classList.add("active");
-    let nextVideo = elements[index].querySelector("video");
-    if(nextVideo){ nextVideo.currentTime = 0; nextVideo.play(); }
-  }, 9000);
 }
 
-function buildCards(items, containerId){
-  const grid = document.getElementById(containerId);
+function buildSkillsTab(skills){
+  const c = document.getElementById("tab-skills");
+  c.innerHTML = `
+    <div class="section-title"><div class="dot green"></div><h2>Skills</h2></div>
+    <div class="skills-panel"></div>`;
+  const panel = c.querySelector(".skills-panel");
+  const groups = [
+    {label:"3D Software", items:skills["3d_software"]},
+    {label:"Game Engines", items:skills.game_engine},
+    {label:"Human Pipeline", items:skills.human_system_pipeline},
+    {label:"Programming", items:skills.programming_language}
+  ];
+  groups.forEach(g => {
+    const b=document.createElement("div");b.className="skill-block";
+    const h4=document.createElement("h4");h4.textContent=g.label;b.appendChild(h4);
+    const d=document.createElement("div");d.className="items";
+    g.items.forEach(i=>{const s=document.createElement("span");s.textContent=i;d.appendChild(s);});
+    b.appendChild(d);panel.appendChild(b);
+  });
+}
 
-  items.forEach(item => {
-    const isLocalVideo = item.url && item.url.endsWith(".mp4") &&
-      (containerId === "realtimeGrid" || containerId === "prodGrid");
-    const hasValidLink = item.url && item.url !== "" && !isLocalVideo;
-
-    const outer = document.createElement("div");
-    outer.className = "work-card";
-
-    const img = document.createElement("img");
-    img.className = "thumb";
-    img.src = item.image;
-    img.alt = item.name;
-    img.loading = "lazy";
-    outer.appendChild(img);
-
-    const h3 = document.createElement("h3");
-    h3.textContent = item.name;
-    outer.appendChild(h3);
-
-    if(hasValidLink){
-      const a = document.createElement("a");
-      a.className = "work-card";
-      a.href = safeUrl(item.url);
-      a.target = "_blank";
-      a.rel = "noopener";
-      const img2 = img.cloneNode();
-      a.appendChild(img2);
-      const h32 = document.createElement("h3");
-      h32.textContent = item.name;
-      a.appendChild(h32);
-      grid.appendChild(a);
-      return;
-    }
-
-    if(isLocalVideo){
-      outer.addEventListener("click", () => {
-        projectVideo.src = item.url;
-        projectVideo.currentTime = 0;
-        projectVideo.play();
-        videoModal.classList.add("active");
-      });
-    }
-
-    grid.appendChild(outer);
+function buildContactTab(){
+  const c = document.getElementById("tab-contact");
+  c.innerHTML = `
+    <div class="section-title"><div class="dot green"></div><h2>Contact</h2></div>
+    <div class="contact-wrap">
+      <form class="contact-form" id="contactForm" action="https://formsubmit.co/cgrig.td@gmail.com" method="POST">
+        <div class="contact-row">
+          <div class="field">
+            <label for="cName">Name</label>
+            <input type="text" id="cName" name="name" placeholder="Your name" required>
+          </div>
+          <div class="field">
+            <label for="cEmail">Email</label>
+            <input type="email" id="cEmail" name="email" placeholder="your@email.com" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="cSubject">Subject</label>
+          <input type="text" id="cSubject" name="subject" placeholder="What's this about?">
+        </div>
+        <div class="field">
+          <label for="cMessage">Message</label>
+          <textarea id="cMessage" name="message" placeholder="Tell me about your project..." required></textarea>
+        </div>
+        <button type="submit">Send Message</button>
+        <input type="hidden" name="_captcha" value="false">
+      </form>
+      <div class="contact-alt">
+        <span>Or reach out directly:</span>
+        <a href="mailto:cgrig.td@gmail.com">cgrig.td@gmail.com</a>
+      </div>
+    </div>`;
+  document.getElementById("contactForm").addEventListener("submit", e => {
+    const btn = e.target.querySelector("button");
+    btn.textContent = "Sending...";
+    btn.style.background = "rgba(16,185,129,0.15)";
   });
 }
 
 function randomizeWires(){
   const container = document.querySelector(".hero-bg-wires");
+  if(!container) return;
   const cw = container.clientWidth || 800;
   const ch = container.clientHeight || 600;
   const placed = [];
   const pad = 14;
-
   document.querySelectorAll(".hero-bg-wires .wire").forEach(el => {
     const vb = el.getAttribute("viewBox").split(" ").map(Number);
     const ar = vb[3] / vb[2];
@@ -185,13 +208,11 @@ function randomizeWires(){
     const deg = -30 + Math.random() * 60;
     const rad = deg * Math.PI / 180;
     const op = 0.06 + Math.random() * 0.06;
-
     const hw = w / 2, hh = h / 2;
     const cos = Math.abs(Math.cos(rad));
     const sin = Math.abs(Math.sin(rad));
     const bw = hw * cos + hh * sin + pad;
     const bh = hw * sin + hh * cos + pad;
-
     let top, left, attempts = 0, ok = false;
     while (!ok && attempts < 120) {
       top = 2 + Math.random() * 86;
@@ -212,7 +233,6 @@ function randomizeWires(){
       }
       attempts++;
     }
-
     el.style.top = top + "%";
     el.style.left = left + "%";
     el.style.width = w + "px";
@@ -221,60 +241,4 @@ function randomizeWires(){
   });
 }
 
-function initNav(){
-  const links = document.querySelectorAll(".nav-links a");
-  const sections = [];
-  links.forEach(a => {
-    const id = a.getAttribute("href").slice(1);
-    const el = document.getElementById(id);
-    if(el) sections.push({ el, a });
-  });
-  function update(){
-    let current = sections[0];
-    const scrollY = window.scrollY + 120;
-    for(const s of sections){
-      if(s.el.offsetTop <= scrollY) current = s;
-    }
-    sections.forEach(s => s.a.classList.toggle("active", s === current));
-  }
-  window.addEventListener("scroll", update, { passive: true });
-  update();
-}
-
-function initSliders(){
-  document.querySelectorAll(".slider-wrapper").forEach(wrapper => {
-    const grid = wrapper.querySelector(".work-grid");
-    const prev = wrapper.querySelector(".slider-arrow.prev");
-    const next = wrapper.querySelector(".slider-arrow.next");
-    if(!grid || !prev || !next) return;
-    const scroll = dir => {
-      const card = grid.querySelector(".work-card, a.work-card");
-      const amount = card ? card.offsetWidth + 6 : 266;
-      grid.scrollBy({ left: dir * amount, behavior: "smooth" });
-    };
-    prev.addEventListener("click", () => scroll(-1));
-    next.addEventListener("click", () => scroll(1));
-  });
-}
-
-window.addEventListener("load", async () => {
-  await loadData();
-  randomizeWires();
-  initNav();
-  initSliders();
-
-  const imgs = document.querySelectorAll("img:not([loading=lazy])");
-  await Promise.all(Array.from(imgs, img => {
-    if (img.complete) return;
-    return new Promise(resolve => {
-      img.addEventListener("load", resolve, { once: true });
-      img.addEventListener("error", resolve, { once: true });
-    });
-  }));
-
-  const loader = document.getElementById("loader");
-  loader.classList.add("hidden");
-  setTimeout(() => {
-    loader.style.display = "none";
-  }, 2000);
-});
+window.addEventListener("load", init);

@@ -9,23 +9,21 @@
 <meta name="google-site-verification" content="y8yhAFlBR7QxAm2eaArYs3nvcVJ-LhDXp2YU_zYR0Ts" />
 <link rel="canonical" href="https://cgrigstd.github.io/home/">
 
-<!-- Open Graph -->
 <meta property="og:title" content="Pablo Romero — Rigger &amp; Programmer">
 <meta property="og:description" content="Technical Rigger &amp; TD. Rigging, deformation, automation y pipeline tools en Python para Blender, Maya, Unreal Engine y Unity.">
 <meta property="og:url" content="https://cgrigstd.github.io/home/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://cgrigstd.github.io/home/assets/user.jpg">
 
-<!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Pablo Romero — Rigger &amp; Programmer">
 <meta name="twitter:description" content="Technical Rigger &amp; TD. Rigging, deformation, automation y pipeline tools.">
 <meta name="twitter:image" content="https://cgrigstd.github.io/home/assets/user.jpg">
-<link rel="stylesheet" href="./styles.css">
+<link rel="icon" href="./assets/cgrigs-logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="icon" href="./assets/cgrigs-logo.svg">
+<link rel="stylesheet" href="./styles.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -59,32 +57,12 @@
 
 <div class="bg-wire"></div>
 
-<div id="loader">
-  <img id="loaderLogo" class="loader-logo" src="./assets/cgrigs-logo.svg">
-</div>
+<div class="page">
 
-<nav>
-  <div class="nav-logo">
-    <img id="navLogo" alt="CG RIGS">
-  </div>
-  <div class="nav-links">
-    <a href="#work">PRODUCTION RIGS</a>
-    <a href="#realtime">REALTIME</a>
-    <a href="#tools">TOOLS</a>
-    <a href="#games">GAMES</a>
-    <a href="#skills">SKILLS</a>
-  </div>
-</nav>
-
-<div class="container">
-
-  <!-- HERO -->
   <div class="hero">
     <div class="hero-left">
       <img class="avatar" id="profileImage" alt="Pablo Romero">
-      <div class="hero-name">
-        <span class="emerald" id="heroName"></span> <span class="indigo" id="heroLastName"></span>
-      </div>
+      <div class="hero-name"><span class="emerald" id="heroName"></span> <span class="indigo" id="heroLastName"></span></div>
       <div class="hero-role" id="heroRole"></div>
     </div>
     <div class="hero-center">
@@ -282,112 +260,14 @@
     </div>
   </div>
 
-  <div class="divider"></div>
+  <div class="tab-bar" id="tabBar"></div>
 
-  <!-- SHOWCASE -->
-  <div class="section">
-    <div class="section-title">
-      <div class="dot green"></div>
-      <h2>Showcase</h2>
-    </div>
-    <div class="carousel-container" id="showcaseCarousel"></div>
-  </div>
+  <div id="tabContents"></div>
 
-  <!-- DEMO REEL -->
-  <div class="section">
-    <div class="section-title">
-      <div class="dot green"></div>
-      <h2>Demo Reel</h2>
-    </div>
-    <div class="video-wrapper">
-      <iframe id="demoReel" frameborder="0" allowfullscreen></iframe>
-    </div>
-  </div>
-
-  <!-- SHORT UNREAL -->
-  <div class="section">
-    <div class="section-title">
-      <div class="dot indigo"></div>
-      <h2>Short Unreal Engine</h2>
-    </div>
-    <div class="video-wrapper">
-      <iframe id="shortRealTime" frameborder="0" allowfullscreen></iframe>
-    </div>
-  </div>
-
-  <!-- WORK -->
-  <div class="section" id="work">
-    <div class="section-title">
-      <div class="dot green"></div>
-      <h2>Production Rigs</h2>
-      <span class="count" id="prodCount"></span>
-    </div>
-    <div class="slider-wrapper">
-      <button class="slider-arrow prev" aria-label="Previous">‹</button>
-      <div class="work-grid" id="prodGrid"></div>
-      <button class="slider-arrow next" aria-label="Next">›</button>
-    </div>
-  </div>
-
-  <div class="section" id="realtime">
-    <div class="section-title">
-      <div class="dot indigo"></div>
-      <h2>Realtime Rigs</h2>
-      <span class="count" id="realtimeCount"></span>
-    </div>
-    <div class="slider-wrapper">
-      <button class="slider-arrow prev" aria-label="Previous">‹</button>
-      <div class="work-grid" id="realtimeGrid"></div>
-      <button class="slider-arrow next" aria-label="Next">›</button>
-    </div>
-  </div>
-
-  <div class="section" id="tools">
-    <div class="section-title">
-      <div class="dot white"></div>
-      <h2>Tools &amp; Assets</h2>
-      <span class="count" id="toolsCount"></span>
-    </div>
-    <div class="slider-wrapper">
-      <button class="slider-arrow prev" aria-label="Previous">‹</button>
-      <div class="work-grid" id="toolsGrid"></div>
-      <button class="slider-arrow next" aria-label="Next">›</button>
-    </div>
-  </div>
-
-  <div class="section" id="games">
-    <div class="section-title">
-      <div class="dot indigo"></div>
-      <h2>Games</h2>
-      <span class="count" id="gamesCount"></span>
-    </div>
-    <div class="slider-wrapper">
-      <button class="slider-arrow prev" aria-label="Previous">‹</button>
-      <div class="work-grid" id="gamesGrid"></div>
-      <button class="slider-arrow next" aria-label="Next">›</button>
-    </div>
-  </div>
-
-  <!-- SKILLS -->
-  <div class="section" id="skills">
-    <div class="section-title">
-      <div class="dot green"></div>
-      <h2>Skills</h2>
-    </div>
-    <div class="skills-panel" id="skillsPanel"></div>
-  </div>
-
-
-
+  <footer><span id="footerLocation"></span></footer>
 </div>
 
-<footer>
-  <span id="footerLocation"></span>
-</footer>
-
-<div id="video-modal">
-  <video id="project-video" muted></video>
-</div>
+<div id="video-modal"><video id="project-video" muted></video></div>
 
 <script src="./app.js"></script>
 </body>
