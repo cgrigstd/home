@@ -183,6 +183,7 @@ function buildContactTab(){
         </div>
         <button type="submit">Send Message</button>
         <input type="hidden" name="_next" value="https://cgrigstd.github.io/home/">
+        <input type="hidden" name="Page URL" value="https://cgrigstd.github.io/home/">
         <input type="hidden" name="_captcha" value="false">
       </form>
       <div class="contact-alt">
