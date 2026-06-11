@@ -186,10 +186,30 @@ function buildContactTab(){
         <a href="mailto:cgrig.td@gmail.com">cgrig.td@gmail.com</a>
       </div>
     </div>`;
-  document.getElementById("contactForm").addEventListener("submit", e => {
-    const btn = e.target.querySelector("button");
+  document.getElementById("contactForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const form = e.target;
+    const btn = form.querySelector("button");
+    const originalText = btn.textContent;
     btn.textContent = "Sending...";
+    btn.disabled = true;
     btn.style.background = "rgba(16,185,129,0.15)";
+    try {
+      const res = await fetch(form.action, {
+        method: "POST",
+        body: new URLSearchParams(new FormData(form))
+      });
+      if(res.ok){
+        form.innerHTML = `<div class="success-msg">✓ Message sent successfully!</div>`;
+      } else {
+        throw new Error("Server responded with " + res.status);
+      }
+    } catch(err){
+      btn.textContent = originalText;
+      btn.disabled = false;
+      btn.style.background = "";
+      alert("Oops! Something went wrong. Please try again or email me directly.");
+    }
   });
 }
 
