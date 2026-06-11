@@ -66,6 +66,9 @@ async function init(){
   video.onended = ()=>{ video.pause();video.src="";modal.classList.remove("active"); };
   modal.onclick = e => { if(e.target===modal){ video.pause();video.src="";modal.classList.remove("active"); } };
   window.playVideo = src => { video.src=src;video.currentTime=0;video.play();modal.classList.add("active"); };
+
+  document.body.classList.remove("js-loading");
+  document.getElementById("loadingScreen").classList.add("hidden");
 }
 
 function switchTab(id){
@@ -194,6 +197,7 @@ function buildContactTab(){
     btn.textContent = "Sending...";
     btn.disabled = true;
     btn.style.background = "rgba(16,185,129,0.15)";
+    const originalHTML = form.innerHTML;
     try {
       const res = await fetch(form.action, {
         method: "POST",
@@ -201,6 +205,9 @@ function buildContactTab(){
       });
       if(res.ok){
         form.innerHTML = `<div class="success-msg">✓ Message sent successfully!</div>`;
+        setTimeout(() => {
+          form.innerHTML = originalHTML;
+        }, 3000);
       } else {
         throw new Error("Server responded with " + res.status);
       }

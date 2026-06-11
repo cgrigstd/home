@@ -149,3 +149,17 @@ footer span{ font-size:0.65rem;color:rgba(255,255,255,0.08); }
   .work-grid{ grid-template-columns:repeat(3,1fr); }
   .tab-btn{ font-size:0.6rem;padding:8px 12px; }
 }
+
+.js-loading .page{ display:none; }
+.js-loading .loading-screen{ display:flex; }
+.loading-screen{
+  display:none;
+  position:fixed;inset:0;z-index:99999;
+  background:#09090d;
+  flex-direction:column;justify-content:center;align-items:center;
+}
+.loading-logo{
+  width:48px;height:48px;
+  opacity:0.8;
+}
+.loading-screen.hidden{ opacity:0; pointer-events:none; transition:opacity 0.3s; }
