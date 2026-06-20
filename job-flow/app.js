@@ -10,11 +10,26 @@ let activeRegions = new Set();
 let currentPage = 1;
 let currentSearch = "";
 
+const ICONS = {
+  pin: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13s3-4 3-7a3 3 0 1 0-6 0c0 3 3 7 3 7z"/><circle cx="8" cy="6" r="1" fill="currentColor"/></svg>',
+  signal: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10a6 6 0 0 1 12 0"/><path d="M5 8a3 3 0 0 1 6 0"/><circle cx="8" cy="12" r="1" fill="currentColor"/></svg>',
+  building: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13V6l5-4 5 4v7H3z"/><path d="M7 13v-3h2v3"/></svg>',
+  dot: '<svg viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="2.5"/></svg>',
+};
+
+function createIcon(svg) {
+  const el = document.createElement("span");
+  el.innerHTML = svg;
+  el.setAttribute("aria-hidden", "true");
+  el.style.cssText = "display:inline-flex;width:1em;height:1em;vertical-align:-0.15em";
+  return el;
+}
+
 const REGION_CONFIG = {
-  latin_america: { label: "Latin America", icon: "🌎" },
-  remote: { label: "Remote", icon: "🌐" },
-  us_canada_europe: { label: "US / Canada / Europe", icon: "🇺🇸" },
-  other: { label: "Other", icon: "📍" },
+  latin_america: { label: "Latin America", icon: ICONS.pin },
+  remote: { label: "Remote", icon: ICONS.signal },
+  us_canada_europe: { label: "US / Canada / Europe", icon: ICONS.building },
+  other: { label: "Other", icon: ICONS.dot },
 };
 
 const CATEGORY_MAP = {
@@ -187,7 +202,12 @@ function renderPage() {
       const cfg = REGION_CONFIG[job.region];
       const regionSpan = document.createElement("span");
       regionSpan.className = "job-region";
-      regionSpan.textContent = cfg ? `${cfg.icon} ${cfg.label}` : job.region;
+      if (cfg) {
+        regionSpan.appendChild(createIcon(cfg.icon));
+        regionSpan.appendChild(document.createTextNode(" " + cfg.label));
+      } else {
+        regionSpan.textContent = job.region;
+      }
       metaDiv.appendChild(regionSpan);
     }
     if (metaDiv.children.length === 0) {
@@ -331,7 +351,12 @@ function updateActiveStrip() {
     const cfg = REGION_CONFIG[slug];
     const chip = document.createElement("span");
     chip.className = "active-chip region-chip";
-    chip.textContent = cfg ? `${cfg.icon} ${cfg.label}` : slug;
+    if (cfg) {
+      chip.appendChild(createIcon(cfg.icon));
+      chip.appendChild(document.createTextNode(" " + cfg.label));
+    } else {
+      chip.textContent = slug;
+    }
     const rem = document.createElement("span");
     rem.className = "remove";
     rem.textContent = "✕";
@@ -476,6 +501,25 @@ function setupFilters() {
   document.getElementById("filter-specialty").addEventListener("click", toggleFilterGroup(activeSpecialties));
 }
 
+function setupTheme() {
+  const btn = document.getElementById("theme-toggle");
+  const html = document.documentElement;
+
+  function apply(theme) {
+    html.setAttribute("data-theme", theme);
+    btn.textContent = theme === "dark" ? "☀" : "☾";
+    try { localStorage.setItem("jobflow_theme", theme); } catch (e) {}
+  }
+
+  btn.addEventListener("click", () => {
+    const cur = html.getAttribute("data-theme") || "dark";
+    apply(cur === "dark" ? "light" : "dark");
+  });
+
+  const stored = (() => { try { return localStorage.getItem("jobflow_theme"); } catch (e) {} })();
+  if (stored) apply(stored);
+}
+
 function setupSearch() {
   const input = document.getElementById("search-input");
   const button = document.getElementById("search-button");
@@ -493,6 +537,7 @@ function setupSearch() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  setupTheme();
   setupSearch();
   setupFilters();
   setupPagination();
