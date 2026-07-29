@@ -35,6 +35,11 @@
 },
 "productionrigs":[
 {
+"name":"Beauty and the Beast",
+"image":"./assets/beauty_and_the_beast.png",
+"url":""
+},
+{
 "name":"BBVA Seguro de Hogar",
 "image":"./assets/BBVA_SEGURO_DE_HOGAR.jpg",
 "url":"https://vimeo.com/965544861"
