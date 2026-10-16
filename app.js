@@ -1,6 +1,33 @@
+const BOOT_AT = performance.now();
+const MIN_LOADER_MS = 1600;
+
 async function loadData(){
   const response = await fetch("./data.json");
   return await response.json();
+}
+
+function waitForMedia(root){
+  if(!root) return Promise.resolve();
+  const imgJobs = [...root.querySelectorAll("img")].map(img => new Promise(res => {
+    if(img.complete && img.naturalWidth) return res();
+    img.addEventListener("load", res, {once:true});
+    img.addEventListener("error", res, {once:true});
+    setTimeout(res, 8000);
+  }));
+  const videoJobs = [...root.querySelectorAll("video")].map(v => new Promise(res => {
+    if(v.readyState >= 1) return res();
+    v.addEventListener("loadedmetadata", res, {once:true});
+    v.addEventListener("error", res, {once:true});
+    setTimeout(res, 8000);
+  }));
+  return Promise.all([...imgJobs, ...videoJobs]);
+}
+
+function hideLoader(){
+  const screen = document.getElementById("loadingScreen");
+  document.body.classList.remove("js-loading");
+  screen.classList.add("hidden");
+  screen.addEventListener("transitionend", () => screen.remove(), {once:true});
 }
 
 function safeUrl(url){
@@ -67,8 +94,10 @@ async function init(){
   modal.onclick = e => { if(e.target===modal){ video.pause();video.src="";modal.classList.remove("active"); } };
   window.playVideo = src => { video.src=src;video.currentTime=0;video.play();modal.classList.add("active"); };
 
-  document.body.classList.remove("js-loading");
-  document.getElementById("loadingScreen").classList.add("hidden");
+  await waitForMedia(document.querySelector(".page"));
+  const remaining = MIN_LOADER_MS - (performance.now() - BOOT_AT);
+  if(remaining > 0) await new Promise(r => setTimeout(r, remaining));
+  hideLoader();
 }
 
 function switchTab(id){
