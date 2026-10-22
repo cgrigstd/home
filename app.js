@@ -72,6 +72,7 @@ async function init(){
     const content = document.createElement("div");
     content.className = "tab-content" + (i===0?" active":"");
     content.id = "tab-" + t.id;
+    content.dataset.tabLoader = "true";
     tabContents.appendChild(content);
   });
 
@@ -84,6 +85,8 @@ async function init(){
   buildWorkTab(data.games, "Games", "indigo", "games");
   buildSkillsTab(data.skills);
   buildContactTab();
+  showTabLoader("showcase");
+  waitForTabMedia(document.getElementById("tab-showcase")).then(() => hideTabLoader("showcase"));
   randomizeWires();
   const wiresContainer = document.querySelector(".hero-bg-wires");
   if(wiresContainer) wiresContainer.style.opacity = "1";
@@ -103,13 +106,74 @@ async function init(){
 function switchTab(id){
   document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab===id));
   document.querySelectorAll(".tab-content").forEach(c => c.classList.toggle("active", c.id==="tab-"+id));
+  const c = document.getElementById("tab-" + id);
+  if(c && c.dataset.tabLoader === "true"){
+    if(!c.querySelector(".tab-loader")){
+      showTabLoader(id);
+      waitForTabMedia(c).then(() => hideTabLoader(id));
+    }
+  }
+}
+
+function showTabLoader(id){
+  const container = document.getElementById("tab-" + id);
+  if(!container) return;
+  let loader = container.querySelector(".tab-loader");
+  if(loader){
+    loader.classList.remove("hidden");
+    return;
+  }
+  loader = document.createElement("div");
+  loader.className = "tab-loader";
+  loader.innerHTML = `
+    <div class="tab-loader-inner">
+      <svg class="tri-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <path class="tri-track" d="M-0.74 18.90 L100.03 18.90 L49.64 94.05 Z"/>
+        <path class="tri-run" d="M-0.74 18.90 L100.03 18.90 L49.64 94.05 Z" pathLength="100"/>
+      </svg>
+      <img class="loading-logo" src="./assets/cgrigs-logo.svg" alt="Loading...">
+    </div>
+  `;
+  container.prepend(loader);
+}
+
+function hideTabLoader(id){
+  const container = document.getElementById("tab-" + id);
+  if(!container) return;
+  const loader = container.querySelector(".tab-loader");
+  if(!loader) return;
+  loader.classList.add("hidden");
+  loader.addEventListener("transitionend", () => { loader.remove(); }, {once:true});
+}
+
+function waitForTabMedia(root, timeoutMs = 12000){
+  if(!root) return Promise.resolve();
+  const imgs = [...root.querySelectorAll("img")].map(img => new Promise(res => {
+    if(img.complete && img.naturalWidth) return res();
+    img.addEventListener("load", res, {once:true});
+    img.addEventListener("error", res, {once:true});
+    setTimeout(res, timeoutMs);
+  }));
+  const videos = [...root.querySelectorAll("video")].map(v => new Promise(res => {
+    if(v.readyState >= 1) return res();
+    v.addEventListener("loadedmetadata", res, {once:true});
+    v.addEventListener("error", res, {once:true});
+    setTimeout(res, timeoutMs);
+  }));
+  const iframes = [...root.querySelectorAll("iframe")].map(f => new Promise(res => {
+    const done = () => res();
+    f.addEventListener("load", done, {once:true});
+    setTimeout(done, Math.min(timeoutMs, 6000));
+  }));
+  return Promise.all([...imgs, ...videos, ...iframes]);
 }
 
 function buildShowcaseTab(items){
   const container = document.getElementById("tab-showcase");
-  container.innerHTML = `
+  container.querySelectorAll(".tab-loader, .section-title, .carousel-container").forEach(el => el.remove());
+  container.insertAdjacentHTML("afterbegin", `
     <div class="section-title"><div class="dot green"></div><h2>Showcase</h2></div>
-    <div class="carousel-container" id="scCarousel"></div>`;
+    <div class="carousel-container" id="scCarousel"></div>`);
   const carousel = document.getElementById("scCarousel");
   let idx = 0, els = [];
   items.forEach(item => {
@@ -126,27 +190,36 @@ function buildShowcaseTab(items){
     els[idx].classList.add("active");
     let nv = els[idx].querySelector("video"); if(nv){ nv.currentTime=0;nv.play(); }
   },9000);
+  showTabLoader("showcase");
+  waitForTabMedia(container).then(() => hideTabLoader("showcase"));
 }
 
 function buildDemoTab(url){
   const c = document.getElementById("tab-demo");
-  c.innerHTML = `
+  c.querySelectorAll(".tab-loader, .section-title, .video-wrapper").forEach(el => el.remove());
+  c.insertAdjacentHTML("afterbegin", `
     <div class="section-title"><div class="dot green"></div><h2>Demo Reel</h2></div>
-    <div class="video-wrapper"><iframe frameborder="0" allowfullscreen src="${safeUrl(url)}"></iframe></div>`;
+    <div class="video-wrapper"><iframe frameborder="0" allowfullscreen src="${safeUrl(url)}"></iframe></div>`);
+  showTabLoader("demo");
+  waitForTabMedia(c).then(() => hideTabLoader("demo"));
 }
 
 function buildUnrealTab(url){
   const c = document.getElementById("tab-unreal");
-  c.innerHTML = `
+  c.querySelectorAll(".tab-loader, .section-title, .video-wrapper").forEach(el => el.remove());
+  c.insertAdjacentHTML("afterbegin", `
     <div class="section-title"><div class="dot indigo"></div><h2>Short Unreal Engine</h2></div>
-    <div class="video-wrapper"><iframe frameborder="0" allowfullscreen src="${safeUrl(url)}"></iframe></div>`;
+    <div class="video-wrapper"><iframe frameborder="0" allowfullscreen src="${safeUrl(url)}"></iframe></div>`);
+  showTabLoader("unreal");
+  waitForTabMedia(c).then(() => hideTabLoader("unreal"));
 }
 
 function buildWorkTab(items, title, dot, tabId){
   const c = document.getElementById("tab-" + tabId);
-  c.innerHTML = `
+  c.querySelectorAll(".tab-loader, .section-title, .work-grid").forEach(el => el.remove());
+  c.insertAdjacentHTML("afterbegin", `
     <div class="section-title"><div class="dot ${dot}"></div><h2>${title}</h2><span class="count">(${items.length})</span></div>
-    <div class="work-grid"></div>`;
+    <div class="work-grid"></div>`);
   const grid = c.querySelector(".work-grid");
   items.forEach(item => {
     const isLocal = item.url && item.url.endsWith(".mp4");
@@ -163,13 +236,16 @@ function buildWorkTab(items, title, dot, tabId){
       grid.appendChild(div);
     }
   });
+  showTabLoader(tabId);
+  waitForTabMedia(c).then(() => hideTabLoader(tabId));
 }
 
 function buildSkillsTab(skills){
   const c = document.getElementById("tab-skills");
-  c.innerHTML = `
+  c.querySelectorAll(".tab-loader, .section-title, .skills-panel").forEach(el => el.remove());
+  c.insertAdjacentHTML("afterbegin", `
     <div class="section-title"><div class="dot green"></div><h2>Skills</h2></div>
-    <div class="skills-panel"></div>`;
+    <div class="skills-panel"></div>`);
   const panel = c.querySelector(".skills-panel");
   const groups = [
     {label:"3D Software", items:skills["3d_software"]},
@@ -184,11 +260,14 @@ function buildSkillsTab(skills){
     g.items.forEach(i=>{const s=document.createElement("span");s.textContent=i;d.appendChild(s);});
     b.appendChild(d);panel.appendChild(b);
   });
+  showTabLoader("skills");
+  waitForTabMedia(c).then(() => hideTabLoader("skills"));
 }
 
 function buildContactTab(){
   const c = document.getElementById("tab-contact");
-  c.innerHTML = `
+  c.querySelectorAll(".tab-loader, .section-title, .contact-wrap").forEach(el => el.remove());
+  c.insertAdjacentHTML("afterbegin", `
     <div class="section-title"><div class="dot green"></div><h2>Contact</h2></div>
     <div class="contact-wrap">
       <form class="contact-form" id="contactForm" action="https://formsubmit.co/cgrig.td@gmail.com" method="POST">
@@ -219,7 +298,7 @@ function buildContactTab(){
         <span>Or reach out directly:</span>
         <a href="mailto:cgrig.td@gmail.com">cgrig.td@gmail.com</a>
       </div>
-    </div>`;
+    </div>`);
   document.getElementById("contactForm").addEventListener("submit", async e => {
     e.preventDefault();
     const form = e.target;
