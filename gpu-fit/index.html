@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GPU Fit · ¿Qué modelos soporta tu GPU?</title>
+  <meta name="description" content="Explora modelos y nodos de ComfyUI compatibles con tu GPU. Datos de vramdb.com y modelfit.io, con caché local." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet" />
+<link rel="icon" href="logo.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="brand">
+        <img class="brand-mark" src="logo.svg" alt="GPU Fit" width="68" height="68" />
+        <div>
+          <h1>GPU Fit</h1>
+          <p class="brand-sub">Compatibilidad de modelos según tu GPU</p>
+        </div>
+      </div>
+      <p class="hero-lead">
+        Elige una GPU (o indica los GB de VRAM) y descubre qué modelos y nodos de ComfyUI
+        puedes ejecutar. Los datos se obtienen de <a href="https://vramdb.com/" target="_blank" rel="noopener">vramdb.com</a>
+        y <a href="https://modelfit.io/" target="_blank" rel="noopener">modelfit.io</a> y se cachean localmente.
+        Los modelos gratuitos incluyen botón de descarga directa a Hugging Face.
+      </p>
+    </div>
+  </header>
+
+  <main class="container">
+    <form id="search-form" class="search-card" autocomplete="off">
+      <div class="field field-gpu">
+        <label for="gpu">Modelo de GPU</label>
+        <select id="gpu">
+          <option value="">Cargando GPUs…</option>
+        </select>
+      </div>
+      <div class="field field-vram">
+        <label for="vram">VRAM (GB)</label>
+        <input id="vram" type="number" min="1" max="512" step="1" value="12" />
+      </div>
+      <div class="field field-q">
+        <label for="q">Buscar modelo o nodo</label>
+        <input id="q" type="search" placeholder="flux, sdxl, wan, upscale…" />
+      </div>
+      <div class="field field-ctx">
+        <label for="context">Contexto LLM (tokens)</label>
+        <input id="context" type="number" min="512" max="1048576" step="512" value="4096" />
+      </div>
+      <div class="field field-res">
+        <label for="resolution">Resolución difusión</label>
+        <select id="resolution">
+          <option value="512">512 px</option>
+          <option value="1024" selected>1024 px</option>
+          <option value="2048">2048 px</option>
+        </select>
+      </div>
+      <button type="submit" class="btn-primary" id="submit-btn">Analizar</button>
+    </form>
+
+    <div class="presets" id="presets" aria-label="Atajos rápidos"></div>
+
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+
+    <section id="profile" class="profile hidden"></section>
+ 
+    <nav id="tabs" class="tabs hidden" aria-label="Secciones de resultados">
+      <button type="button" class="tab active" data-tab="recommendations">Modelos recomendados</button>
+      <button type="button" class="tab" data-tab="models">Estimación de VRAM</button>
+      <button type="button" class="tab" data-tab="nodes">Nodos compatibles</button>
+    </nav>
+ 
+    <section id="recommendations" class="results tab-panel active">
+      <div class="section-head">
+        <h2>Modelos recomendados para tu GPU</h2>
+        <span class="source-tag">modelfit.io</span>
+      </div>
+      <div id="recommendations-body"></div>
+    </section>
+ 
+    <section id="models" class="results tab-panel hidden">
+      <div class="section-head">
+        <h2>Estimación de VRAM por modelo</h2>
+        <span class="source-tag">vramdb.com</span>
+      </div>
+      <div id="models-body" class="table-wrap"></div>
+    </section>
+ 
+    <section id="nodes" class="results tab-panel hidden">
+      <div class="section-head">
+        <h2>Nodos de ComfyUI compatibles</h2>
+        <span class="source-tag">vramdb.com</span>
+      </div>
+      <div id="nodes-body"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <button type="button" id="refresh-btn" class="btn-ghost">Refrescar datos</button>
+    </div>
+  </footer>
+
+  <script src="app.js" type="module"></script>
+</body>
+</html>

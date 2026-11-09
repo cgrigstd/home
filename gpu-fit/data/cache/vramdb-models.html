@@ -1,0 +1,435 @@
+<!DOCTYPE html><html class="dark" lang="en" data-astro-cid-ju4pidww><head><meta charset="UTF-8"><meta name="description" content="ComfyUI Node Directory - VRAM Requirements &amp; Dependencies"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><link rel="canonical" href="https://vramdb.com/models-vram/"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="manifest" href="/site.webmanifest"><meta name="generator" content="Astro v7.3.7"><title>AI Model Memory &amp; VRAM Requirements - VRAM DB</title><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"><script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed-variant": "#004e5a",
+                    "on-surface": "#dae2fd",
+                    "secondary-fixed": "#d4e4fa",
+                    "secondary": "#b9c8de",
+                    "on-error": "#690005",
+                    "surface-container": "#171f33",
+                    "primary-container": "#38bdf8",
+                    "outline": "#87929a",
+                    "on-tertiary-fixed": "#001f25",
+                    "surface-container-lowest": "#060e20",
+                    "tertiary-fixed": "#a2eeff",
+                    "surface-variant": "#2d3449",
+                    "primary": "#8ed5ff",
+                    "on-primary": "#00354a",
+                    "outline-variant": "#3e484f",
+                    "on-tertiary": "#00363e",
+                    "surface-bright": "#31394d",
+                    "background": "#0b1326",
+                    "on-secondary-fixed-variant": "#39485a",
+                    "on-secondary": "#233143",
+                    "primary-fixed": "#c4e7ff",
+                    "on-secondary-container": "#a7b6cc",
+                    "tertiary": "#3ce0fb",
+                    "tertiary-fixed-dim": "#2fd9f4",
+                    "secondary-fixed-dim": "#b9c8de",
+                    "surface-dim": "#0b1326",
+                    "secondary-container": "#39485a",
+                    "surface-tint": "#7bd0ff",
+                    "tertiary-container": "#00c3dd",
+                    "inverse-surface": "#dae2fd",
+                    "surface-container-high": "#222a3d",
+                    "on-tertiary-container": "#004b56",
+                    "primary-fixed-dim": "#7bd0ff",
+                    "on-primary-container": "#004965",
+                    "on-background": "#dae2fd",
+                    "on-surface-variant": "#bdc8d1",
+                    "surface": "#0b1326",
+                    "inverse-on-surface": "#283044",
+                    "surface-container-low": "#131b2e",
+                    "on-secondary-fixed": "#0d1c2d",
+                    "inverse-primary": "#00668a",
+                    "on-primary-fixed-variant": "#004c69",
+                    "on-error-container": "#ffdad6",
+                    "error-container": "#93000a",
+                    "error": "#ffb4ab",
+                    "surface-container-highest": "#2d3449",
+                    "on-primary-fixed": "#001e2c"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "container-max": "1440px",
+                    "gutter": "16px",
+                    "margin": "24px",
+                    "unit": "4px"
+            },
+            "fontFamily": {
+                    "label-sm": ["JetBrains Mono"],
+                    "headline-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "code-md": ["JetBrains Mono"],
+                    "headline-lg-mobile": ["Inter"],
+                    "headline-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "code-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script><script async defer data-website-id="882f992f-0f33-423c-adfb-d7b1d8f021c4" data-domains="vramdb.com" src="https://cloud.umami.is/script.js"></script><link rel="stylesheet" href="/_astro/Layout.DqyiRlsn.css"><link rel="stylesheet" href="/_astro/index.gH1wzyfl.css"></head><body data-astro-cid-ju4pidww><header data-astro-cid-ju4pidww><nav data-astro-cid-ju4pidww><a href="/" data-astro-cid-ju4pidww>ComfyUI Nodes</a><a href="/gpus/" class="nav-tab" data-astro-cid-ju4pidww>Graphics Cards</a><a href="/models-vram/" class="nav-tab" data-astro-cid-ju4pidww>Model Memory</a><a href="/tools/workflow-analyzer/" class="nav-tab" data-astro-cid-ju4pidww>Workflow Analyzer</a><a href="/tools/traceback-doctor/" class="nav-tab" data-astro-cid-ju4pidww>Traceback Doctor</a><a href="/tools/cloud-vs-local/" class="nav-tab" data-astro-cid-ju4pidww>TCO Calculator</a><a href="/research/" class="nav-tab" data-astro-cid-ju4pidww>Research</a></nav></header><main data-astro-cid-ju4pidww><div class="models-dashboard-container" data-astro-cid-4heuqepm><div class="header-section text-center" data-astro-cid-4heuqepm><h1 class="gradient-text" data-astro-cid-4heuqepm>💾 Model Memory & VRAM Estimator</h1><p class="subtitle" data-astro-cid-4heuqepm>Estimate local VRAM footprint, context length limits, and system RAM requirements dynamically before downloading models.</p></div><!-- Mode Selector Toggles --><div class="tab-selectors" data-astro-cid-4heuqepm><button class="tab-btn active" id="tab-llm" data-target="llm-panel" data-astro-cid-4heuqepm>💬 Large Language Models (LLMs)</button><button class="tab-btn" id="tab-diffusion" data-target="diffusion-panel" data-astro-cid-4heuqepm>🎨 Image & Video Diffusion</button></div><!-- Main Dashboard Workspace --><div class="dashboard-panel" id="main-panel" data-astro-cid-4heuqepm><!-- LLM SETTINGS CONTAINER --><div class="panel-section active" id="llm-panel" data-astro-cid-4heuqepm><div class="form-row" data-astro-cid-4heuqepm><div class="form-col" data-astro-cid-4heuqepm><label for="llm-model-select" data-astro-cid-4heuqepm>Select Architecture</label><select id="llm-model-select" class="styled-select" data-astro-cid-4heuqepm><option value="llama-3.2-1b" data-astro-cid-4heuqepm>Llama 3.2 (1B) (Meta)</option><option value="llama-3.2-3b" data-astro-cid-4heuqepm>Llama 3.2 (3B) (Meta)</option><option value="llama-3.1-8b" data-astro-cid-4heuqepm>Llama 3 / 3.1 (8B) (Meta)</option><option value="deepseek-r1-7b" data-astro-cid-4heuqepm>DeepSeek-R1 Distill Qwen (7B) (DeepSeek)</option><option value="deepseek-r1-14b" data-astro-cid-4heuqepm>DeepSeek-R1 Distill Qwen (14B) (DeepSeek)</option><option value="deepseek-r1-32b" data-astro-cid-4heuqepm>DeepSeek-R1 Distill Qwen (32B) (DeepSeek)</option><option value="deepseek-r1-70b" data-astro-cid-4heuqepm>DeepSeek-R1 Distill Llama (70B) (DeepSeek)</option><option value="qwen-2.5-72b" data-astro-cid-4heuqepm>Qwen 2.5 (72B) (Alibaba)</option></select></div><div class="form-col" data-astro-cid-4heuqepm><label for="llm-quant-select" data-astro-cid-4heuqepm>Target Precision / Quantization</label><select id="llm-quant-select" class="styled-select" data-astro-cid-4heuqepm></select></div></div><div class="form-row range-row" data-astro-cid-4heuqepm><div class="range-info" data-astro-cid-4heuqepm><label for="llm-context-slider" data-astro-cid-4heuqepm>Active Context Limit (Sequence length)</label><span class="range-value" id="llm-context-display" data-astro-cid-4heuqepm>8,192 tokens</span></div><input type="range" id="llm-context-slider" min="1024" max="131072" step="1024" value="8192" class="styled-slider" data-astro-cid-4heuqepm><div class="range-subtext" id="llm-kv-overhead-display" data-astro-cid-4heuqepm>KV Cache overhead: +0.00 GB</div></div></div><!-- DIFFUSION SETTINGS CONTAINER --><div class="panel-section" id="diffusion-panel" data-astro-cid-4heuqepm><div class="form-row" data-astro-cid-4heuqepm><div class="form-col" data-astro-cid-4heuqepm><label for="diff-model-select" data-astro-cid-4heuqepm>Select Model</label><select id="diff-model-select" class="styled-select" data-astro-cid-4heuqepm><option value="stable-diffusion-1.5" data-astro-cid-4heuqepm>Stable Diffusion 1.5</option><option value="stable-diffusion-xl" data-astro-cid-4heuqepm>Stable Diffusion XL (SDXL)</option><option value="flux-1-dev" data-astro-cid-4heuqepm>FLUX.1 Dev</option><option value="hunyuan-video" data-astro-cid-4heuqepm>Hunyuan Video (13B)</option></select></div><div class="form-col" data-astro-cid-4heuqepm><label for="diff-quant-select" data-astro-cid-4heuqepm>Target Quantization Format</label><select id="diff-quant-select" class="styled-select" data-astro-cid-4heuqepm></select></div></div><div class="form-row" data-astro-cid-4heuqepm><div class="form-col" data-astro-cid-4heuqepm><label for="diff-res-select" data-astro-cid-4heuqepm>Target Generation Resolution</label><select id="diff-res-select" class="styled-select" data-astro-cid-4heuqepm></select></div><div class="form-col" data-astro-cid-4heuqepm><label for="diff-opt-select" data-astro-cid-4heuqepm>ComfyUI Optimization Mode</label><select id="diff-opt-select" class="styled-select" data-astro-cid-4heuqepm><option value="1.0" data-astro-cid-4heuqepm>--normalvram (No CPU Offload - Fastest)</option><option value="0.6" data-astro-cid-4heuqepm>--medvram (Moderate CPU Offload - Standard)</option><option value="0.35" data-astro-cid-4heuqepm>--lowvram (Aggressive CPU Offload - Minimal VRAM)</option></select></div></div></div><!-- RESULTS PANEL (REAL-TIME MATH DISPLAY) --><div class="results-panel" data-astro-cid-4heuqepm><h3 class="panel-title" data-astro-cid-4heuqepm>📊 Calculated Memory Allocation</h3><div class="metric-grid" data-astro-cid-4heuqepm><div class="metric-card" data-astro-cid-4heuqepm><div class="metric-label" data-astro-cid-4heuqepm>Estimated Total VRAM</div><div class="metric-value text-primary" id="vram-required-val" data-astro-cid-4heuqepm>-- GB</div></div><div class="metric-card" data-astro-cid-4heuqepm><div class="metric-label" data-astro-cid-4heuqepm>Min. System RAM</div><div class="metric-value text-tertiary" id="ram-required-val" data-astro-cid-4heuqepm>-- GB</div></div></div><!-- Progress Bar Indicator --><div class="progress-container" data-astro-cid-4heuqepm><div class="progress-bar-label" data-astro-cid-4heuqepm><span id="progress-card-recommend" data-astro-cid-4heuqepm>VRAM Capacity Impact (Standard 12GB GPU)</span><span id="progress-percent-display" data-astro-cid-4heuqepm>0.0%</span></div><div class="progress-bar-bg" data-astro-cid-4heuqepm><div class="progress-bar-fill" id="vram-progress-fill" style="width: 0%" data-astro-cid-4heuqepm></div></div></div><!-- Status & Context Warning Banner --><div class="status-banner" id="status-card" data-astro-cid-4heuqepm><div class="status-title" id="status-title-text" data-astro-cid-4heuqepm>Calculating...</div><div class="status-desc" id="status-desc-text" data-astro-cid-4heuqepm>Select parameters to evaluate VRAM.</div></div><!-- Cloud CTA Container --><div class="cloud-cta" id="cloud-cta-container" style="display: none;" data-astro-cid-4heuqepm><div class="cta-flex" data-astro-cid-4heuqepm><div data-astro-cid-4heuqepm><div class="cta-title" data-astro-cid-4heuqepm>⚡ Local Hardware Exceeded?</div><p class="cta-desc" id="cloud-cta-text" data-astro-cid-4heuqepm>Rent a compatible high-VRAM instance instantly starting at $0.22/hr.</p></div><a id="cloud-affiliate-link" href="#" target="_blank" rel="sponsored noopener noreferrer" class="cta-action-btn" data-astro-cid-4heuqepm>Rent GPU</a></div></div></div></div></div><script type="application/json" id="models-data-island">{"models":[{"id":"llama-3.2-1b","name":"Llama 3.2 (1B)","creator":"Meta","type":"llm","parameters_b":1.2,"num_layers":16,"num_kv_heads":8,"head_dim":64,"default_context":131072,"quants":{"fp16":{"bits":16,"vram_overhead_gb":0.3,"label":"FP16 (Uncompressed)"},"fp8":{"bits":8,"vram_overhead_gb":0.2,"label":"FP8 (Quantized)"},"q8_0":{"bits":8.5,"vram_overhead_gb":0.25,"label":"Q8_0 (8-bit GGUF)"},"q4_k_m":{"bits":4.5,"vram_overhead_gb":0.15,"label":"Q4_K_M (4-bit Recommended)"}}},{"id":"llama-3.2-3b","name":"Llama 3.2 (3B)","creator":"Meta","type":"llm","parameters_b":3.2,"num_layers":28,"num_kv_heads":8,"head_dim":128,"default_context":131072,"quants":{"fp16":{"bits":16,"vram_overhead_gb":0.5,"label":"FP16 (Uncompressed)"},"fp8":{"bits":8,"vram_overhead_gb":0.35,"label":"FP8 (Quantized)"},"q8_0":{"bits":8.5,"vram_overhead_gb":0.4,"label":"Q8_0 (8-bit GGUF)"},"q4_k_m":{"bits":4.5,"vram_overhead_gb":0.25,"label":"Q4_K_M (4-bit Recommended)"}}},{"id":"llama-3.1-8b","name":"Llama 3 / 3.1 (8B)","creator":"Meta","type":"llm","parameters_b":8,"num_layers":32,"num_kv_heads":8,"head_dim":128,"default_context":131072,"quants":{"fp16":{"bits":16,"vram_overhead_gb":1.5,"label":"FP16 (Uncompressed)"},"fp8":{"bits":8,"vram_overhead_gb":1,"label":"FP8 (Quantized)"},"q8_0":{"bits":8.5,"vram_overhead_gb":0.8,"label":"Q8_0 (8-bit GGUF)"},"q4_k_m":{"bits":4.5,"vram_overhead_gb":0.5,"label":"Q4_K_M (4-bit Recommended)"}}},{"id":"deepseek-r1-7b","name":"DeepSeek-R1 Distill Qwen (7B)","creator":"DeepSeek","type":"llm","parameters_b":7.6,"num_layers":28,"num_kv_heads":4,"head_dim":128,"default_context":131072,"quants":{"fp16":{"bits":16,"vram_overhead_gb":1.4,"label":"FP16 (Uncompressed)"},"q8_0":{"bits":8.5,"vram_overhead_gb":0.7,"label":"Q8_0 (8-bit GGUF)"},"q4_k_m":{"bits":4.5,"vram_overhead_gb":0.4,"label":"Q4_K_M (4-bit Recommended)"}}},{"id":"deepseek-r1-14b","name":"DeepSeek-R1 Distill Qwen (14B)","creator":"DeepSeek","type":"llm","parameters_b":14.7,"num_layers":48,"num_kv_heads":4,"head_dim":128,"default_context":131072,"quants":{"fp16":{"bits":16,"vram_overhead_gb":2.2,"label":"FP16 (Uncompressed)"},"q8_0":{"bits":8.5,"vram_overhead_gb":1.2,"label":"Q8_0 (8-bit GGUF)"},"q4_k_m":{"bits":4.5,"vram_overhead_gb":0.7,"label":"Q4_K_M (4-bit Recommended)"}}},{"id":"deepseek-r1-32b","name":"DeepSeek-R1 Distill Qwen (32B)","creator":"DeepSeek","type":"llm","parameters_b":32.5,"num_layers":64,"num_kv_heads":8,"head_dim":128,"default_context":131072,"quants":{"fp16":{"bits":16,"vram_overhead_gb":3.5,"label":"FP16 (Uncompressed)"},"q8_0":{"bits":8.5,"vram_overhead_gb":1.8,"label":"Q8_0 (8-bit GGUF)"},"q4_k_m":{"bits":4.5,"vram_overhead_gb":1.1,"label":"Q4_K_M (4-bit Recommended)"}}},{"id":"deepseek-r1-70b","name":"DeepSeek-R1 Distill Llama (70B)","creator":"DeepSeek","type":"llm","parameters_b":70.6,"num_layers":80,"num_kv_heads":8,"head_dim":128,"default_context":131072,"quants":{"fp16":{"bits":16,"vram_overhead_gb":6.5,"label":"FP16 (Uncompressed)"},"q8_0":{"bits":8.5,"vram_overhead_gb":3.8,"label":"Q8_0 (8-bit GGUF)"},"q4_k_m":{"bits":4.5,"vram_overhead_gb":2.2,"label":"Q4_K_M (4-bit Recommended)"}}},{"id":"qwen-2.5-72b","name":"Qwen 2.5 (72B)","creator":"Alibaba","type":"llm","parameters_b":72.7,"num_layers":80,"num_kv_heads":8,"head_dim":128,"default_context":131072,"quants":{"fp16":{"bits":16,"vram_overhead_gb":6.8,"label":"FP16 (Uncompressed)"},"q8_0":{"bits":8.5,"vram_overhead_gb":4,"label":"Q8_0 (8-bit GGUF)"},"q4_k_m":{"bits":4.5,"vram_overhead_gb":2.3,"label":"Q4_K_M (4-bit Recommended)"}}},{"id":"stable-diffusion-1.5","name":"Stable Diffusion 1.5","creator":"Stability AI","type":"diffusion","parameters_b":1,"base_weights_gb":4.2,"quants":{"fp16":{"base_weights_gb":4.2,"label":"FP16 (Standard)"},"fp8":{"base_weights_gb":2.1,"label":"FP8 (Optimized)"}},"resolutions":[{"label":"512 x 512 (Native)","width":512,"height":512,"empirical_activation_gb":0.5},{"label":"768 x 768 (High-Res)","width":768,"height":768,"empirical_activation_gb":1.2},{"label":"1024 x 1024 (Upscaled)","width":1024,"height":1024,"empirical_activation_gb":2.5}]},{"id":"stable-diffusion-xl","name":"Stable Diffusion XL (SDXL)","creator":"Stability AI","type":"diffusion","parameters_b":2.6,"base_weights_gb":6.5,"quants":{"fp16":{"base_weights_gb":6.5,"label":"FP16 (Standard)"},"fp8":{"base_weights_gb":3.3,"label":"FP8 (Optimized)"}},"resolutions":[{"label":"512 x 512 (Fast draft)","width":512,"height":512,"empirical_activation_gb":0.6},{"label":"1024 x 1024 (Native)","width":1024,"height":1024,"empirical_activation_gb":2.2},{"label":"2048 x 2048 (High-Res)","width":2048,"height":2048,"empirical_activation_gb":6.5}]},{"id":"flux-1-dev","name":"FLUX.1 Dev","creator":"Black Forest Labs","type":"diffusion","parameters_b":12,"base_weights_gb":23.8,"quants":{"bf16":{"base_weights_gb":23.8,"label":"BF16 (Standard)"},"fp8":{"base_weights_gb":11.9,"label":"FP8 (Recommended)"},"q4_gguf":{"base_weights_gb":6.8,"label":"Q4_K_S GGUF (Compressed)"}},"resolutions":[{"label":"512 x 512 (Fast draft)","width":512,"height":512,"empirical_activation_gb":1.1},{"label":"1024 x 1024 (Native)","width":1024,"height":1024,"empirical_activation_gb":2.8},{"label":"2048 x 2048 (Extreme High-Res)","width":2048,"height":2048,"empirical_activation_gb":11.2}]},{"id":"hunyuan-video","name":"Hunyuan Video (13B)","creator":"Tencent","type":"diffusion","parameters_b":13,"base_weights_gb":26.2,"quants":{"bf16":{"base_weights_gb":26.2,"label":"BF16 (Standard)"},"fp8":{"base_weights_gb":13.1,"label":"FP8 (Recommended)"}},"resolutions":[{"label":"720p (1280x720, 24 frames)","width":1280,"height":720,"empirical_activation_gb":8.5},{"label":"1080p (1920x1080, 24 frames)","width":1920,"height":1080,"empirical_activation_gb":18}]}]}</script><script>
+    (function () {
+      // 1. Load data from Static Data Island
+      const dataRaw = document.getElementById('models-data-island').textContent;
+      const db = JSON.parse(dataRaw);
+      
+      let activeTabType = 'llm'; // 'llm' or 'diffusion'
+
+      // 2. Locate DOM elements
+      const tabLlmBtn = document.getElementById('tab-llm');
+      const tabDiffBtn = document.getElementById('tab-diffusion');
+      const llmPanel = document.getElementById('llm-panel');
+      const diffPanel = document.getElementById('diffusion-panel');
+
+      const llmModelSelect = document.getElementById('llm-model-select');
+      const llmQuantSelect = document.getElementById('llm-quant-select');
+      const llmContextSlider = document.getElementById('llm-context-slider');
+      const llmContextDisplay = document.getElementById('llm-context-display');
+      const llmKvOverheadDisplay = document.getElementById('llm-kv-overhead-display');
+
+      const diffModelSelect = document.getElementById('diff-model-select');
+      const diffQuantSelect = document.getElementById('diff-quant-select');
+      const diffResSelect = document.getElementById('diff-res-select');
+      const diffOptSelect = document.getElementById('diff-opt-select');
+
+      const vramValEl = document.getElementById('vram-required-val');
+      const ramValEl = document.getElementById('ram-required-val');
+      const progressFill = document.getElementById('vram-progress-fill');
+      const progressPercent = document.getElementById('progress-percent-display');
+      const statusCard = document.getElementById('status-card');
+      const statusTitle = document.getElementById('status-title-text');
+      const statusDesc = document.getElementById('status-desc-text');
+      const cloudCta = document.getElementById('cloud-cta-container');
+      const cloudCtaText = document.getElementById('cloud-cta-text');
+      const cloudAffiliateLink = document.getElementById('cloud-affiliate-link');
+
+      // 3. Tab Switching Mechanism
+      function switchTab(type) {
+        activeTabType = type;
+        if (type === 'llm') {
+          tabLlmBtn.classList.add('active');
+          tabDiffBtn.classList.remove('active');
+          llmPanel.classList.add('active');
+          diffPanel.classList.remove('active');
+        } else {
+          tabDiffBtn.classList.add('active');
+          tabLlmBtn.classList.remove('active');
+          diffPanel.classList.add('active');
+          llmPanel.classList.remove('active');
+        }
+        recalculate();
+      }
+
+      tabLlmBtn.addEventListener('click', () => switchTab('llm'));
+      tabDiffBtn.addEventListener('click', () => switchTab('diffusion'));
+
+      // 4. Dropdown Population and Bindings
+      function populateLlmQuants() {
+        const model = db.models.find(m => m.id === llmModelSelect.value);
+        llmQuantSelect.innerHTML = '';
+        if (model && model.quants) {
+          Object.entries(model.quants).forEach(([key, spec]) => {
+            const opt = document.createElement('option');
+            opt.value = key;
+            opt.textContent = spec.label;
+            llmQuantSelect.appendChild(opt);
+          });
+          llmContextSlider.max = model.default_context;
+          llmContextSlider.value = Math.min(8192, model.default_context);
+        }
+      }
+
+      function populateDiffusionParameters() {
+        const model = db.models.find(m => m.id === diffModelSelect.value);
+        diffQuantSelect.innerHTML = '';
+        diffResSelect.innerHTML = '';
+        if (model) {
+          if (model.quants) {
+            Object.entries(model.quants).forEach(([key, spec]) => {
+              const opt = document.createElement('option');
+              opt.value = key;
+              opt.textContent = spec.label;
+              diffQuantSelect.appendChild(opt);
+            });
+          }
+          if (model.resolutions) {
+            model.resolutions.forEach((res, idx) => {
+              const opt = document.createElement('option');
+              opt.value = idx.toString();
+              opt.textContent = res.label;
+              diffResSelect.appendChild(opt);
+            });
+          }
+        }
+      }
+
+      llmModelSelect.addEventListener('change', () => { populateLlmQuants(); recalculate(); });
+      llmQuantSelect.addEventListener('change', recalculate);
+      llmContextSlider.addEventListener('input', () => {
+        llmContextDisplay.textContent = Number(llmContextSlider.value).toLocaleString() + ' tokens';
+        recalculate();
+      });
+
+      diffModelSelect.addEventListener('change', () => { populateDiffusionParameters(); recalculate(); });
+      diffQuantSelect.addEventListener('change', recalculate);
+      diffResSelect.addEventListener('change', recalculate);
+      diffOptSelect.addEventListener('change', recalculate);
+
+      // 5. Memory Calculation Logic
+      function recalculate() {
+        if (activeTabType === 'llm') {
+          calculateLlmMemory();
+        } else {
+          calculateDiffusionMemory();
+        }
+      }
+
+      function calculateLlmMemory() {
+        const model = db.models.find(m => m.id === llmModelSelect.value);
+        const quantKey = llmQuantSelect.value;
+        if (!model || !quantKey) return;
+        
+        const quant = model.quants[quantKey];
+        const context = parseInt(llmContextSlider.value);
+
+        // Model weights calculation: V_w = (Params * bits / 8) * 1.15
+        const vWeights = (model.parameters_b * quant.bits / 8) * 1.15;
+
+        // KV Cache math: V_kv = 2 * B * L * H_kv * D_head * S * p_kv / 10^9
+        const L = model.num_layers;
+        const H_kv = model.num_kv_heads;
+        const D_head = model.head_dim;
+        const p_kv = quant.bits <= 8 ? 1.0 : 2.0; // 8-bit cache vs 16-bit cache
+        
+        const vKv = (2 * 1 * L * H_kv * D_head * context * p_kv) / 1000000000;
+        const totalVram = vWeights + vKv + quant.vram_overhead_gb;
+        
+        llmKvOverheadDisplay.textContent = `KV Cache allocation: +${vKv.toFixed(2)} GB VRAM`;
+        updateMetrics(totalVram, model.parameters_b * 1.3, model.name);
+      }
+
+      function calculateDiffusionMemory() {
+        const model = db.models.find(m => m.id === diffModelSelect.value);
+        const quantKey = diffQuantSelect.value;
+        const resIdx = parseInt(diffResSelect.value);
+        const optFactor = parseFloat(diffOptSelect.value);
+        if (!model || !quantKey || isNaN(resIdx)) return;
+
+        const quant = model.quants[quantKey];
+        const res = model.resolutions[resIdx];
+
+        const wWeights = quant.base_weights_gb;
+        const aActivation = res.empirical_activation_gb;
+
+        // Diffusion weights VRAM with CPU offload factor
+        const totalVram = (wWeights + aActivation) * optFactor;
+        const requiredSystemRam = wWeights * (1.2 - optFactor) + 8.0;
+
+        updateMetrics(totalVram, requiredSystemRam, model.name);
+      }
+
+      // 6. UI Updates and Threshold Evaluator
+      function updateMetrics(vramGb, ramGb, modelName) {
+        vramValEl.textContent = vramGb.toFixed(2) + ' GB';
+        ramValEl.textContent = ramGb.toFixed(1) + ' GB';
+
+        // Target matching against local GPU sizes
+        let referenceGpuVram = 12.0; // Standard midpoint benchmark (RTX 4070)
+        let utilizationPercent = (vramGb / referenceGpuVram) * 100;
+        
+        progressPercent.textContent = Math.round(utilizationPercent) + '%';
+        progressFill.style.width = Math.min(100, utilizationPercent) + '%';
+
+        // Set colors matching utilization
+        if (vramGb <= 8.0) {
+          progressFill.className = 'progress-bar-fill green';
+          statusCard.className = 'status-banner green';
+          statusTitle.textContent = '✅ Light / Comfortable Execution';
+          statusDesc.textContent = `Excellent fit! Fits easily on standard entry-level GPUs (8GB VRAM). Perfect for standard workloads.`;
+          cloudCta.style.display = 'none';
+        } else if (vramGb <= 12.0) {
+          progressFill.className = 'progress-bar-fill green';
+          statusCard.className = 'status-banner green';
+          statusTitle.textContent = '✅ Mid-tier Compatible';
+          statusDesc.textContent = `Fits comfortably on 12GB graphics cards (RTX 4070 / RTX 3060 12GB). Safe to run with minor overhead.`;
+          cloudCta.style.display = 'none';
+        } else if (vramGb <= 16.0) {
+          progressFill.className = 'progress-bar-fill orange';
+          statusCard.className = 'status-banner orange';
+          statusTitle.textContent = '⚠️ High-VRAM Boundary';
+          statusDesc.textContent = `Fits on 16GB graphics cards (RTX 4080 / RTX 4060 Ti 16GB). 8GB and 12GB cards will face massive slowdowns due to RAM swapping.`;
+          cloudCta.style.display = 'none';
+        } else if (vramGb <= 24.0) {
+          progressFill.className = 'progress-bar-fill danger';
+          statusCard.className = 'status-banner danger';
+          statusTitle.textContent = '🛑 Extreme VRAM Limit';
+          statusDesc.textContent = `Requires an enthusiast-class 24GB GPU (RTX 4090 / RTX 3090 / A5000) to execute local generations without OOM crashing.`;
+          
+          // Show Affiliate Deep Link
+          cloudCta.style.display = 'block';
+          cloudCtaText.textContent = `Running ${modelName} locally on lower-VRAM cards will freeze your PC. Rent a 24GB RTX 3090 instance on RunPod for just $0.35/hr.`;
+          cloudAffiliateLink.href = 'https://runpod.io/console/deploy?template=comfyui-official&ref=vcrnit90';
+        } else {
+          progressFill.className = 'progress-bar-fill extreme';
+          statusCard.className = 'status-banner extreme';
+          statusTitle.textContent = '💀 Out-of-Memory Guaranteed';
+          statusDesc.textContent = `Requires ${vramGb.toFixed(1)}GB VRAM. Exceeds even standard local RTX 4090 cards. Multi-GPU clusters or aggressive CPU layer-offloading are required.`;
+          
+          // Show Affiliate Deep Link
+          cloudCta.style.display = 'block';
+          cloudCtaText.textContent = `This configuration exceeds single-GPU hardware capacity. Deploy on RunPod using a multi-GPU A100 template starting at $1.20/hr.`;
+          cloudAffiliateLink.href = 'https://runpod.io?ref=vcrnit90';
+        }
+      }
+
+      // Initialize UI dropdown presets on load with SEO Query Parameter Hydration
+      function initializeFromQueryParams() {
+        const params = new URLSearchParams(window.location.search);
+        let targetTab = params.get('tab') || params.get('type');
+        const targetModel = params.get('model');
+        const targetQuant = params.get('quant') || params.get('precision');
+        const targetContext = params.get('context') || params.get('seq') || params.get('sequence');
+        const targetRes = params.get('res') || params.get('resolution');
+        const targetOpt = params.get('opt') || params.get('optimization');
+
+        // Derive tab automatically if model is provided
+        if (targetModel) {
+          const modelObj = db.models.find(m => m.id === targetModel);
+          if (modelObj) {
+            targetTab = modelObj.type;
+          }
+        }
+
+        // 1. Populate defaults first
+        populateLlmQuants();
+        populateDiffusionParameters();
+
+        // 2. Set active tab
+        if (targetTab === 'diffusion' || targetTab === 'diff') {
+          switchTab('diffusion');
+        } else {
+          switchTab('llm');
+        }
+
+        // 3. Hydrate LLM parameters if applicable
+        if (activeTabType === 'llm') {
+          if (targetModel) {
+            const hasModel = Array.from(llmModelSelect.options).some(o => o.value === targetModel);
+            if (hasModel) {
+              llmModelSelect.value = targetModel;
+              populateLlmQuants();
+            }
+          }
+          if (targetQuant) {
+            const hasQuant = Array.from(llmQuantSelect.options).some(o => o.value === targetQuant);
+            if (hasQuant) {
+              llmQuantSelect.value = targetQuant;
+            }
+          }
+          if (targetContext) {
+            const contextVal = parseInt(targetContext);
+            if (!isNaN(contextVal) && contextVal >= parseInt(llmContextSlider.min) && contextVal <= parseInt(llmContextSlider.max)) {
+              llmContextSlider.value = contextVal.toString();
+              llmContextDisplay.textContent = contextVal.toLocaleString() + ' tokens';
+            }
+          }
+        } else {
+          // 4. Hydrate Diffusion parameters if applicable
+          if (targetModel) {
+            const hasModel = Array.from(diffModelSelect.options).some(o => o.value === targetModel);
+            if (hasModel) {
+              diffModelSelect.value = targetModel;
+              populateDiffusionParameters();
+            }
+          }
+          if (targetQuant) {
+            const hasQuant = Array.from(diffQuantSelect.options).some(o => o.value === targetQuant);
+            if (hasQuant) {
+              diffQuantSelect.value = targetQuant;
+            }
+          }
+          if (targetRes) {
+            // Can be index or label match
+            const options = Array.from(diffResSelect.options);
+            const indexVal = parseInt(targetRes);
+            if (!isNaN(indexVal) && indexVal >= 0 && indexVal < options.length) {
+              diffResSelect.value = indexVal.toString();
+            } else {
+              const matchedOpt = options.find(o => o.textContent.toLowerCase().includes(targetRes.toLowerCase()));
+              if (matchedOpt) {
+                diffResSelect.value = matchedOpt.value;
+              }
+            }
+          }
+          if (targetOpt) {
+            const options = Array.from(diffOptSelect.options);
+            const matchedOpt = options.find(o => o.value === targetOpt || o.textContent.toLowerCase().includes(targetOpt.toLowerCase()));
+            if (matchedOpt) {
+              diffOptSelect.value = matchedOpt.value;
+            }
+          }
+        }
+
+        recalculate();
+      }
+
+      initializeFromQueryParams();
+    })();
+  </script></main><footer data-astro-cid-ju4pidww><p style="font-size: 0.75rem; max-width: 800px; margin: 1rem auto 0 auto; line-height: 1.4; opacity: 0.7;" data-astro-cid-ju4pidww><strong data-astro-cid-ju4pidww>Affiliate Disclosure:</strong> As an Amazon Associate, this site earns from qualifying purchases. Outbound referral links to cloud providers (Vast.ai, RunPod) and retailers (Amazon) generate affiliate commissions at no additional cost to you.</p></footer><script>
+      document.addEventListener('DOMContentLoaded', () => {
+        // 1. Core Interception Pattern
+        document.addEventListener('click', (event) => {
+          const link = event.target.closest('a');
+          if (!link || !link.href) return;
+
+          const destinationUrl = link.href;
+          const currentPath = window.location.pathname;
+
+          // Identify targeted affiliate partners
+          let partner = null;
+          if (destinationUrl.includes('amazon.com')) {
+            partner = 'Amazon';
+          } else if (destinationUrl.includes('ebay.com') || destinationUrl.includes('rover.ebay.com')) {
+            partner = 'eBay';
+          } else if (destinationUrl.includes('runpod.io')) {
+            partner = 'RunPod';
+          } else if (destinationUrl.includes('vast.ai') || destinationUrl.includes('cloud.vast.ai')) {
+            partner = 'Vast.ai';
+          }
+
+          // 2. Fire Event to Umami if Match Found
+          if (partner && typeof window.umami !== 'undefined') {
+            window.umami.track('Affiliate Click', {
+              partner: partner,
+              destination: destinationUrl,
+              source_page: currentPath,
+              text: link.innerText.trim().substring(0, 50) || 'Button/Image'
+            });
+          }
+        });
+
+        // 3. Tool Event Helpers
+        window.trackToolUsage = function(toolName, eventName, metadata = {}) {
+          if (typeof window.umami !== 'undefined') {
+            window.umami.track(`${toolName} - ${eventName}`, metadata);
+          }
+        };
+      });
+    </script><div id="feedback-widget" data-astro-cid-2mudduv2><!-- Floating Feedback Button --><button id="feedback-trigger" class="feedback-button" aria-label="Send Feedback" type="button" data-astro-cid-2mudduv2><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-2mudduv2><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" data-astro-cid-2mudduv2></path></svg><span class="feedback-text" data-astro-cid-2mudduv2>Feedback</span></button><!-- Modal Overlay --><div id="feedback-modal" class="feedback-modal" aria-hidden="true" data-astro-cid-2mudduv2><div class="feedback-modal-overlay" id="feedback-overlay" data-astro-cid-2mudduv2></div><div class="feedback-modal-content" data-astro-cid-2mudduv2><div class="feedback-modal-header" data-astro-cid-2mudduv2><h3 data-astro-cid-2mudduv2>Send Feedback</h3><button id="feedback-close" class="feedback-close" aria-label="Close" data-astro-cid-2mudduv2><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-2mudduv2><line x1="18" y1="6" x2="6" y2="18" data-astro-cid-2mudduv2></line><line x1="6" y1="6" x2="18" y2="18" data-astro-cid-2mudduv2></line></svg></button></div><div class="feedback-modal-body" data-astro-cid-2mudduv2><p class="feedback-description" data-astro-cid-2mudduv2>We'd love to hear your thoughts! Share feedback, bug reports, or feature requests.</p><textarea id="feedback-textarea" placeholder="Type your feedback here..." rows="6" aria-label="Feedback message" data-astro-cid-2mudduv2></textarea><div class="feedback-actions" data-astro-cid-2mudduv2><button id="feedback-send" class="feedback-btn feedback-btn-primary" data-astro-cid-2mudduv2><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-2mudduv2><line x1="22" y1="2" x2="11" y2="13" data-astro-cid-2mudduv2></line><polygon points="22 2 15 22 11 13 2 9 22 2" data-astro-cid-2mudduv2></polygon></svg>Send Email</button><button id="feedback-copy" class="feedback-btn feedback-btn-secondary" data-astro-cid-2mudduv2><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-2mudduv2><rect x="9" y="9" width="13" height="13" rx="2" ry="2" data-astro-cid-2mudduv2></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" data-astro-cid-2mudduv2></path></svg><span id="copy-text" data-astro-cid-2mudduv2>Copy Email</span></button></div><div class="feedback-email-info" data-astro-cid-2mudduv2><span class="feedback-label" data-astro-cid-2mudduv2>Email:</span><code class="feedback-email" data-astro-cid-2mudduv2>info@vramdb.com</code></div></div></div></div></div><script type="module">var e=document.getElementById(`feedback-trigger`),t=document.getElementById(`feedback-modal`),n=document.getElementById(`feedback-overlay`),r=document.getElementById(`feedback-close`),i=document.getElementById(`feedback-send`),a=document.getElementById(`feedback-copy`),o=document.getElementById(`feedback-textarea`),s=document.getElementById(`copy-text`),c=`info@vramdb.com`;function l(){t?.setAttribute(`aria-hidden`,`false`),document.body.style.overflow=`hidden`,o?.focus()}function u(){t?.setAttribute(`aria-hidden`,`true`),document.body.style.overflow=``}e?.addEventListener(`click`,l),r?.addEventListener(`click`,u),n?.addEventListener(`click`,u),document.addEventListener(`keydown`,e=>{e.key===`Escape`&&t?.getAttribute(`aria-hidden`)===`false`&&u()}),i?.addEventListener(`click`,()=>{let e=o?.value.trim();if(!e){alert(`Please enter your feedback first!`),o?.focus();return}let t=`mailto:${c}?subject=VRAM%20DB%20Feedback&body=${encodeURIComponent(e)}`;window.location.href=t,setTimeout(()=>{u(),o&&(o.value=``)},500)}),a?.addEventListener(`click`,async()=>{try{if(await navigator.clipboard.writeText(c),s){let e=s.textContent;s.textContent=`Copied!`,a?.classList.add(`feedback-btn-success`),setTimeout(()=>{s.textContent=e,a?.classList.remove(`feedback-btn-success`)},2e3)}}catch{let e=document.createElement(`input`);e.value=c,document.body.appendChild(e),e.select(),document.execCommand(`copy`),document.body.removeChild(e),s&&(s.textContent=`Copied!`,setTimeout(()=>{s.textContent=`Copy Email`},2e3))}});</script><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"902c521e88604f2c8499c7300c4b37b3","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body></html>
