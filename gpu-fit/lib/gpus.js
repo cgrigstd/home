@@ -26,20 +26,15 @@ export const FALLBACK_GPUS = [
   { slug: 'rtx-3050', name: 'NVIDIA GeForce RTX 3050', vramGb: 8, brand: 'NVIDIA', modelfitSlug: null },
   { slug: 'rtx-2070', name: 'NVIDIA GeForce RTX 2070', vramGb: 8, brand: 'NVIDIA', modelfitSlug: 'rtx-2070' },
   { slug: 'rtx-6000-pro', name: 'NVIDIA RTX 6000 Pro', vramGb: 96, brand: 'NVIDIA', modelfitSlug: 'rtx-6000-pro' },
-  { slug: 'gtx-1650', name: 'NVIDIA GeForce GTX 1650', vramGb: 4, brand: 'NVIDIA', modelfitSlug: null },
   { slug: 'tesla-p100-pcie-16gb', name: 'NVIDIA Tesla P100 (16GB)', vramGb: 16, brand: 'NVIDIA', modelfitSlug: 'tesla-p100-pcie-16gb' },
   { slug: 'tesla-t4', name: 'NVIDIA Tesla T4', vramGb: 16, brand: 'NVIDIA', modelfitSlug: 'tesla-t4' },
-  { slug: 'rx-9070-xt', name: 'AMD Radeon RX 9070 XT', vramGb: 16, brand: 'AMD', modelfitSlug: 'rx-9070-xt' },
-  { slug: 'rx-9060-xt', name: 'AMD Radeon RX 9060 XT', vramGb: 16, brand: 'AMD', modelfitSlug: 'rx-9060-xt' },
-  { slug: 'rx-7900-xtx', name: 'AMD Radeon RX 7900 XTX', vramGb: 24, brand: 'AMD', modelfitSlug: 'rx-7900-xtx' },
-  { slug: 'rx-7900-xt', name: 'AMD Radeon RX 7900 XT', vramGb: 20, brand: 'AMD', modelfitSlug: 'rx-7900-xt' },
-  { slug: 'ryzen-ai-max-395', name: 'AMD Ryzen AI Max 395', vramGb: 128, brand: 'AMD', modelfitSlug: 'ryzen-ai-max-395' },
-  { slug: 'macbook-m3-max', name: 'Apple MacBook Pro (M3 Max)', vramGb: 36, brand: 'Apple', modelfitSlug: null },
 ];
 
 export function mergeGpuCatalog(base, live) {
   const bySlug = new Map(base.map((gpu) => [gpu.slug, { ...gpu }]));
   for (const gpu of live) {
+    if (gpu.slug === 'gtx-1650' || gpu.slug === 'macbook-m3-max') continue;
+    if (gpu.brand === 'AMD' || /^rx-|^ryzen-/i.test(gpu.slug || '')) continue;
     const existing = bySlug.get(gpu.slug);
     if (existing) {
       existing.name = gpu.name || existing.name;
