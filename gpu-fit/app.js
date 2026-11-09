@@ -160,7 +160,10 @@ async function loadCache(nombre) {
     return await res.text();
   } catch (e) {
     try {
-      const r = await fetch(`https://vramdb.com/${nombre}`);
+      let url = `https://vramdb.com/${nombre}`;
+      const modelfitMatch = nombre.match(/^modelfit-(.+)\.html$/);
+      if (modelfitMatch) url = `https://modelfit.io/gpu/${modelfitMatch[1]}/`;
+      const r = await fetch(url);
       if (!r.ok) throw new Error(`red ${r.status}`);
       return await r.text();
     } catch {
@@ -422,7 +425,16 @@ async function runSearch(event) {
     let vramGb = Number(vram);
     if (!Number.isFinite(vramGb) || vramGb <= 0) vramGb = gpu?.vramGb || 12;
 
-    const needle = q.toLowerCase();
+    let needle = q.toLowerCase();
+    if (needle && (!gpu || gpu.slug === 'custom')) {
+      if (new RegExp(`^\\s*${vramGb}\\s*gb\\s*$`, 'i').test(needle) || needle === `${vramGb}gb`) needle = '';
+    }
+    if (gpu && needle) {
+      const gpuNeedle = `${gpu.name} ${gpu.slug} ${gpu.vramGb}gb ${gpu.vramGb} gb`.toLowerCase();
+      if (gpuNeedle.includes(needle) || needle.split(/\s+/).every((token) => gpuNeedle.includes(token))) {
+        needle = '';
+      }
+    }
 
     const nodeResults = nodes
       .filter((node) => {
