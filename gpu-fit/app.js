@@ -1,7 +1,8 @@
 import { parseLlmsNodes, parseGpuCatalog, parseModelsIsland } from './lib/vramdb.js';
 import { parseModelfitGpu } from './lib/modelfit.js';
+import { parseModelfitGpuCatalog } from './lib/modelfit-catalog.js';
 import { classifyFit, FIT_LABELS, estimateModelVram } from './lib/estimate.js';
-import { FALLBACK_GPUS, mergeGpuCatalog } from './lib/gpus.js';
+import { FALLBACK_GPUS, mergeGpuCatalog, modelfitPathFor } from './lib/gpus.js';
 import {
   buildRecommendationDownload,
   downloadForVramdbModel,
@@ -15,6 +16,7 @@ const state = {
   gpus: [],
   fitLabels: FIT_LABELS,
   lastSearch: null,
+  recommendationsIndex: null,
 };
 
 const esc = (value) =>
@@ -99,8 +101,9 @@ function renderGpuSelect() {
 function renderPresets() {
   const presets = [
     { label: 'RTX 3060 · 12 GB', gpu: 'rtx-3060' },
-    { label: 'RTX 4070 · 12 GB', gpu: 'rtx-4070' },
     { label: 'RTX 4090 · 24 GB', gpu: 'rtx-4090' },
+    { label: 'RX 9070 XT · 16 GB', gpu: 'rx-9070-xt' },
+    { label: 'MacBook Pro M5 · 32 GB', gpu: 'apple-macbook-pro-m5' },
     { label: '8 GB', vram: 8 },
     { label: '16 GB', vram: 16 },
     { label: '24 GB', vram: 24 },
@@ -153,23 +156,63 @@ function renderProfile(data) {
   `;
 }
 
-async function loadCache(nombre) {
+async function loadJson(path) {
+  const res = await fetch(`./data/${path}`);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
+async function loadLocalCache(nombre) {
   try {
     const res = await fetch(`./data/cache/${nombre}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return await res.text();
-  } catch (e) {
-    try {
-      let url = `https://vramdb.com/${nombre}`;
-      const modelfitMatch = nombre.match(/^modelfit-(.+)\.html$/);
-      if (modelfitMatch) url = `https://modelfit.io/gpu/${modelfitMatch[1]}/`;
-      const r = await fetch(url);
-      if (!r.ok) throw new Error(`red ${r.status}`);
-      return await r.text();
-    } catch {
-      return '';
-    }
+  } catch {
+    return '';
   }
+}
+
+async function loadCache(nombre, liveUrl = '') {
+  const local = await loadLocalCache(nombre);
+  if (local) return local;
+  try {
+    let url = liveUrl;
+    if (!url) {
+      url = `https://vramdb.com/${nombre}`;
+      const modelfitMatch = nombre.match(/^modelfit-(.+)\.html$/);
+      if (modelfitMatch) {
+        url = `https://modelfit.io/gpu/${modelfitMatch[1].replace(/^gpu-/, '')}/`;
+      }
+    }
+    const r = await fetch(url);
+    if (!r.ok) throw new Error(`red ${r.status}`);
+    return await r.text();
+  } catch {
+    return '';
+  }
+}
+
+function cacheNameForPath(path) {
+  const clean = String(path || '').replace(/^\/+|\/+$/g, '');
+  if (clean.startsWith('gpu/')) return `modelfit-${clean.slice(4)}.html`;
+  return `modelfit-${clean.replace(/\//g, '-')}.html`;
+}
+
+async function loadCatalog() {
+  let catalog = null;
+  try {
+    catalog = await loadJson('catalog.json');
+  } catch {
+    catalog = null;
+  }
+
+  const base = Array.isArray(catalog?.gpus) && catalog.gpus.length > 0 ? catalog.gpus : FALLBACK_GPUS;
+  const [gpusHtml, modelfitHtml] = await Promise.all([
+    loadLocalCache('vramdb-gpus.html'),
+    loadLocalCache('modelfit-gpus.html'),
+  ]);
+
+  return mergeGpuCatalog(base, parseGpuCatalog(gpusHtml), parseModelfitGpuCatalog(modelfitHtml));
 }
 
 function downloadButton(download) {
@@ -193,6 +236,14 @@ function recommendationCard(model) {
         ${badge(model.fit, REC_LABELS[model.fit] || model.fit)}
       </div>
       ${model.fitDetail ? `<div class="model-detail">${esc(model.fitDetail)}</div>` : ''}
+      ${
+        model.params || model.quant || model.memoryGb
+          ? `<div class="model-license">${[model.params, model.quant, model.memoryGb ? `${model.memoryGb} GB` : '']
+              .filter(Boolean)
+              .map(esc)
+              .join(' · ')}</div>`
+          : ''
+      }
       ${model.license ? `<div class="model-license">${esc(model.license)}</div>` : ''}
       ${model.quality ? `<div class="model-license">${esc(model.quality)}</div>` : ''}
       ${model.app ? `<div class="model-apps">App: ${esc(model.app)}</div>` : ''}
@@ -208,7 +259,7 @@ async function resolveDownloadButtons(root = document) {
     const page = button.dataset.downloadPage;
     const slug = page.replace(/[^a-z0-9]+/gi, '-').replace(/^-+|-+$/g, '');
     try {
-      const html = await loadCache(`modelfit-model-${slug}.html`);
+      const html = await loadCache(`modelfit-model-${slug}.html`, page);
       const found = resolvePrimaryHfRepo(html, page);
       if (found?.url) {
         button.href = found.url;
@@ -271,6 +322,7 @@ function renderRecommendations(data) {
 
   section.classList.remove('hidden');
   const groups = [
+    { key: 'llm', title: 'LLM' },
     { key: 'video', title: 'Video' },
     { key: 'image', title: 'Imagen' },
     { key: 'other', title: 'Otros' },
@@ -310,18 +362,18 @@ function renderModels(data) {
             `<span class="quant ${best && quant.key === best.key ? 'best' : ''}">${esc(quant.key)} · ${fmtGb(quant.totalGb)}</span>`,
         )
         .join('');
-      return `
+       return `
         <tr>
-          <td>
+          <td data-label="Modelo">
             <strong>${esc(model.name)}</strong>
             ${model.creator ? `<div class="model-license">${esc(model.creator)}</div>` : ''}
           </td>
-          <td>${esc(model.type)}</td>
-          <td class="mono">${esc(model.parametersB ?? '—')} B</td>
-          <td>${best ? badge(best.fit, state.fitLabels[best.fit] || best.fit) : badge('unknown', 'Sin datos')}</td>
-          <td class="mono">${best ? fmtGb(best.totalGb) : '—'}${best ? `<div class="model-license">${esc(breakdown(best))}</div>` : ''}</td>
-          <td><div class="quant-row">${quants}</div></td>
-          <td class="download-col">${downloadButton(model.download) || '<span class="model-license">—</span>'}</td>
+          <td data-label="Tipo">${esc(model.type)}</td>
+          <td data-label="Parámetros" class="mono">${esc(model.parametersB ?? '—')} B</td>
+          <td data-label="Estado">${best ? badge(best.fit, state.fitLabels[best.fit] || best.fit) : badge('unknown', 'Sin datos')}</td>
+          <td data-label="VRAM" class="mono">${best ? fmtGb(best.totalGb) : '—'}${best ? `<div class="model-license">${esc(breakdown(best))}</div>` : ''}</td>
+          <td data-label="Quants"><div class="quant-row">${quants}</div></td>
+          <td data-label="Descarga" class="download-col">${downloadButton(model.download) || '<span class="model-license">—</span>'}</td>
         </tr>
       `;
     })
@@ -410,15 +462,18 @@ async function runSearch(event) {
   setStatus('Cargando datos…');
 
   try {
-    const [llmsText, modelsHtml, gpusHtml] = await Promise.all([
+    const [llmsText, modelsHtml, recommendationsIndex] = await Promise.all([
       loadCache('vramdb-llms.txt'),
       loadCache('vramdb-models.html'),
-      loadCache('vramdb-gpus.html'),
+      state.recommendationsIndex
+        ? Promise.resolve(state.recommendationsIndex)
+        : loadJson('recommendations.json').catch(() => null),
     ]);
+    if (recommendationsIndex) state.recommendationsIndex = recommendationsIndex;
 
     const nodes = parseLlmsNodes(llmsText);
     const models = parseModelsIsland(modelsHtml);
-    const gpus = mergeGpuCatalog(FALLBACK_GPUS, parseGpuCatalog(gpusHtml));
+    const gpus = state.gpus.length > 0 ? state.gpus : await loadCatalog();
 
     const gpu = gpus.find((item) => item.slug === gpuSlug) || null;
 
@@ -497,19 +552,24 @@ async function runSearch(event) {
     let recommendationMeta = null;
     let recommendationError = null;
 
-    if (gpu?.modelfitSlug) {
+    const modelfitPath = modelfitPathFor(gpu);
+    if (modelfitPath) {
       try {
-        const recHtml = await loadCache(`modelfit-${gpu.modelfitSlug}.html`);
-        const recommendations = parseModelfitGpu(recHtml, `https://modelfit.io/gpu/${gpu.modelfitSlug}/`);
+        const liveUrl = `https://modelfit.io${modelfitPath}`;
+        let recommendations = recommendationsIndex?.byPath?.[modelfitPath] || null;
+        if (!recommendations) {
+          const recHtml = await loadCache(cacheNameForPath(modelfitPath), liveUrl);
+          recommendations = parseModelfitGpu(recHtml, liveUrl);
+        }
         recommendationMeta = {
           gpuTitle: recommendations.gpuTitle,
           summary: recommendations.summary,
           bestModel: recommendations.bestModel,
           vramGb: recommendations.vramGb,
-          faq: recommendations.faq.slice(0, 6),
-          sourceUrl: recommendations.sourceUrl,
+          faq: (recommendations.faq || []).slice(0, 6),
+          sourceUrl: recommendations.sourceUrl || liveUrl,
         };
-        recommendedModels = recommendations.models
+        recommendedModels = (recommendations.models || [])
           .filter((model) => !needle || model.name.toLowerCase().includes(needle))
           .map((model) => ({ ...model, download: buildRecommendationDownload(model) }));
       } catch (error) {
@@ -525,13 +585,13 @@ async function runSearch(event) {
           name: `GPU personalizada (${vramGb} GB)`,
           vramGb,
           brand: 'Otros',
-          modelfitSlug: null,
+          modelfitPath: null,
         },
       recommendations: {
         models: recommendedModels,
         meta: recommendationMeta,
         error: recommendationError,
-        available: Boolean(gpu?.modelfitSlug),
+        available: Boolean(modelfitPath),
       },
       models: modelResults,
       nodes: nodeResults,
@@ -575,9 +635,12 @@ async function runSearch(event) {
 
 async function loadBootstrap(autoSearch = false) {
   try {
-    const gpusHtml = await loadCache('vramdb-gpus.html');
-    const gpus = mergeGpuCatalog(FALLBACK_GPUS, parseGpuCatalog(gpusHtml));
+    const [gpus, recommendationsIndex] = await Promise.all([
+      loadCatalog(),
+      loadJson('recommendations.json').catch(() => null),
+    ]);
     state.gpus = gpus;
+    state.recommendationsIndex = recommendationsIndex;
     state.fitLabels = FIT_LABELS;
     renderGpuSelect();
     renderPresets();

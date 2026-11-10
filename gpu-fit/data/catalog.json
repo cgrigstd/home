@@ -1,0 +1,518 @@
+{
+  "generatedAt": "2026-11-10T09:48:00.850Z",
+  "gpus": [
+    {
+      "slug": "ryzen-ai-max-395",
+      "name": "AMD Ryzen AI Max+ 395",
+      "vramGb": 128,
+      "brand": "AMD",
+      "optimal": "",
+      "modelfitPath": "/gpu/ryzen-ai-max-395/",
+      "verified": true
+    },
+    {
+      "slug": "rx-7900-xtx",
+      "name": "AMD Radeon RX 7900 XTX",
+      "vramGb": 24,
+      "brand": "AMD",
+      "optimal": "",
+      "modelfitPath": "/gpu/rx-7900-xtx/",
+      "verified": true
+    },
+    {
+      "slug": "rx-7900-xt",
+      "name": "AMD Radeon RX 7900 XT",
+      "vramGb": 20,
+      "brand": "AMD",
+      "optimal": "",
+      "modelfitPath": "/gpu/rx-7900-xt/",
+      "verified": true
+    },
+    {
+      "slug": "rx-9060-xt",
+      "name": "AMD Radeon RX 9060 XT",
+      "vramGb": 16,
+      "brand": "AMD",
+      "optimal": "",
+      "modelfitPath": "/gpu/rx-9060-xt/",
+      "verified": true
+    },
+    {
+      "slug": "rx-9070-xt",
+      "name": "AMD Radeon RX 9070 XT",
+      "vramGb": 16,
+      "brand": "AMD",
+      "optimal": "",
+      "modelfitPath": "/gpu/rx-9070-xt/",
+      "verified": true
+    },
+    {
+      "slug": "apple-mac-studio-m5",
+      "name": "Apple Mac Studio M5 Ultra",
+      "vramGb": 256,
+      "brand": "Apple",
+      "optimal": "",
+      "modelfitPath": "/mac-studio/m5/",
+      "verified": true
+    },
+    {
+      "slug": "apple-mac-studio-m1",
+      "name": "Apple Mac Studio M1 Ultra",
+      "vramGb": 128,
+      "brand": "Apple",
+      "optimal": "",
+      "modelfitPath": "/mac-studio/m1/",
+      "verified": true
+    },
+    {
+      "slug": "apple-mac-studio-m2",
+      "name": "Apple Mac Studio M2 Ultra",
+      "vramGb": 128,
+      "brand": "Apple",
+      "optimal": "",
+      "modelfitPath": "/mac-studio/m2/",
+      "verified": true
+    },
+    {
+      "slug": "apple-mac-studio-m3",
+      "name": "Apple Mac Studio M3 Ultra",
+      "vramGb": 96,
+      "brand": "Apple",
+      "optimal": "",
+      "modelfitPath": "/mac-studio/m3/",
+      "verified": true
+    },
+    {
+      "slug": "apple-mac-studio-m4",
+      "name": "Apple Mac Studio M4 Max",
+      "vramGb": 64,
+      "brand": "Apple",
+      "optimal": "",
+      "modelfitPath": "/mac-studio/m4/",
+      "verified": true
+    },
+    {
+      "slug": "apple-macbook-pro-m4",
+      "name": "Apple MacBook Pro M4",
+      "vramGb": 32,
+      "brand": "Apple",
+      "optimal": "",
+      "modelfitPath": "/macbook-pro/m4/",
+      "verified": true
+    },
+    {
+      "slug": "apple-macbook-pro-m5",
+      "name": "Apple MacBook Pro M5",
+      "vramGb": 32,
+      "brand": "Apple",
+      "optimal": "",
+      "modelfitPath": "/macbook-pro/m5/",
+      "verified": true
+    },
+    {
+      "slug": "apple-imac-m4",
+      "name": "Apple iMac M4",
+      "vramGb": 24,
+      "brand": "Apple",
+      "optimal": "",
+      "modelfitPath": "/imac/m4/",
+      "verified": true
+    },
+    {
+      "slug": "apple-imac-m6",
+      "name": "Apple iMac M6",
+      "vramGb": 24,
+      "brand": "Apple",
+      "optimal": "",
+      "modelfitPath": "/imac/m6/",
+      "verified": true
+    },
+    {
+      "slug": "apple-mac-mini-m4",
+      "name": "Apple Mac Mini M4",
+      "vramGb": 24,
+      "brand": "Apple",
+      "optimal": "",
+      "modelfitPath": "/mac-mini/m4/",
+      "verified": true
+    },
+    {
+      "slug": "apple-mac-mini-m6",
+      "name": "Apple Mac Mini M6",
+      "vramGb": 24,
+      "brand": "Apple",
+      "optimal": "",
+      "modelfitPath": "/mac-mini/m6/",
+      "verified": true
+    },
+    {
+      "slug": "apple-macbook-air-m4",
+      "name": "Apple MacBook Air M4",
+      "vramGb": 24,
+      "brand": "Apple",
+      "optimal": "",
+      "modelfitPath": "/macbook-air/m4/",
+      "verified": true
+    },
+    {
+      "slug": "apple-macbook-air-m5",
+      "name": "Apple MacBook Air M5",
+      "vramGb": 24,
+      "brand": "Apple",
+      "optimal": "",
+      "modelfitPath": "/macbook-air/m5/",
+      "verified": true
+    },
+    {
+      "slug": "apple-macbook-pro-m6",
+      "name": "Apple MacBook Pro M6",
+      "vramGb": 24,
+      "brand": "Apple",
+      "optimal": "",
+      "modelfitPath": "/macbook-pro/m6/",
+      "verified": true
+    },
+    {
+      "slug": "apple-imac-m1",
+      "name": "Apple iMac M1",
+      "vramGb": 16,
+      "brand": "Apple",
+      "optimal": "",
+      "modelfitPath": "/imac/m1/",
+      "verified": true
+    },
+    {
+      "slug": "apple-imac-m3",
+      "name": "Apple iMac M3",
+      "vramGb": 16,
+      "brand": "Apple",
+      "optimal": "",
+      "modelfitPath": "/imac/m3/",
+      "verified": true
+    },
+    {
+      "slug": "apple-mac-mini-m1",
+      "name": "Apple Mac Mini M1",
+      "vramGb": 16,
+      "brand": "Apple",
+      "optimal": "",
+      "modelfitPath": "/mac-mini/m1/",
+      "verified": true
+    },
+    {
+      "slug": "apple-mac-mini-m2",
+      "name": "Apple Mac Mini M2",
+      "vramGb": 16,
+      "brand": "Apple",
+      "optimal": "",
+      "modelfitPath": "/mac-mini/m2/",
+      "verified": true
+    },
+    {
+      "slug": "apple-macbook-air-m1",
+      "name": "Apple MacBook Air M1",
+      "vramGb": 16,
+      "brand": "Apple",
+      "optimal": "",
+      "modelfitPath": "/macbook-air/m1/",
+      "verified": true
+    },
+    {
+      "slug": "apple-macbook-air-m2",
+      "name": "Apple MacBook Air M2",
+      "vramGb": 16,
+      "brand": "Apple",
+      "optimal": "",
+      "modelfitPath": "/macbook-air/m2/",
+      "verified": true
+    },
+    {
+      "slug": "apple-macbook-air-m3",
+      "name": "Apple MacBook Air M3",
+      "vramGb": 16,
+      "brand": "Apple",
+      "optimal": "",
+      "modelfitPath": "/macbook-air/m3/",
+      "verified": true
+    },
+    {
+      "slug": "apple-macbook-pro-m1",
+      "name": "Apple MacBook Pro M1",
+      "vramGb": 16,
+      "brand": "Apple",
+      "optimal": "",
+      "modelfitPath": "/macbook-pro/m1/",
+      "verified": true
+    },
+    {
+      "slug": "apple-macbook-pro-m2",
+      "name": "Apple MacBook Pro M2",
+      "vramGb": 16,
+      "brand": "Apple",
+      "optimal": "",
+      "modelfitPath": "/macbook-pro/m2/",
+      "verified": true
+    },
+    {
+      "slug": "apple-macbook-pro-m3",
+      "name": "Apple MacBook Pro M3",
+      "vramGb": 16,
+      "brand": "Apple",
+      "optimal": "",
+      "modelfitPath": "/macbook-pro/m3/",
+      "verified": true
+    },
+    {
+      "slug": "rtx-6000-pro",
+      "name": "NVIDIA RTX PRO 6000",
+      "vramGb": 96,
+      "brand": "NVIDIA",
+      "optimal": "",
+      "modelfitPath": "/gpu/rtx-6000-pro/",
+      "verified": true
+    },
+    {
+      "slug": "rtx-5090",
+      "name": "NVIDIA GeForce RTX 5090",
+      "vramGb": 32,
+      "brand": "NVIDIA",
+      "optimal": "",
+      "modelfitPath": "/gpu/rtx-5090/",
+      "verified": true
+    },
+    {
+      "slug": "rtx-3090",
+      "name": "NVIDIA GeForce RTX 3090",
+      "vramGb": 24,
+      "brand": "NVIDIA",
+      "optimal": "FLUX.1 Dev / Schnell (Native FP16), Hunyuan Video, Wan 2.1 Video, Stable Diffusion XL (SDXL)",
+      "modelfitPath": "/gpu/rtx-3090/",
+      "verified": true
+    },
+    {
+      "slug": "rtx-3090-ti",
+      "name": "NVIDIA GeForce RTX 3090 Ti",
+      "vramGb": 24,
+      "brand": "NVIDIA",
+      "optimal": "",
+      "modelfitPath": "/gpu/rtx-3090-ti/",
+      "verified": true
+    },
+    {
+      "slug": "rtx-4090",
+      "name": "NVIDIA GeForce RTX 4090",
+      "vramGb": 24,
+      "brand": "NVIDIA",
+      "optimal": "FLUX.1 Dev / Schnell (Native FP16), Hunyuan Video, Wan 2.1 Video, Stable Diffusion XL (SDXL)",
+      "modelfitPath": "/gpu/rtx-4090/",
+      "verified": true
+    },
+    {
+      "slug": "rtx-4060-ti",
+      "name": "NVIDIA GeForce RTX 4060 Ti",
+      "vramGb": 16,
+      "brand": "NVIDIA",
+      "optimal": "",
+      "modelfitPath": "/gpu/rtx-4060-ti/",
+      "verified": true
+    },
+    {
+      "slug": "rtx-4060-ti-16gb",
+      "name": "NVIDIA GeForce RTX 4060 Ti (16GB)",
+      "vramGb": 16,
+      "brand": "NVIDIA",
+      "optimal": "Stable Diffusion XL (SDXL), Stable Diffusion 1.5, Pony Diffusion, FLUX.1 Schnell (FP16/FP8)",
+      "modelfitPath": "/gpu/rtx-4060-ti/",
+      "verified": true
+    },
+    {
+      "slug": "rtx-4070-ti-super",
+      "name": "NVIDIA GeForce RTX 4070 Ti SUPER",
+      "vramGb": 16,
+      "brand": "NVIDIA",
+      "optimal": "",
+      "modelfitPath": "/gpu/rtx-4070-ti-super/",
+      "verified": true
+    },
+    {
+      "slug": "rtx-4080",
+      "name": "NVIDIA GeForce RTX 4080",
+      "vramGb": 16,
+      "brand": "NVIDIA",
+      "optimal": "Stable Diffusion XL (SDXL), Stable Diffusion 1.5, Pony Diffusion, FLUX.1 Schnell (FP16/FP8)",
+      "modelfitPath": "/gpu/rtx-4080/",
+      "verified": true
+    },
+    {
+      "slug": "rtx-4080-super",
+      "name": "NVIDIA GeForce RTX 4080 SUPER",
+      "vramGb": 16,
+      "brand": "NVIDIA",
+      "optimal": "",
+      "modelfitPath": "/gpu/rtx-4080-super/",
+      "verified": true
+    },
+    {
+      "slug": "rtx-5060-ti",
+      "name": "NVIDIA GeForce RTX 5060 Ti",
+      "vramGb": 16,
+      "brand": "NVIDIA",
+      "optimal": "",
+      "modelfitPath": "/gpu/rtx-5060-ti/",
+      "verified": true
+    },
+    {
+      "slug": "rtx-5070-ti",
+      "name": "NVIDIA GeForce RTX 5070 Ti",
+      "vramGb": 16,
+      "brand": "NVIDIA",
+      "optimal": "",
+      "modelfitPath": "/gpu/rtx-5070-ti/",
+      "verified": true
+    },
+    {
+      "slug": "rtx-5080",
+      "name": "NVIDIA GeForce RTX 5080",
+      "vramGb": 16,
+      "brand": "NVIDIA",
+      "optimal": "",
+      "modelfitPath": "/gpu/rtx-5080/",
+      "verified": true
+    },
+    {
+      "slug": "tesla-p100-pcie-16gb",
+      "name": "NVIDIA Tesla P100",
+      "vramGb": 16,
+      "brand": "NVIDIA",
+      "optimal": "",
+      "modelfitPath": "/gpu/tesla-p100-pcie-16gb/",
+      "verified": true
+    },
+    {
+      "slug": "tesla-t4",
+      "name": "NVIDIA Tesla T4",
+      "vramGb": 16,
+      "brand": "NVIDIA",
+      "optimal": "",
+      "modelfitPath": "/gpu/tesla-t4/",
+      "verified": true
+    },
+    {
+      "slug": "rtx-3060",
+      "name": "NVIDIA GeForce RTX 3060",
+      "vramGb": 12,
+      "brand": "NVIDIA",
+      "optimal": "Stable Diffusion XL (SDXL), Stable Diffusion 1.5, Pony Diffusion",
+      "modelfitPath": "/gpu/rtx-3060/",
+      "verified": true
+    },
+    {
+      "slug": "rtx-4070",
+      "name": "NVIDIA GeForce RTX 4070",
+      "vramGb": 12,
+      "brand": "NVIDIA",
+      "optimal": "Stable Diffusion XL (SDXL), Stable Diffusion 1.5, Pony Diffusion",
+      "modelfitPath": "/gpu/rtx-4070/",
+      "verified": true
+    },
+    {
+      "slug": "rtx-4070-super",
+      "name": "NVIDIA GeForce RTX 4070 SUPER",
+      "vramGb": 12,
+      "brand": "NVIDIA",
+      "optimal": "",
+      "modelfitPath": "/gpu/rtx-4070-super/",
+      "verified": true
+    },
+    {
+      "slug": "rtx-4070-ti",
+      "name": "NVIDIA GeForce RTX 4070 Ti",
+      "vramGb": 12,
+      "brand": "NVIDIA",
+      "optimal": "Stable Diffusion XL (SDXL), Stable Diffusion 1.5, Pony Diffusion",
+      "modelfitPath": "/gpu/rtx-4070-ti/",
+      "verified": true
+    },
+    {
+      "slug": "rtx-5070",
+      "name": "NVIDIA GeForce RTX 5070",
+      "vramGb": 12,
+      "brand": "NVIDIA",
+      "optimal": "",
+      "modelfitPath": "/gpu/rtx-5070/",
+      "verified": true
+    },
+    {
+      "slug": "rtx-3080",
+      "name": "NVIDIA GeForce RTX 3080",
+      "vramGb": 10,
+      "brand": "NVIDIA",
+      "optimal": "Stable Diffusion XL (SDXL), Stable Diffusion 1.5, Pony Diffusion",
+      "modelfitPath": "/gpu/rtx-3080-10gb/",
+      "verified": true
+    },
+    {
+      "slug": "rtx-3080-10gb",
+      "name": "NVIDIA GeForce RTX 3080 10GB",
+      "vramGb": 10,
+      "brand": "NVIDIA",
+      "optimal": "",
+      "modelfitPath": "/gpu/rtx-3080-10gb/",
+      "verified": true
+    },
+    {
+      "slug": "rtx-2070",
+      "name": "NVIDIA GeForce RTX 2070",
+      "vramGb": 8,
+      "brand": "NVIDIA",
+      "optimal": "",
+      "modelfitPath": "/gpu/rtx-2070/",
+      "verified": true
+    },
+    {
+      "slug": "rtx-3050",
+      "name": "NVIDIA GeForce RTX 3050",
+      "vramGb": 8,
+      "brand": "NVIDIA",
+      "optimal": "Stable Diffusion 1.5, Pony Diffusion (SD1.5 fine-tunes), SDXL (with --medvram)",
+      "modelfitPath": null,
+      "verified": true
+    },
+    {
+      "slug": "rtx-3060-ti",
+      "name": "NVIDIA GeForce RTX 3060 Ti",
+      "vramGb": 8,
+      "brand": "NVIDIA",
+      "optimal": "",
+      "modelfitPath": "/gpu/rtx-3060-ti/",
+      "verified": true
+    },
+    {
+      "slug": "rtx-3070",
+      "name": "NVIDIA GeForce RTX 3070",
+      "vramGb": 8,
+      "brand": "NVIDIA",
+      "optimal": "Stable Diffusion 1.5, Pony Diffusion (SD1.5 fine-tunes), SDXL (with --medvram)",
+      "modelfitPath": "/gpu/rtx-3070/",
+      "verified": true
+    },
+    {
+      "slug": "rtx-4060",
+      "name": "NVIDIA GeForce RTX 4060",
+      "vramGb": 8,
+      "brand": "NVIDIA",
+      "optimal": "Stable Diffusion 1.5, Pony Diffusion (SD1.5 fine-tunes), SDXL (with --medvram)",
+      "modelfitPath": "/gpu/rtx-4060/",
+      "verified": true
+    },
+    {
+      "slug": "rtx-5060",
+      "name": "NVIDIA GeForce RTX 5060",
+      "vramGb": 8,
+      "brand": "NVIDIA",
+      "optimal": "",
+      "modelfitPath": "/gpu/rtx-5060/",
+      "verified": true
+    }
+  ]
+}

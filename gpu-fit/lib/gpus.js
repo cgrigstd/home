@@ -1,5 +1,6 @@
-// Catálogo base. Se combina con lo que devuelve vramdb.com/gpus/ en tiempo de ejecución.
-// `modelfitSlug` apunta a la página equivalente en modelfit.io (para recomendaciones).
+// Catálogo base. Se combina con data/catalog.json y, si está disponible, con
+// lo que devuelve vramdb.com/gpus/ en tiempo de ejecución.
+// `modelfitSlug`/`modelfitPath` apuntan a la página equivalente en modelfit.io.
 export const FALLBACK_GPUS = [
   { slug: 'rtx-5090', name: 'NVIDIA GeForce RTX 5090', vramGb: 32, brand: 'NVIDIA', modelfitSlug: 'rtx-5090' },
   { slug: 'rtx-5080', name: 'NVIDIA GeForce RTX 5080', vramGb: 16, brand: 'NVIDIA', modelfitSlug: 'rtx-5080' },
@@ -28,40 +29,77 @@ export const FALLBACK_GPUS = [
   { slug: 'rtx-6000-pro', name: 'NVIDIA RTX 6000 Pro', vramGb: 96, brand: 'NVIDIA', modelfitSlug: 'rtx-6000-pro' },
   { slug: 'tesla-p100-pcie-16gb', name: 'NVIDIA Tesla P100 (16GB)', vramGb: 16, brand: 'NVIDIA', modelfitSlug: 'tesla-p100-pcie-16gb' },
   { slug: 'tesla-t4', name: 'NVIDIA Tesla T4', vramGb: 16, brand: 'NVIDIA', modelfitSlug: 'tesla-t4' },
+
+  { slug: 'rx-7900-xtx', name: 'AMD Radeon RX 7900 XTX', vramGb: 24, brand: 'AMD', modelfitSlug: 'rx-7900-xtx' },
+  { slug: 'rx-7900-xt', name: 'AMD Radeon RX 7900 XT', vramGb: 20, brand: 'AMD', modelfitSlug: 'rx-7900-xt' },
+  { slug: 'rx-9070-xt', name: 'AMD Radeon RX 9070 XT', vramGb: 16, brand: 'AMD', modelfitSlug: 'rx-9070-xt' },
+  { slug: 'rx-9060-xt', name: 'AMD Radeon RX 9060 XT', vramGb: 16, brand: 'AMD', modelfitSlug: 'rx-9060-xt' },
+  { slug: 'ryzen-ai-max-395', name: 'AMD Ryzen AI Max+ 395', vramGb: 128, brand: 'AMD', modelfitSlug: 'ryzen-ai-max-395' },
+
+  { slug: 'apple-macbook-air-m5', name: 'Apple MacBook Air M5', vramGb: 24, brand: 'Apple', modelfitPath: '/macbook-air/m5/' },
+  { slug: 'apple-macbook-pro-m3', name: 'Apple MacBook Pro M3', vramGb: 16, brand: 'Apple', modelfitPath: '/macbook-pro/m3/' },
+  { slug: 'apple-macbook-pro-m5', name: 'Apple MacBook Pro M5', vramGb: 32, brand: 'Apple', modelfitPath: '/macbook-pro/m5/' },
+  { slug: 'apple-mac-mini-m4', name: 'Apple Mac Mini M4', vramGb: 24, brand: 'Apple', modelfitPath: '/mac-mini/m4/' },
+  { slug: 'apple-mac-studio-m5', name: 'Apple Mac Studio M5 Ultra', vramGb: 256, brand: 'Apple', modelfitPath: '/mac-studio/m5/' },
+  { slug: 'apple-imac-m4', name: 'Apple iMac M4', vramGb: 24, brand: 'Apple', modelfitPath: '/imac/m4/' },
 ];
 
-export function mergeGpuCatalog(base, live) {
-  const bySlug = new Map(base.map((gpu) => [gpu.slug, { ...gpu }]));
-  for (const gpu of live) {
-    if (gpu.slug === 'gtx-1650' || gpu.slug === 'macbook-m3-max') continue;
-    if (gpu.brand === 'AMD' || /^rx-|^ryzen-/i.test(gpu.slug || '')) continue;
-    const existing = bySlug.get(gpu.slug);
-    if (existing) {
-      existing.name = gpu.name || existing.name;
-      existing.vramGb = gpu.vramGb || existing.vramGb;
-      existing.optimal = gpu.optimal || existing.optimal;
-      existing.verified = true;
-    } else {
-      bySlug.set(gpu.slug, {
-        slug: gpu.slug,
-        name: gpu.name,
-        vramGb: gpu.vramGb,
-        brand: brandFromName(gpu.name),
-        modelfitSlug: gpu.slug,
-        optimal: gpu.optimal,
-        verified: true,
-      });
-    }
-  }
-  return [...bySlug.values()].sort((a, b) => {
-    if (a.brand !== b.brand) return a.brand.localeCompare(b.brand);
-    return b.vramGb - a.vramGb || a.name.localeCompare(b.name);
-  });
+export function modelfitPathFor(gpu) {
+  if (!gpu) return null;
+  if (gpu.modelfitPath) return gpu.modelfitPath;
+  if (gpu.modelfitSlug) return `/gpu/${gpu.modelfitSlug}/`;
+  return null;
 }
 
-function brandFromName(name = '') {
-  if (/apple|macbook|m\d\s*max/i.test(name)) return 'Apple';
+export function brandFromName(name = '') {
+  if (/apple|macbook|mac\s*mini|mac\s*studio|imac|m\d\s*(max|pro|ultra)\b/i.test(name)) return 'Apple';
   if (/radeon|rx\s|ryzen|amd/i.test(name)) return 'AMD';
   if (/nvidia|rtx|gtx|tesla|geforce/i.test(name)) return 'NVIDIA';
   return 'Otros';
+}
+
+function normalizeGpu(gpu) {
+  const name = gpu.name || gpu.label || gpu.slug || '';
+  return {
+    slug: gpu.slug,
+    name,
+    vramGb: gpu.vramGb || null,
+    brand: gpu.brand || brandFromName(name),
+    optimal: gpu.optimal || '',
+    modelfitPath: modelfitPathFor(gpu),
+    verified: Boolean(gpu.verified),
+  };
+}
+
+// Combina el catálogo base con cualquier número de listas (vramdb, modelfit).
+// No descarta ninguna marca: NVIDIA, AMD y Apple conviven en el resultado.
+export function mergeGpuCatalog(base, ...lists) {
+  const bySlug = new Map();
+  for (const gpu of base || []) {
+    if (!gpu?.slug) continue;
+    bySlug.set(gpu.slug, normalizeGpu(gpu));
+  }
+
+  for (const list of lists) {
+    for (const gpu of list || []) {
+      if (!gpu?.slug) continue;
+      const existing = bySlug.get(gpu.slug);
+      if (existing) {
+        if (gpu.name) existing.name = gpu.name;
+        if (gpu.vramGb) existing.vramGb = gpu.vramGb;
+        if (gpu.optimal) existing.optimal = gpu.optimal;
+        const path = modelfitPathFor(gpu);
+        if (path) existing.modelfitPath = path;
+        if (gpu.brand) existing.brand = gpu.brand;
+        existing.verified = true;
+      } else {
+        bySlug.set(gpu.slug, normalizeGpu({ ...gpu, verified: gpu.verified !== false }));
+      }
+    }
+  }
+
+  return [...bySlug.values()].sort((a, b) => {
+    if (a.brand !== b.brand) return a.brand.localeCompare(b.brand);
+    return (b.vramGb || 0) - (a.vramGb || 0) || a.name.localeCompare(b.name);
+  });
 }

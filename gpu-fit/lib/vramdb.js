@@ -43,6 +43,7 @@ export function parseGpuCatalog(html) {
   while ((match = GPU_CARD.exec(String(html || ''))) !== null) {
     const slug = match[1];
     if (seen.has(slug)) continue;
+    if (slug === 'gtx-1650') continue;
     seen.add(slug);
     gpus.push({
       slug,
